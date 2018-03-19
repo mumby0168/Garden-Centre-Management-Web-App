@@ -21,6 +21,10 @@ namespace Garden_Centre_MVC.Models
 
         [Required]
         public int EmployeeNumber { get; set; }
+
+        [Required]
+        public bool Admin { get; set; }
+
     }
     
 }
