@@ -14,5 +14,10 @@ namespace Garden_Centre_MVC.Models
         public byte[] Password { get; set; }
 
         public byte[] Salt { get; set; }
+
+        public Employee Employee { get; set; }
+
+        public int EmployeeId { get; set; }
+
     }
 }

@@ -39,6 +39,6 @@ namespace Garden_Centre_MVC.Models
         {
             Transactions = new Collection<Transaction>();
 
-
+        }
     }
 }
