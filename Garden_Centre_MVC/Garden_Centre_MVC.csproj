@@ -162,6 +162,23 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803191038291_IntialModel.cs" />
+    <Compile Include="Migrations\201803191038291_IntialModel.Designer.cs">
+      <DependentUpon>201803191038291_IntialModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803191038579_SeedingDatabase.cs" />
+    <Compile Include="Migrations\201803191038579_SeedingDatabase.Designer.cs">
+      <DependentUpon>201803191038579_SeedingDatabase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803191047542_SwappedEmployeeRelationship.cs" />
+    <Compile Include="Migrations\201803191047542_SwappedEmployeeRelationship.Designer.cs">
+      <DependentUpon>201803191047542_SwappedEmployeeRelationship.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803191051262_AddedADescriptionToAnItem.cs" />
+    <Compile Include="Migrations\201803191051262_AddedADescriptionToAnItem.Designer.cs">
+      <DependentUpon>201803191051262_AddedADescriptionToAnItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\EmployeeLogin.cs" />
@@ -223,6 +240,20 @@
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201803191038291_IntialModel.resx">
+      <DependentUpon>201803191038291_IntialModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803191038579_SeedingDatabase.resx">
+      <DependentUpon>201803191038579_SeedingDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803191047542_SwappedEmployeeRelationship.resx">
+      <DependentUpon>201803191047542_SwappedEmployeeRelationship.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803191051262_AddedADescriptionToAnItem.resx">
+      <DependentUpon>201803191051262_AddedADescriptionToAnItem.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

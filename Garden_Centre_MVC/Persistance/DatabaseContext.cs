@@ -17,6 +17,10 @@ namespace Garden_Centre_MVC.Persistance
         public DbSet<EmployeeLogin> EmployeeLogins { get; set; }
 
         public DbSet<Customer> Customers { get; set; }
+
+        public DbSet<Item> Items { get; set; }
+
+        public DbSet<Transaction> Transactions { get; set; }
          
         public DatabaseContext()
         {
