@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Policy;
 using System.Web;
@@ -10,15 +11,32 @@ namespace Garden_Centre_MVC.Models
     {
         public int CustomerId { get; set; }
 
+        [Required]
+        [MaxLength(15)]
         public string FirstName { get; set; }
 
+        [Required]
+        [MaxLength(15)]
         public string SecondName { get; set; }
 
+        [Required]
+        [MaxLength(25)]
         public string AddressLine1 { get; set; }
 
+        [Required]
+        [MaxLength(15)]
         public string AddressLine2 { get; set; }   
 
+        [MaxLength(255)]
+        [Required]
         public string PostCode { get; set; }
+
+        //public ICollection<>
+
+        public Customer()
+        {
+
+        }
 
 
     }
