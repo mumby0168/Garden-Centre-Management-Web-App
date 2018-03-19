@@ -165,6 +165,8 @@
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\EmployeeLogin.cs" />
+    <Compile Include="Models\Item.cs" />
+    <Compile Include="Models\Transaction.cs" />
     <Compile Include="Persistance\DatabaseContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
