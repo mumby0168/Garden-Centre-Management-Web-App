@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Policy;
 using System.Web;
+using System.Web.Configuration;
 
 namespace Garden_Centre_MVC.Models
 {
@@ -31,12 +33,11 @@ namespace Garden_Centre_MVC.Models
         [Required]
         public string PostCode { get; set; }
 
-        //public ICollection<>
+        public ICollection<Transaction> Transactions { get; set; }
 
         public Customer()
         {
-
-        }
+            Transactions = new Collection<Transaction>();
 
 
     }
