@@ -29,7 +29,7 @@ namespace Garden_Centre_MVC.Controllers
         public ActionResult Login(LoginViewModel loginVm)
         {
 
-            var employee = _context.EmployeeLogins.Include(e => e.Employee).FirstOrDefault(e => e.Username == loginVm.Username);
+            var employee = _context.EmployeeLogins.Include(e => e.Employee).FirstOrDefault(e => e.Username == loginVm.Email);
 
             if (employee == null)
                 return View();
@@ -84,7 +84,7 @@ namespace Garden_Centre_MVC.Controllers
 
             var vm = new LoginViewModel()
             {
-                Username = registerVm.Username,
+                Email = registerVm.Username,
                 EmployeeNumber = registerVm.EmployeeNumber
             };
             
@@ -94,6 +94,12 @@ namespace Garden_Centre_MVC.Controllers
         protected override void Dispose(bool disposing)
         {
             _context.Dispose();
+        }
+
+        public ActionResult ForgotPassword()
+        {
+
+            return PartialView("ForgottenPassword");
         }
     }
 }

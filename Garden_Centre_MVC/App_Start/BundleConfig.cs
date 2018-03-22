@@ -24,7 +24,7 @@ namespace Garden_Centre_MVC
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
+                      "~/Content/darkly-theme.css",
                       "~/Content/site.css"));
         }
     }

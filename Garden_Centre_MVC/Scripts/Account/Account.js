@@ -1,4 +1,21 @@
-﻿//$(document).ready(function() {
+﻿$(document).ready(function() {
+
+    $("#ForgottonPasswordLink").click(function() {
+
+        $.ajax({
+            url: "/Account/ForgotPassword",
+            success: function (content) {
+                //alert(content);
+                $("#forgotPasswordModalBody").html(content);
+            }
+
+        });
+
+        $("#ForgottenPasswordModal").modal();
+
+        e.preventDefault();
+
+    });
 
 
 //    $("#loginForm").submit(function() {
@@ -6,7 +23,6 @@
 
 //        alert("form submitted");
 
-        
 
 //        $.ajax({
 //            url: "/Account/Login",
@@ -37,4 +53,4 @@
 //    });
 
 
-//});
+});

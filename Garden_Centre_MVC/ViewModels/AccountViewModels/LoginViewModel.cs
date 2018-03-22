@@ -11,12 +11,16 @@ namespace Garden_Centre_MVC.ViewModels.AccountViewModels
     public class LoginViewModel
     {
         [Required]
-        public string Username { get; set; }
+        [Display(Name = "Email Address")]
+        public string Email { get; set; }
 
         [Required]
+        [Display(Name = "Password")]
         public string Password { get; set; }
 
         [Required]
+        [Display(Name = "Valid Employee Number")]
         public int EmployeeNumber { get; set; }
+
     }
 }
