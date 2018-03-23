@@ -1,12 +1,12 @@
 ﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+    padding: 70px;    
 }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    padding: 70px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -23,8 +23,11 @@ textarea {
     max-width: 280px;
 }
 
-._partial_outline
-{
-    border: solid;
-    border-color: black;
+#CenteredDiv {
+    /*Make sure to use the align=center in the div*/
+    margin: 10px;
+}
+
+#Title {
+    margin-bottom: 60px;
 }

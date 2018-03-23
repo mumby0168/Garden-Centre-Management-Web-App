@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Garden_Centre_MVC.Attributes;
 
 namespace Garden_Centre_MVC.Controllers
 {
     public class HomeController : Controller
     {
+        [NormalUser]
         public ActionResult Index()
         {
             return View();
         }
 
+        [NormalUser]
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
@@ -20,6 +23,8 @@ namespace Garden_Centre_MVC.Controllers
             return View();
         }
 
+        [AdminUser]
+        [NormalUser]
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
