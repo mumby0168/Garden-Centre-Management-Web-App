@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Garden_Centre_MVC.ViewModels.Transactions;
 
 namespace Garden_Centre_MVC.Controllers
 {
@@ -10,7 +11,8 @@ namespace Garden_Centre_MVC.Controllers
     {
         public ActionResult Index()
         {
-            return View("Index");
+            IndexViewModel vm = new IndexViewModel();
+            return View("Index", vm);
         }
     }
 }
