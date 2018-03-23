@@ -22,3 +22,17 @@ select,
 textarea {
     max-width: 280px;
 }
+#ForgotPasswordContainer button {
+    margin: 5px;
+}
+
+#ForgotPasswordContainer {
+    padding: 20px;
+    border-radius: 6%;
+    background: #00BC8C;
+}
+
+
+#ForgotPasswordContainer h4 {
+    margin-bottom: 10px;
+}

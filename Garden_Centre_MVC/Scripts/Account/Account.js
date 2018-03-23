@@ -1,56 +1,50 @@
-﻿$(document).ready(function() {
+﻿$(document).ready(function () {
 
+    $("#ForogotPasswordDiv").hidden = true;
+
+    //loads the modal with a form from a partial view
     $("#ForgottonPasswordLink").click(function() {
 
         $.ajax({
             url: "/Account/ForgotPassword",
-            success: function (content) {
-                //alert(content);
-                $("#forgotPasswordModalBody").html(content);
+            success: function(content) {
+                $("#ForogotPasswordDiv").html(content);
             }
 
         });
 
-        $("#ForgottenPasswordModal").modal();
-
-        e.preventDefault();
+        $("#ForogotPasswordDiv").delay(1000).slideDown("slow");
 
     });
 
 
-//    $("#loginForm").submit(function() {
-//        var form = $("#loginForm").serialize();
+   
 
-//        alert("form submitted");
+    //sends the email when the submit button is clicked
+    $("#forgottenPasswordForm").submit(function (e) {
 
+        //stop the page from refreshing
 
-//        $.ajax({
-//            url: "/Account/Login",
-//            data: form,
-//            success: function (data) {
-//                alert(data);
-//            }
-//        });
+        $.ajax({
+            url: "/Account/SendRecoveryEmail",
+            data: $("#forgottenPasswordForm").serialize(),
+            datatype: JSON,
+            success: function (data) {
+                $("#ForogotPasswordDiv").delay(1000).slideUp("slow");
+                bootbox.alert("The email with your username and password has been sent");
+            }
+        });
 
-//        e.preventDefault();
+        //stop the page from refreshing
+        e.preventDefault();
+    });
 
+    //closes the form 
+    $("#CloseForgotPasswordFormBtn").click(function() {
 
-//    });
+        $("#ForogotPasswordDiv").slideUp("Slow");
 
-
-//    $("#click").click(function() {
-
-//        alert("button clicked");
-
-//        $.ajax({
-//            url: "/Account/Send",
-//            success: function(data) {
-//                $(".wrapper").innerHTML = data;
-//            }
-//        });
-
-//        e.preventDefault();
-//    });
-
+    });
 
 });
+
