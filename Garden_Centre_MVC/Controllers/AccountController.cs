@@ -106,6 +106,10 @@ namespace Garden_Centre_MVC.Controllers
 
         public ActionResult SendRecoveryEmail(ForgotPasswordViewModel vm)
         {
+            if (!ModelState.IsValid)
+                return View();
+
+
             var employee = _context.EmployeeLogins.Include(m => m.Employee).FirstOrDefault(e => e.Username == vm.Email);
 
             if (employee.Employee.EmployeeNumber != vm.EmployeeId)

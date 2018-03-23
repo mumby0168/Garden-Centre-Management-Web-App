@@ -36,3 +36,11 @@ textarea {
 #ForgotPasswordContainer h4 {
     margin-bottom: 10px;
 }
+
+.input-validation-error {
+     border: 2px dashed red;
+}
+
+.field-validation-error {
+    color: red;   
+}
