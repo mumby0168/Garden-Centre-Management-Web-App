@@ -14,6 +14,9 @@ using Garden_Centre_MVC.ViewModels.AccountViewModels;
 
 namespace Garden_Centre_MVC.Controllers
 {
+    /// <summary>
+    /// Billy Mumby
+    /// </summary>
     public class AccountController : Controller
     {
         private DatabaseContext _context;
@@ -94,10 +97,6 @@ namespace Garden_Centre_MVC.Controllers
             return View("Login", vm);
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            _context.Dispose();
-        }
 
         public ActionResult ForgotPassword()
         {
@@ -156,11 +155,16 @@ namespace Garden_Centre_MVC.Controllers
                 Debug.WriteLine("Email has been sent");
                 return true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //if fails catch the exeception and return false for caller to handle
                 return false;
             }            
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
         }
 
         #endregion
