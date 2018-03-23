@@ -108,7 +108,7 @@ namespace Garden_Centre_MVC.Controllers
         {
             var employee = _context.EmployeeLogins.Include(m => m.Employee).FirstOrDefault(e => e.Username == vm.Email);
 
-            if (employee.EmployeeId != vm.EmployeeId)
+            if (employee.Employee.EmployeeNumber != vm.EmployeeId)
                 return PartialView("ForgottenPassword");
 
             if (SendEmail(employee))
