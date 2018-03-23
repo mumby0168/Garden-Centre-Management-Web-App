@@ -1,0 +1,25 @@
+﻿@model Garden_Centre_MVC.ViewModels.AddViewModel
+
+<div class="container _partial_outline" style="margin:1%;margin-bottom:0%;padding:1%;">
+    <form>
+        <h1>Customer</h1>
+        <input type="text" />
+        <button>...</button>
+        <br />
+        <h1>Items</h1>
+        <input type="text" />
+        <button>Add</button>
+        <button>...</button>
+        @if(Model.Items.Count > 0)
+        {
+            foreach (Garden_Centre_MVC.Models.Item item in Model.Items)
+            {
+                <p>@item.Description</p>
+                <br />
+            }
+        }
+        <br />
+        <br />
+        <input type="submit" />     <button>Cancel</button>
+    </form>
+</div>
