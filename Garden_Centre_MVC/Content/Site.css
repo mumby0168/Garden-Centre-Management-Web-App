@@ -22,3 +22,9 @@ select,
 textarea {
     max-width: 280px;
 }
+
+._partial_outline
+{
+    border: solid;
+    border-color: black;
+}

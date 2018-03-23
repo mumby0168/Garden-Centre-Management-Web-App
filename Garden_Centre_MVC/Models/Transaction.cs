@@ -15,7 +15,7 @@ namespace Garden_Centre_MVC.Models
 
         [Required]
         public DateTime Date { get; set; }
-
+        
         public float Value { get; set; }
 
         public int ItemId { get; set; }
