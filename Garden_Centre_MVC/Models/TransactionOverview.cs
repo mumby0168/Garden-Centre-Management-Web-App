@@ -44,6 +44,17 @@ namespace Garden_Centre_MVC.Models
             }
         }
 
+        public TransactionOverview()
+        {
+            m_Transactions = new List<Transaction>();
+            m_Value = 0.0f;
+            m_DateAndTime = DateTime.Now;
+            foreach (Transaction t in m_Transactions)
+            {
+                m_Value += t.Item.ItemPrice;
+            }
+        }
+
         public TransactionOverview(List<Transaction> transactions)
         {
             m_Transactions = transactions;

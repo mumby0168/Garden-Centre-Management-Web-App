@@ -158,8 +158,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Assets\CurrentUser.cs" />
-    <Compile Include="Assets\Encryptor.cs" />
+    <Compile Include="Attributes\Assets\CurrentUser.cs" />
+    <Compile Include="Attributes\Assets\Encryptor.cs" />
     <Compile Include="Attributes\AdminUser.cs" />
     <Compile Include="Attributes\NormalUser.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -204,6 +204,7 @@
     <Compile Include="ViewModels\AccountViewModels\ForgotPasswordViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModels\RegisterViewModel.cs" />
+    <Compile Include="ViewModels\Transactions\AddViewModel.cs" />
     <Compile Include="ViewModels\Transactions\IndexViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -245,10 +246,12 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Transactions\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\ForgottenPassword.cshtml" />
-    <Content Include="Views\Transactions\Index.cshtml" />
+    <Content Include="Views\Transactions\Partials\HistoricView.cshtml" />
+    <Content Include="Views\Transactions\Partials\AddView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

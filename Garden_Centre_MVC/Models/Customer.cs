@@ -21,6 +21,8 @@ namespace Garden_Centre_MVC.Models
         [MaxLength(15)]
         public string SecondName { get; set; }
 
+        public string FullName { get { return FirstName + " " + SecondName; } }
+
         [Required]
         [MaxLength(25)]
         public string AddressLine1 { get; set; }

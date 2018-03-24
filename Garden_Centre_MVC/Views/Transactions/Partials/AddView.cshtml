@@ -1,25 +1,50 @@
-﻿@model Garden_Centre_MVC.ViewModels.AddViewModel
+﻿@model Garden_Centre_MVC.ViewModels.Transactions.AddViewModel
 
-<div class="container _partial_outline" style="margin:1%;margin-bottom:0%;padding:1%;">
-    <form>
-        <h1>Customer</h1>
-        <input type="text" />
-        <button>...</button>
+<h2>Add Transaction</h2>
+
+@using (Html.BeginForm("Add", "Transaction", FormMethod.Post))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.Customers)
+        @Html.DropDownListFor(m => m._Customer, new SelectList(Model.Customers, "CustomerId", "FirstName"), "Select Customer", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m._Customer)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Items)
+        @Html.DropDownListFor(m => m._Item, new SelectList(Model.Items, "ItemId", "Description"), "Select Item", new { @id = "ItemSelection", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m._Item)
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+}
+
+<div style="border:solid;">
+    <h2>Adding</h2>
+    @foreach (Garden_Centre_MVC.Models.Item item in Model._Items)
+    {
+        <h2>@item.Description</h2>
         <br />
-        <h1>Items</h1>
-        <input type="text" />
-        <button>Add</button>
-        <button>...</button>
-        @if(Model.Items.Count > 0)
-        {
-            foreach (Garden_Centre_MVC.Models.Item item in Model.Items)
-            {
-                <p>@item.Description</p>
-                <br />
-            }
-        }
-        <br />
-        <br />
-        <input type="submit" />     <button>Cancel</button>
-    </form>
+    }
 </div>
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $("#ItemSelection").on("change", (function () {
+            $.ajax(
+            {
+                    type: "POST",
+                    data: ({ svm: '@Html.Raw(Json.Encode(Model))', id: $("#ItemSelection").val() }),
+                url: '@Url.Action("AddTransaction", "Transactions")',
+                success: function (result) {
+                    $("#ActionView").html(result);
+                },
+                error: function(x, e, r) {
+                    alert(e + " " + r);
+                    alert(x.responseText);
+                }
+            });
+            $("#ItemSelection").val(0);
+        }));
+    });
+    </script>

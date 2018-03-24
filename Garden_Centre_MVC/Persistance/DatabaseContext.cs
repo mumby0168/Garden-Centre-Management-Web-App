@@ -26,7 +26,7 @@ namespace Garden_Centre_MVC.Persistance
             {
                 List<List<Transaction>> ret = new List<List<Transaction>>();
                 //for every transaction
-                for (int x = 0; x < Transactions.Include(m => m.Item).ToList().Count; x++)
+                for (int x = 0; x < Transactions.Include(m => m.Item).Include(s => s.Customer).ToList().Count; x++)
                 {
                     //if the return is empty then add it anyways
                     if(ret.Count == 0)
@@ -41,7 +41,7 @@ namespace Garden_Centre_MVC.Persistance
                     //for all groups that are in return
                     for (int y = 0; y < ret.Count; y++)
                     {
-                        if (ret[y][0].TransactionNumber == Transactions.Include(m => m.Item).ToList()[x].TransactionNumber)
+                        if (ret[y][0].TransactionNumber == Transactions.ToList()[x].TransactionNumber)
                         {
                             ret[y].Add(Transactions.ToList()[x]);
                             bCreateNew = false;
@@ -52,7 +52,7 @@ namespace Garden_Centre_MVC.Persistance
                     if(bCreateNew)
                     {
                         ret.Add(new List<Transaction>());
-                        ret[ret.Count - 1].Add(Transactions.Include(m => m.Item).ToList()[x]);
+                        ret[ret.Count - 1].Add(Transactions.ToList()[x]);
                         continue;
                     }
                 }

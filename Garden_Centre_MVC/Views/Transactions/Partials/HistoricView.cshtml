@@ -1,34 +1,17 @@
-﻿@model Garden_Centre_MVC.ViewModels.TransactionsViewModel
+﻿@model Garden_Centre_MVC.ViewModels.Transactions.IndexViewModel
 
-<div class="container _partial_outline" style="margin:1%;padding:1%;">
-    <h1 style="text-align:center;">Transactions</h1>
-    <br />
-    <button class="btn btn-primary">Add</button>
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>
-                    <h2>Tansaction ID</h2>
-                </th>
-                <th>
-                    <h2>Date</h2>
-                </th>
-                <th>
-                    <h2>Value</h2>
-                </th>
-                <th></th>
-                <th></th>
-            </tr>
-        </thead>
-        @for (int i = 0; i < Model.Transactions.Count && i < 20; i++)
+@foreach (Garden_Centre_MVC.Models.TransactionOverview t in Model.Transactions)
+{
+<h2>
+    @t.Transactions[0].Customer.FirstName @t.Transactions[0].Customer.SecondName - @t.DateAndTime.Day/@t.DateAndTime.Month/@t.DateAndTime.Year - £@t.TotalValue
+</h2>
+    <div style="border:solid;">
+        @foreach (Garden_Centre_MVC.Models.Transaction a in t.Transactions)
         {
-            <tr>
-                <td><h3>@Model.Transactions[i].TransactionNumber</h3></td>
-                <td><h3>@Model.Transactions[i].Date.Day/@Model.Transactions[i].Date.Month/@Model.Transactions[i].Date.Year</h3></td>
-                <td><h3>£ @Model.Transactions[i].Value</h3></td>
-                <td><button class="btn btn-primary" style="margin-top:15%; vertical-align:central;">Edit</button></td>
-                <td><button class="btn btn-primary" style="margin-top:10%; vertical-align:central;">Remove</button></td>
-            </tr>
+            <h2>
+                @a.Item.Description - £@a.Item.ItemPrice
+                <button>Edit</button><button>Delete</button>
+            </h2>
         }
-    </table>
-</div>
+    </div>
+}

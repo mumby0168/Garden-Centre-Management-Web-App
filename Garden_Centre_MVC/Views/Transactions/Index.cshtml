@@ -1,16 +1,28 @@
 ﻿@model Garden_Centre_MVC.ViewModels.Transactions.IndexViewModel
 
-@foreach(Garden_Centre_MVC.Models.TransactionOverview t in Model.Transactions)
-{
-    <h2>
-        @t.ID - @t.DateAndTime.Day/@t.DateAndTime.Month/@t.DateAndTime.Year - £@t.TotalValue
-    </h2>
-    <div style="border:solid;">
-        @foreach (Garden_Centre_MVC.Models.Transaction a in t.Transactions)
-        {
-            <h2>
-                @a.Id - @a.Item.Description - @a.Item.ItemPrice
-            </h2>
+<h2><button id="AddButton">Add</button></h2>
+<div id="HistoricView">
+    @Html.Partial("Partials/HistoricView")
+</div>
+
+<div id="ActionView">
+
+</div>
+
+
+<script type="text/javascript">
+$("#AddButton").on("click", function() {
+    var model = {  }
+    $.ajax(
+    {
+        type: "POST",
+        url: '@Url.Action("AddView", "Transactions")',
+        success: function (result) {
+            $("#ActionView").html(result);
+        },
+        error: function (x, e) {
+
         }
-    </div>
-}
+    });
+});
+</script>
