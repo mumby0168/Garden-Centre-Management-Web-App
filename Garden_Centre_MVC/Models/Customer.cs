@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.Policy;
 using System.Web;
 using System.Web.Configuration;
+using System.Web.Script.Serialization;
 
 namespace Garden_Centre_MVC.Models
 {
@@ -35,6 +36,7 @@ namespace Garden_Centre_MVC.Models
         [Required]
         public string PostCode { get; set; }
 
+        [ScriptIgnore]
         public ICollection<Transaction> Transactions { get; set; }
 
         public Customer()

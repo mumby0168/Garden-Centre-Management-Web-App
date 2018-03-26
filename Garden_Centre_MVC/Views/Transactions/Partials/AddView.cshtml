@@ -2,11 +2,10 @@
 
 <h2>Add Transaction</h2>
 
-@using (Html.BeginForm("Add", "Transaction", FormMethod.Post))
-{
+<form>
     <div class="form-group">
         @Html.LabelFor(m => m.Customers)
-        @Html.DropDownListFor(m => m._Customer, new SelectList(Model.Customers, "CustomerId", "FirstName"), "Select Customer", new { @class = "form-control" })
+        @Html.DropDownListFor(m => m._Customer, new SelectList(Model.Customers, "CustomerId", "FirstName"), "Select Customer", new { @id = "CustomerSelection", @class = "form-control" })
         @Html.ValidationMessageFor(m => m._Customer)
     </div>
 
@@ -16,8 +15,8 @@
         @Html.ValidationMessageFor(m => m._Item)
     </div>
 
-    <button type="submit" class="btn btn-primary">Save</button>
-}
+    <button id="AddTransaction" class="btn btn-primary">Add</button>
+</form>
 
 <div style="border:solid;">
     <h2>Adding</h2>
@@ -28,23 +27,84 @@
     }
 </div>
 
-    <script type="text/javascript">
-    $(document).ready(function () {
-        $("#ItemSelection").on("change", (function () {
+<script type="text/javascript">
+    $(document).ready(function ()
+    {
+        $("#AddTransaction").on("click", function (e) {
+            e.preventDefault();
+            $("#ActionView").html("");
+
             $.ajax(
             {
-                    type: "POST",
-                    data: ({ svm: '@Html.Raw(Json.Encode(Model))', id: $("#ItemSelection").val() }),
+                type: "POST",
+                data: ({ svm: '@Html.Raw(Json.Encode(Model))' }),
                 url: '@Url.Action("AddTransaction", "Transactions")',
                 success: function (result) {
-                    $("#ActionView").html(result);
+                    $("#HistoricView").html(result);
                 },
-                error: function(x, e, r) {
+                error: function (x, e, r) {
                     alert(e + " " + r);
                     alert(x.responseText);
                 }
             });
-            $("#ItemSelection").val(0);
+        });
+
+        $("#CustomerSelection").on("change", (function (e)
+        {
+            e.preventDefault();
+            if ($("#CustomerSelection").val() === '')
+            {
+                @if (Model._Customer != null)
+                {
+                    @:alert("Please select a valid customer");
+                    @:$("#CustomerSelection").val('@Model._Customer.CustomerId');
+                }
+            }
+            if ($("#CustomerSelection").val() !== '')
+            {
+                var v = $("#CustomerSelection").val();
+                $.ajax(
+                    {
+                        type: "POST",
+                        data: ({ svm: '@Html.Raw(Json.Encode(Model))', id: $("#CustomerSelection").val() }),
+                        url: '@Url.Action("AddCustomer", "Transactions")',
+                        success: function (result) {
+                            $("#ActionView").html(result);
+                            $("#CustomerSelection").prop("selectedIndex", v).change(function (e) { this.val(e.val()); e.preventDefault(); });
+                            $("#ItemSelection").prop("selectedIndex", '0').change(function (e) { this.val(e.val()); e.preventDefault(); });
+                        },
+                        error: function (x, e, r) {
+                            alert(e + " " + r);
+                            alert(x.responseText);
+                        }
+                    });
+                }
+            }));
+
+        $("#ItemSelection").on("change", (function (e)
+        {
+            e.preventDefault();
+            if ($("#ItemSelection").val() !== 0)
+            {
+                $.ajax(
+                {
+                    type: "POST",
+                    data: ({ svm: '@Html.Raw(Json.Encode(Model))', id: $("#ItemSelection").val() }),
+                    url: '@Url.Action("AddItem", "Transactions")',
+                    success: function (result) {
+                        $("#ActionView").html(result);
+                        @if (Model._Customer != null)
+                        {
+                            @:$("#CustomerSelection").prop("selectedIndex", '@Model._Customer.CustomerId').change(function (e) { this.val(e.val()); e.preventDefault(); });
+                        }
+                        $("#ItemSelection").prop("selectedIndex", '0').change(function (e) { this.val(e.val); e.preventDefault(); });
+                    },
+                    error: function (x, e, r) {
+                        alert(e + " " + r);
+                        alert(x.responseText);
+                    }
+                });
+            }
         }));
     });
-    </script>
+</script>

@@ -25,8 +25,10 @@ namespace Garden_Centre_MVC.Persistance
             get
             {
                 List<List<Transaction>> ret = new List<List<Transaction>>();
+
+                var transactions = Transactions.Include(m => m.Item).Include(s => s.Customer).ToList();
                 //for every transaction
-                for (int x = 0; x < Transactions.Include(m => m.Item).Include(s => s.Customer).ToList().Count; x++)
+                for (int x = 0; x <transactions.Count ; x++)
                 {
                     //if the return is empty then add it anyways
                     if(ret.Count == 0)
