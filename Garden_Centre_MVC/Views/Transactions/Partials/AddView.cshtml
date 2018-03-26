@@ -11,8 +11,8 @@
 
     <div class="form-group">
         @Html.LabelFor(m => m._Items)
-        @Html.DropDownListFor(m => m._Item, new SelectList(Model.ItemList, "ItemId", "Description"), "Select Item", new { @id = "ItemSelection", @class = "form-control" })
-        @Html.ValidationMessageFor(m => m._Item)
+        @Html.DropDownListFor(m => m._Items, new SelectList(Model.ItemList, "ItemId", "Description"), "Select Item", new { @id = "ItemSelection", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m._Items)
     </div>
 
     <button id="AddTransaction" class="btn btn-primary">Add</button>

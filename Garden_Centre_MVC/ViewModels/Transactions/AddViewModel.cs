@@ -22,7 +22,14 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
 
         public AddViewModel(AddViewModel vm)
         {
-            throw new Exception("....");
+            this._Customer = vm._Customer;
+            this.m_Items = vm._Items;
+
+            if (ItemList == null || ItemList.Count == 0)
+                ItemList = m_Context.Items.ToList();
+
+            if (CustomerList == null || CustomerList.Count == 0)
+                CustomerList = m_Context.Customers.ToList();
         }
 
         public Customer _Customer
@@ -43,11 +50,6 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
             }
 
             m_Context.SaveChanges();
-        }
-
-        public Item _Item
-        {
-            get; set;
         }
 
         public int TransactionId
