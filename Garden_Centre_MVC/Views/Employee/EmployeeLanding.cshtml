@@ -1,0 +1,30 @@
+﻿@model Garden_Centre_MVC.ViewModels.EmployeeViewModels.EmployeeLandingViewModels
+
+
+
+<div class="row">
+    <table class="table table-bordered table-hover" id="employeeTable">
+        <thead>
+        <tr>
+            <td>Name</td>
+            <td>Admin</td>
+            <td>Operations</td>
+        </tr>
+        </thead>
+
+        <tbody>
+        @foreach (var emp in Model.Employees)
+        {
+            <tr>
+                <td>@emp.FirstName @emp.SecondName</td>
+                <td> @emp.Admin</td>
+                <td>@Ajax.ActionLink("Edit", "Edit", new { id = emp.EmployeeId }, new AjaxOptions(){UpdateTargetId = "EmployeeFormDiv", HttpMethod = "GET", InsertionMode = InsertionMode.Replace})</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    
+    <div id="EmployeeFormDiv"></div>
+    
+
+</div>
