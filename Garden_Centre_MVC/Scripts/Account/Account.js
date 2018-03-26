@@ -14,20 +14,25 @@
         });
 
         $("#ForogotPasswordDiv").delay(1000).slideDown("slow");
-
     });
-
-
-   
 
     //sends the email when the submit button is clicked
     $("#forgottenPasswordForm").submit(function (e) {
 
-        //stop the page from refreshing
+        e.preventDefault();
+
+        if ($("#EmployeeId").val().toString().length !== 6) {
+            bootbox.alert("The employee Id must be 6 digits");
+            return;
+        }
+            
+
+
+        var form = $("#forgottenPasswordForm").serialize();
 
         $.ajax({
             url: "/Account/SendRecoveryEmail",
-            data: $("#forgottenPasswordForm").serialize(),
+            data: form,
             datatype: JSON,
             success: function (data) {
                 $("#ForogotPasswordDiv").delay(1000).slideUp("slow");
@@ -36,7 +41,7 @@
         });
 
         //stop the page from refreshing
-        e.preventDefault();
+        
     });
 
     //closes the form 

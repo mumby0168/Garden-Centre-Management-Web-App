@@ -100,12 +100,12 @@ namespace Garden_Centre_MVC.Controllers
 
         public ActionResult ForgotPassword()
         {
-
             return PartialView("ForgottenPassword");
         }
 
         public ActionResult SendRecoveryEmail(ForgotPasswordViewModel vm)
         {
+
             if (!ModelState.IsValid)
                 return View();
 

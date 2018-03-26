@@ -11,7 +11,8 @@ namespace Garden_Centre_MVC.Controllers
         // GET: Employee
         public ActionResult Index()
         {
-            return View();
+            //returns the home view
+            return View("EmployeeLanding");
         }
 
         public ActionResult Save(int id)

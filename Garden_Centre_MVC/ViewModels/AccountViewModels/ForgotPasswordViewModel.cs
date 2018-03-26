@@ -14,8 +14,6 @@ namespace Garden_Centre_MVC.ViewModels.AccountViewModels
 
         [Required]
         [Display(Name = "Employee Id")]
-        [MinLength(6, ErrorMessage = "The ID needs to be 6 digits")]
-        [MaxLength(6, ErrorMessage = "The ID is greater than 6 digits")]
         public int EmployeeId { get; set; }
     }
 }
