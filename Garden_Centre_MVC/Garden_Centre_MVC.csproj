@@ -205,7 +205,8 @@
     <Compile Include="ViewModels\AccountViewModels\ForgotPasswordViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModels\RegisterViewModel.cs" />
-    <Compile Include="ViewModels\EmployeeViewModels\EmployeeLanding.cs" />
+    <Compile Include="ViewModels\EmployeeViewModels\EmployeeFormViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeViewModels\EmployeeLandingViewModels.cs" />
     <Compile Include="ViewModels\Transactions\IndexViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -261,6 +262,7 @@
     <Content Include="Views\Account\ForgottenPassword.cshtml" />
     <Content Include="Views\Transactions\Index.cshtml" />
     <Content Include="Views\Employee\EmployeeLanding.cshtml" />
+    <Content Include="Views\Employee\EmployeeForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

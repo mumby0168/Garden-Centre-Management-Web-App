@@ -1,0 +1,21 @@
+﻿@model Garden_Centre_MVC.ViewModels.EmployeeViewModels.EmployeeFormViewModel
+
+<form id="EmployeeForm">
+    <div class="form-group">
+        @Html.LabelFor(m => m.Employee.FirstName)
+        @Html.TextBoxFor(m => m.Employee.FirstName)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Employee.SecondName)
+        @Html.TextBoxFor(m => m.Employee.SecondName)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Employee.EmployeeNumber)
+        @Html.TextBoxFor(m => m.Employee.EmployeeNumber)
+    </div>
+    
+    
+
+</form>

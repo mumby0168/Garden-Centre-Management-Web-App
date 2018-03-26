@@ -3,16 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Garden_Centre_MVC.Persistance;
+using Garden_Centre_MVC.ViewModels.EmployeeViewModels;
 
 namespace Garden_Centre_MVC.Controllers
 {
     public class EmployeeController : Controller
     {
+        private DatabaseContext _context;
+
+        public EmployeeController()
+        {
+            _context = new DatabaseContext();
+        }
+
+
         // GET: Employee
         public ActionResult Index()
         {
+            var employees = _context.Employees.ToList();
+
+            var vm = new EmployeeLandingViewModels {Employees = employees};
+
             //returns the home view
-            return View("EmployeeLanding");
+            return View("EmployeeLanding", vm);
         }
 
         public ActionResult Save(int id)
@@ -29,6 +43,19 @@ namespace Garden_Centre_MVC.Controllers
             }
         }
 
+        public ActionResult Edit(int id)
+        {
+            var employee = _context.Employees.FirstOrDefault(e => e.EmployeeId == id);
+
+            var vm = new EmployeeFormViewModel()
+            {
+                Employee = employee
+            };
+
+            return PartialView("EmployeeForm", vm);
+
+        }
+
         /// <summary>
         /// gets all of the employees to be viewed in the table
         /// </summary>
@@ -42,6 +69,12 @@ namespace Garden_Centre_MVC.Controllers
         public ActionResult GetSingle(int id)
         {
             return View();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
+            base.Dispose(disposing);
         }
     }
 }
