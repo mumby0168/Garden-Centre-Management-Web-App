@@ -1,21 +1,33 @@
 ﻿@model Garden_Centre_MVC.ViewModels.EmployeeViewModels.EmployeeFormViewModel
 
+<script src="../../Scripts/Employee/Employee.js" type="text/javascript"></script>
+
+
+
+
 <form id="EmployeeForm">
     <div class="form-group">
         @Html.LabelFor(m => m.Employee.FirstName)
-        @Html.TextBoxFor(m => m.Employee.FirstName)
+        @Html.TextBoxFor(m => m.Employee.FirstName, new { @class = "form-control" })
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.Employee.SecondName)
-        @Html.TextBoxFor(m => m.Employee.SecondName)
+        @Html.TextBoxFor(m => m.Employee.SecondName, new {@class = "form-control"})
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.Employee.EmployeeNumber)
-        @Html.TextBoxFor(m => m.Employee.EmployeeNumber)
+        @Html.TextBoxFor(m => m.Employee.EmployeeNumber, new { @class = "form-control" })
     </div>
     
+    <div class="form-group">
+        @Html.LabelFor(m => m.Employee.Admin)
+        @Html.CheckBoxFor(m => m.Employee.Admin, new { @class = "form-control"})
+    </div>
     
+    @Html.HiddenFor(m => m.Employee.EmployeeId)
+    
+    <button type="submit" class="btn btn-primary">Submit</button>
 
 </form>
