@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Garden_Centre_MVC.Models;
 using Garden_Centre_MVC.Persistance;
 using Garden_Centre_MVC.ViewModels.EmployeeViewModels;
 
@@ -29,18 +30,68 @@ namespace Garden_Centre_MVC.Controllers
             return View("EmployeeLanding", vm);
         }
 
-        public ActionResult Save(int id)
+        [HttpPost]
+        public ActionResult Save(EmployeeFormViewModel emp)
         {
-            if (id == 0)
+            if (emp.Employee.EmployeeId == 0)
             {
-                //then add the customer as they must be new
-                return View();
+                var employee = new Employee();
+                employee.Admin = emp.Employee.Admin;
+                employee.EmployeeNumber = emp.Employee.EmployeeNumber;
+                employee.FirstName = emp.Employee.FirstName;
+                employee.SecondName = emp.Employee.SecondName;
+
+                _context.Employees.Add(employee);
+                _context.SaveChanges();
+
+                var vm = new EmployeeLandingViewModels()
+                {
+                    Employees = _context.Employees.ToList()
+                };
+
+                return View("EmployeeLanding", vm);
             }
             else
             {
-                //if not then we need to edit the customer record [Use Automapper]
-                return View();
+                var employee = _context.Employees.FirstOrDefault(e => e.EmployeeId == emp.Employee.EmployeeId);
+
+                employee.Admin = emp.Employee.Admin;
+                employee.EmployeeNumber = emp.Employee.EmployeeNumber;
+                employee.FirstName = emp.Employee.FirstName;
+                employee.SecondName = emp.Employee.SecondName;
+               
+                _context.SaveChanges();
+
+
+                var vm = new EmployeeLandingViewModels()
+                {
+                    Employees = _context.Employees.ToList()
+                };
+
+                return PartialView("EmployeeLanding", vm);
             }
+        }
+
+        public ActionResult Remove(int id)
+        {
+            var employee = _context.Employees.FirstOrDefault(e => e.EmployeeId == id);
+
+            _context.Employees.Remove(employee);
+            _context.SaveChanges();
+
+            var vm = new EmployeeLandingViewModels()
+            {
+                Employees = _context.Employees.ToList()
+            };
+
+            return PartialView("EmployeeLanding", vm);
+        }
+
+        public ActionResult Add()
+        {
+            var vm = new EmployeeFormViewModel();
+
+            return PartialView("EmployeeForm", vm);
         }
 
         public ActionResult Edit(int id)

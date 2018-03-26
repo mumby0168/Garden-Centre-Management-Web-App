@@ -1,8 +1,19 @@
 ﻿@model Garden_Centre_MVC.ViewModels.EmployeeViewModels.EmployeeLandingViewModels
 
 
+<script src="../../Scripts/Employee/Employee.js" type="text/javascript"></script>
 
 <div class="row">
+    <h2>Employees</h2>
+</div>
+
+
+<div class="row">
+    <button class="btn btn-primary" id="AddEmployeeBtn">Add Employee</button>
+    
+    <br/>
+    <br/>
+
     <table class="table table-bordered table-hover" id="employeeTable">
         <thead>
         <tr>
@@ -17,14 +28,26 @@
         {
             <tr>
                 <td>@emp.FirstName @emp.SecondName</td>
-                <td> @emp.Admin</td>
-                <td>@Ajax.ActionLink("Edit", "Edit", new { id = emp.EmployeeId }, new AjaxOptions(){UpdateTargetId = "EmployeeFormDiv", HttpMethod = "GET", InsertionMode = InsertionMode.Replace})</td>
+                @if (emp.Admin)
+                {
+                    <td>Yes</td>
+                }
+                else
+                {
+                    <td>No</td>
+                }
+                <td><button empId="@emp.EmployeeId" class="EditLink  btn btn-primary"><i class="fa fa-edit"></i></button> <button empId=@emp.EmployeeId class="RemoveLink btn btn-danger"><i class="fa fa-remove"></i> </button></td>
             </tr>
         }
         </tbody>
     </table>
-    
+
     <div id="EmployeeFormDiv"></div>
-    
+
 
 </div>
+
+
+
+
+@*@Ajax.ActionLink("Edit", "Edit", new { id = emp.EmployeeId }, new AjaxOptions() { UpdateTargetId = "EmployeeFormDiv", HttpMethod = "GET", InsertionMode = InsertionMode.Replace })*@

@@ -44,3 +44,12 @@ textarea {
 .field-validation-error {
     color: red;   
 }
+
+.EditLink {
+    margin-right: 5px;
+    padding: 0;
+}
+
+#MainPageContainer {
+    margin-top: 2px;
+}
