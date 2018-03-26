@@ -20,56 +20,6 @@ namespace Garden_Centre_MVC.Persistance
 
         public DbSet<Transaction> Transactions { get; set; }
 
-        public List<TransactionOverview> GroupedTransactions
-        {
-            get
-            {
-                List<List<Transaction>> ret = new List<List<Transaction>>();
-
-                var transactions = Transactions.Include(m => m.Item).Include(s => s.Customer).ToList();
-                //for every transaction
-                for (int x = 0; x <transactions.Count ; x++)
-                {
-                    //if the return is empty then add it anyways
-                    if(ret.Count == 0)
-                    {
-                        ret.Add(new List<Transaction>());
-                        ret[0].Add(Transactions.ToList()[x]);
-                        continue;
-                    }
-
-                    bool bCreateNew = true;
-
-                    //for all groups that are in return
-                    for (int y = 0; y < ret.Count; y++)
-                    {
-                        if (ret[y][0].TransactionNumber == Transactions.ToList()[x].TransactionNumber)
-                        {
-                            ret[y].Add(Transactions.ToList()[x]);
-                            bCreateNew = false;
-                            break;
-                        }
-                    }
-
-                    if(bCreateNew)
-                    {
-                        ret.Add(new List<Transaction>());
-                        ret[ret.Count - 1].Add(Transactions.ToList()[x]);
-                        continue;
-                    }
-                }
-
-                List<TransactionOverview> retA = new List<TransactionOverview>();
-                foreach(var collection in ret)
-                {
-                    retA.Add(new TransactionOverview(collection));
-                }
-
-
-                return retA;
-            }
-        }
-
         public DatabaseContext()
         {
             

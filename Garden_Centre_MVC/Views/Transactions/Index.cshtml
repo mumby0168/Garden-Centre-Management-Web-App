@@ -2,27 +2,42 @@
 
 <h2><button id="AddButton">Add</button></h2>
 <div id="HistoricView">
-    @Html.Partial("Partials/HistoricView")
+
 </div>
 
 <div id="ActionView">
 
 </div>
 
-
 <script type="text/javascript">
-$("#AddButton").on("click", function() {
-    var model = {  }
-    $.ajax(
-    {
-        type: "POST",
-        url: '@Url.Action("AddView", "Transactions")',
-        success: function (result) {
-            $("#ActionView").html(result);
-        },
-        error: function (x, e) {
+    $(document).ready(function () {
+        $.ajax(
+            {
+                type: "POST",
+                url: '@Url.Action("HistoricView", "Transactions")',
+                success: function (result) {
+                    $("#HistoricView").html(result);
+                },
+                error: function (x, e, r) {
+                    alert(e + " " + r);
+                    alert(x.responseText);
+                }
+            });
 
-        }
+        $("#AddButton").on("click", function () {
+            var model = {}
+            $.ajax(
+                {
+                    type: "POST",
+                    url: '@Url.Action("AddView", "Transactions")',
+                    success: function (result) {
+                        $("#ActionView").html(result);
+                    },
+                    error: function (x, e, r) {
+                        alert(e + " " + r);
+                        alert(x.responseText);
+                    }
+                });
+        });
     });
-});
 </script>

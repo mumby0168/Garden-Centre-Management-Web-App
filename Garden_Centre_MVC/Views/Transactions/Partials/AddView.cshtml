@@ -1,17 +1,17 @@
-﻿@model Garden_Centre_MVC.ViewModels.Transactions.AddViewModel
+﻿ @model Garden_Centre_MVC.ViewModels.Transactions.AddViewModel
 
 <h2>Add Transaction</h2>
 
 <form>
     <div class="form-group">
-        @Html.LabelFor(m => m.Customers)
-        @Html.DropDownListFor(m => m._Customer, new SelectList(Model.Customers, "CustomerId", "FirstName"), "Select Customer", new { @id = "CustomerSelection", @class = "form-control" })
+        @Html.LabelFor(m => m._Customer)
+        @Html.DropDownListFor(m => m._Customer, new SelectList(Model.CustomerList, "CustomerId", "FirstName"), "Select Customer", new { @id = "CustomerSelection", @class = "form-control" })
         @Html.ValidationMessageFor(m => m._Customer)
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Items)
-        @Html.DropDownListFor(m => m._Item, new SelectList(Model.Items, "ItemId", "Description"), "Select Item", new { @id = "ItemSelection", @class = "form-control" })
+        @Html.LabelFor(m => m._Items)
+        @Html.DropDownListFor(m => m._Item, new SelectList(Model.ItemList, "ItemId", "Description"), "Select Item", new { @id = "ItemSelection", @class = "form-control" })
         @Html.ValidationMessageFor(m => m._Item)
     </div>
 

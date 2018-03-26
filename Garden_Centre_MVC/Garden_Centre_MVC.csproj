@@ -204,6 +204,7 @@
     <Compile Include="ViewModels\AccountViewModels\ForgotPasswordViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModels\RegisterViewModel.cs" />
+    <Compile Include="ViewModels\Transactions\HistoricViewModel.cs" />
     <Compile Include="ViewModels\Transactions\AddViewModel.cs" />
     <Compile Include="ViewModels\Transactions\IndexViewModel.cs" />
   </ItemGroup>

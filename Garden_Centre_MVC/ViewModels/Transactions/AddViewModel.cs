@@ -11,25 +11,23 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
     {
         public AddViewModel()
         {
+            if(ItemList == null || ItemList.Count == 0)
+                ItemList = m_Context.Items.ToList();
+
+            if (CustomerList == null || CustomerList.Count == 0)
+                CustomerList = m_Context.Customers.ToList();
+
             m_Items = new List<Item>();
+        }
+
+        public AddViewModel(AddViewModel vm)
+        {
+            throw new Exception("....");
         }
 
         public Customer _Customer
         {
             get; set;
-        }
-
-        public Object AddItem()
-        {
-            foreach (Item item in m_Context.Items.ToList())
-            {
-                if(item.ItemId == _Item)
-                {
-                    m_Items.Add(item);
-                }
-            }
-
-            return null;
         }
 
         public void SaveTransaction()
@@ -47,7 +45,7 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
             m_Context.SaveChanges();
         }
 
-        public int _Item
+        public Item _Item
         {
             get; set;
         }
@@ -78,21 +76,14 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
 
         private DatabaseContext m_Context = new DatabaseContext();
 
-        public List<Customer> Customers
+        public List<Customer> CustomerList
         {
-            get
-            {
-
-                return m_Context.Customers.ToList();
-            }
+            private set;  get;
         }
 
-        public List<Item> Items
+        public List<Item> ItemList
         {
-            get
-            {
-                return m_Context.Items.ToList();
-            }
+            private set; get;
         }
 
         public void Dispose()

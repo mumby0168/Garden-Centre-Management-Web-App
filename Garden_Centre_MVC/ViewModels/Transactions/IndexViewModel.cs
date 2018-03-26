@@ -7,20 +7,7 @@ using Garden_Centre_MVC.Models;
 
 namespace Garden_Centre_MVC.ViewModels.Transactions
 {
-    public class IndexViewModel : IDisposable
+    public class IndexViewModel
     {
-        public void Dispose()
-        {
-            m_Context.Dispose();
-        }
-
-        private DatabaseContext m_Context = new DatabaseContext();
-        public List<TransactionOverview> Transactions
-        {
-            get
-            {
-                return m_Context.GroupedTransactions;
-            }
-        }
     }
 }

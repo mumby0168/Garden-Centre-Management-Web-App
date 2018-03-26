@@ -17,6 +17,12 @@ namespace Garden_Centre_MVC.Controllers
             return View("Index", vm);
         }
 
+        public PartialViewResult HistoricView()
+        {
+            HistoricViewModel vm = new HistoricViewModel();
+            return PartialView("Partials/HistoricView", vm);
+        }
+
         public PartialViewResult AddView()
         {
             AddViewModel vm = new AddViewModel();
@@ -27,19 +33,25 @@ namespace Garden_Centre_MVC.Controllers
         {
             AddViewModel vm = JsonConvert.DeserializeObject<AddViewModel>(svm);
 
-            foreach (Customer cust in vm.Customers)
+            foreach (Customer cust in vm.CustomerList)
             {
                 if (cust.CustomerId == id)
                     vm._Customer = cust;
             }
+
             return PartialView("Partials/AddView", vm);
         }
 
         public PartialViewResult AddItem(string svm, int id)
         {
             AddViewModel vm = JsonConvert.DeserializeObject<AddViewModel>(svm);
-            vm._Item = id;
-            vm.AddItem();
+
+            foreach (Item item in vm.ItemList)
+            {
+                if (item.ItemId == id)
+                    vm._Item = item;
+            }
+
             return PartialView("Partials/AddView", vm);
         }
 
