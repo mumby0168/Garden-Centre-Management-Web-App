@@ -6,7 +6,7 @@
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
-    padding: 70px;
+
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -45,11 +45,18 @@ textarea {
     color: red;   
 }
 
-.EditLink {
-    margin-right: 5px;
-    padding: 0;
-}
-
 #MainPageContainer {
     margin-top: 2px;
+}
+
+.EditLink {
+    background: none;
+    border: none;
+    padding: 0px;
+    margin-right: 5px;
+}
+.RemoveLink {
+    background: none;
+    border: none;
+    padding: 0px;
 }

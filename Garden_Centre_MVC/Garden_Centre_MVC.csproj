@@ -206,7 +206,6 @@
     <Compile Include="ViewModels\AccountViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\AddViewModel.cs" />
-    <Compile Include="ViewModels\EmployeeViewModels\EmployeeFormViewModel.cs" />
     <Compile Include="ViewModels\EmployeeViewModels\EmployeeLandingViewModels.cs" />
     <Compile Include="ViewModels\Transactions\IndexViewModel.cs" />
   </ItemGroup>
@@ -221,6 +220,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\ajaxLoader.gif" />
     <Content Include="Scripts\Account\Account.js" />
     <Content Include="Scripts\bootbox.js" />
     <Content Include="Scripts\bootbox.min.js" />

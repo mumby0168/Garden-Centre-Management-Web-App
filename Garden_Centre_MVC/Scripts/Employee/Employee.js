@@ -3,12 +3,12 @@
     //loads the edit form
     $(".EditLink").click( function(e) {
 
-        var empId = $(window.event.target).attr("empId");
+        //var empId = $(e.target).attr("empId");
         
         $.ajax({
-            url: "/Employee/Edit/" + empId,
+            url: "/Employee/Edit/" + $(this).attr("empId"),
             success: function(view) {
-                $("#EmployeeFormDiv").html(view);
+                $("#EmployeeFormDiv").delay(1000).slideDown("slow").html(view);
             }
         });
 
@@ -19,6 +19,11 @@
     $("#EmployeeForm").submit(function(e) {
         e.preventDefault();
 
+        if ($("#EmployeeNumber").val().toString().length !== 6) {
+            //bootbox.alert("The employee Id must be 6 digits");
+            $("#EmpNumVal").html("The employee Id must be 6 digits");
+            return;
+        }
 
         var form = $("#EmployeeForm").serialize();
 
@@ -36,10 +41,8 @@
 
     $(".RemoveLink").click(function (e) {
 
-        var empId = $(window.event.target).attr("empId");
-
         $.ajax({
-            url: "/Employee/Remove/" + empId,
+            url: "/Employee/Remove/" + $(this).attr("empId"),
             success: function (view) {
                 $("#MainPageContainer").html(view);
             }
@@ -52,10 +55,15 @@
         $.ajax({
             url: "/Employee/Add",
             success: function(view) {
-                $("#EmployeeFormDiv").html(view);
+                $("#EmployeeFormDiv").delay(1000).slideDown("slow").html(view);
             }
         });
 
+    });
+
+
+    $("#CloseEmployeeForm").click(function() {
+        $("#EmployeeFormDiv").delay(1000).slideUp("slow");
     });
 
 
