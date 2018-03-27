@@ -1,0 +1,151 @@
+﻿@model Garden_Centre_MVC.ViewModels.Transactions.EditViewModel
+
+<form>
+    <div class="form-group">
+        <h2>Customer</h2>
+        @Html.DropDownListFor(m => m._Customer, new SelectList(Model.CustomerList, "CustomerId", "FullName"), "Select Customer", new { @id = "CustomerSelection", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m._Customer)
+    </div>
+
+    <div class="form-group">
+        <h2>Item</h2>
+        @Html.DropDownListFor(m => m._Items, new SelectList(Model.ItemList, "ItemId", "Description"), "Select Item", new { @id = "ItemSelection", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m._Items)
+    </div>
+</form>
+
+<table class="table table-bordered table-hover" id="transactionTable">
+    <thead>
+        <td>Item</td>
+        <td>Item Value</td>
+        <td>Operations</td>
+    </thead>
+    <tbody>
+        @foreach (Garden_Centre_MVC.Models.Transaction t in Model.TransactionOverview.Transactions)
+        {
+            <tr>
+                <td>@t.Item.Description</td>
+                <td>£ @t.Item.ItemPrice</td>
+                <td>
+                    <button class="editDel btn btn-primary" transactionId="@t.Id">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<button id="EditSave" class="btn btn-primary">Save</button>
+<button id="EditCancel" class="btn btn-primary">Cancel</button>
+
+<script>
+    $(document).ready(function () {
+        $("#EditCancel").on("click", function (e) {
+            $("#ActionView").delay(100).slideUp("slow");
+            $("#ExtendedView").delay(100).slideUp("slow");
+        });
+
+        $(".editDel").on("click", function (e) {
+            var id = $(this).attr("transactionId");
+
+            $.ajax(
+            {
+                type: "POST",
+                data: ({
+                    svm: '@Html.Raw(Json.Encode(Model))', transactionId: id
+                }),
+                url: '@Url.Action("EditDeleteTransaction", "Transactions")',
+                success: function (result) {
+                    $("#ActionView").html(result);
+
+                },
+                error: function (x, e, r) {
+                    alert(e + " " + r);
+                    alert(x.responseText);
+                }
+            });
+        });
+    });
+
+    $("#EditSave").on("click", function (e) {
+        $.ajax(
+            {
+
+            type: "POST",
+            data: ({
+                svm: '@Html.Raw(Json.Encode(Model))'
+            }),
+            url: '@Url.Action("EditSave", "Transactions")',
+            success: function (result) {
+                $("#HistoricView").html(result);
+                $("#ExtendedView").delay(100).slideUp("slow");
+                $("#ActionView").delay(100).slideUp("slow");
+            },
+            error: function (x, e, r) {
+                alert(e + " " + r);
+                alert(x.responseText);
+            }
+        });
+    });
+
+    $("#CustomerSelection").on("change", (function (e)
+    {
+        e.preventDefault();
+        if ($("#CustomerSelection").val() === '')
+        {
+            @if (Model._Customer != null)
+            {
+                @:alert("Please select a valid customer");
+                @:$("#CustomerSelection").val('@Model._Customer.CustomerId');
+            }
+        }
+        if ($("#CustomerSelection").val() !== '')
+        {
+            var v = $("#CustomerSelection").val();
+            $.ajax(
+                {
+                    type: "POST",
+                    data: ({ svm: '@Html.Raw(Json.Encode(Model))', id: v }),
+                    url: '@Url.Action("EditCustomer", "Transactions")',
+                    success: function (result) {
+                        $("#ActionView").html(result);
+                        $("#CustomerSelection").prop("selectedIndex", v).change(function (e) { this.val(e.val()); e.preventDefault(); });
+                        $("#ItemSelection").prop("selectedIndex", '0').change(function (e) { this.val(e.val()); e.preventDefault(); });
+                    },
+                    error: function (x, e, r) {
+                        alert(e + " " + r);
+                        alert(x.responseText);
+                    }
+                });
+            }
+        }));
+
+    $("#ItemSelection").on("change", (function (e)
+    {
+        e.preventDefault();
+        if ($("#ItemSelection").val() !== 0)
+        {
+            $.ajax(
+            {
+                type: "POST",
+                data: ({ svm: '@Html.Raw(Json.Encode(Model))', itemId: $("#ItemSelection").val() }),
+                url: '@Url.Action("EditAddItem", "Transactions")',
+                success: function (result) {
+                    $("#ActionView").html(result);
+                    @if (Model._Customer != null)
+                    {
+                        @:$("#CustomerSelection").prop("selectedIndex", '@Model._Customer.CustomerId').change(function (e) { this.val(e.val()); e.preventDefault(); });
+                    }
+                    $("#ItemSelection").prop("selectedIndex", '0').change(function (e) { this.val(e.val); e.preventDefault(); });
+                },
+                error: function (x, e, r) {
+                    alert(e + " " + r);
+                    alert(x.responseText);
+                }
+            });
+        }
+    }));
+
+    $("#CustomerSelection").prop("selectedIndex", '@Model._Customer.CustomerId').change(function (e) {
+        $(this).val('@Model._Customer.CustomerId');
+        e.preventDefault();
+    });
+</script>

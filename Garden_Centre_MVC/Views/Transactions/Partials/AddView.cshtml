@@ -5,7 +5,7 @@
 <form>
     <div class="form-group">
         <h2>Customer</h2>
-        @Html.DropDownListFor(m => m._Customer, new SelectList(Model.CustomerList, "CustomerId", "FirstName"), "Select Customer", new { @id = "CustomerSelection", @class = "form-control" })
+        @Html.DropDownListFor(m => m._Customer, new SelectList(Model.CustomerList, "CustomerId", "FullName"), "Select Customer", new { @id = "CustomerSelection", @class = "form-control" })
         @Html.ValidationMessageFor(m => m._Customer)
     </div>
 
