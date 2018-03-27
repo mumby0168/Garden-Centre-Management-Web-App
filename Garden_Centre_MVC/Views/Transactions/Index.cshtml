@@ -31,17 +31,17 @@
         $("#AddButton").on("click", function () {
             $("#ExtendedView").delay(100).slideUp("slow");
             $.ajax(
-                {
-                    type: "POST",
-                    url: '@Url.Action("AddView", "Transactions")',
-                    success: function (result) {
-                        $("#ActionView").delay(100).slideDown("slow").html(result);
-                    },
-                    error: function (x, e, r) {
-                        alert(e + " " + r);
-                        alert(x.responseText);
-                    }
-                });
+            {
+                type: "POST",
+                url: '@Url.Action("AddView", "Transactions")',
+                success: function (result) {
+                    $("#ActionView").delay(100).slideDown("slow").html(result);
+                },
+                error: function (x, e, r) {
+                    alert(e + " " + r);
+                    alert(x.responseText);
+                }
+            });
         });
     });
 </script>

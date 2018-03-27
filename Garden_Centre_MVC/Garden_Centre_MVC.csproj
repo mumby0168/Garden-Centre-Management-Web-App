@@ -204,6 +204,7 @@
     <Compile Include="ViewModels\AccountViewModels\ForgotPasswordViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModels\RegisterViewModel.cs" />
+    <Compile Include="ViewModels\Transactions\EditViewModel.cs" />
     <Compile Include="ViewModels\Transactions\ExtendedViewModel.cs" />
     <Compile Include="ViewModels\Transactions\HistoricViewModel.cs" />
     <Compile Include="ViewModels\Transactions\AddViewModel.cs" />
@@ -254,6 +255,7 @@
     <Content Include="Views\Account\ForgottenPassword.cshtml" />
     <Content Include="Views\Transactions\Partials\HistoricView.cshtml" />
     <Content Include="Views\Transactions\Partials\AddView.cshtml" />
+    <Content Include="Views\Transactions\Partials\EditView.cshtml" />
     <Content Include="Views\Transactions\Partials\ExtendedView.cshtml" />
   </ItemGroup>
   <ItemGroup>
