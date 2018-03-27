@@ -1,8 +1,54 @@
 ﻿$(document).ready(function () {
 
+    //Paging Start
+    var amountOfrecords;
+    $.ajax({
+        url: "/Employee/CheckAmountOfRecords",
+        type: "JSON",
+        success: function(obj) {
+            amountOfrecords = obj.amount;
+        }
+    });
 
-    //for the search box
+    $("#NextPage").click(function() {
 
+        var page = $("#PageNumber").html();
+        page++;
+
+        $.ajax({
+            url: "/Employee/LoadTablePage",
+            data: { "page": page },
+            success: function (view) {
+                $("#MainPageContainer").html(view);
+            }
+        });
+
+    });
+
+
+    $("#PreviousPage").click(function () {
+
+        var pages = $("#PageNumber").html();
+
+        if (parseInt(pages) === 1) {
+            bootbox.alert("This is the first page");
+            return;
+        }
+
+        pages--;
+
+        $.ajax({
+            url: "/Employee/LoadTablePage",
+            data: { "page": pages },
+            success: function(view) {
+                $("#MainPageContainer").html(view);
+            }
+        });
+    });
+    //Paging End
+
+      
+    //Search Box Start
     $("#ResetSearch").click(function () {
         alert("Clicked");
         $.ajax({
@@ -28,35 +74,12 @@
 
         });
 
-        
-
-
-        //var table = $("#Table");
-        //var i;
-        //var tr = $('#employeeTable > tbody > tr');
-
-        //for (i = 0; i < tr.length; i++) {
-
-        //    td = tr[i].getElementsByTagName("td")[0];
-        //    if (td) {
-        //        var t
-        //        if (td.innerText.toUpperCase().indexOf(filter) > -1) {
-        //            tr[i].style.display = "";
-        //        }
-        //        else {
-        //            tr[i].style.display = "none";
-        //        }
-
-        //    }
-        //}
-
     });
+    //Search Box End
 
 
     //loads the edit form
     $(".EditLink").click( function(e) {
-
-        //var empId = $(e.target).attr("empId");
         
         $.ajax({
             url: "/Employee/Edit/" + $(this).attr("empId"),
@@ -68,7 +91,7 @@
     });
 
 
-    //edit customer
+    //Edit Customer
     $("#EmployeeForm").submit(function(e) {
         e.preventDefault();
 
@@ -92,6 +115,7 @@
 
     });
 
+    //deletes the employee
     $(".RemoveLink").click(function (e) {
 
         $.ajax({
@@ -103,6 +127,7 @@
 
     });
 
+    //loads the add screen
     $("#AddEmployeeBtn").click(function() {
 
         $.ajax({
@@ -114,10 +139,9 @@
 
     });
 
-
+    //closes the employee form
     $("#CloseEmployeeForm").click(function() {
         $("#EmployeeFormDiv").delay(1000).slideUp("slow");
     });
-
 
 });

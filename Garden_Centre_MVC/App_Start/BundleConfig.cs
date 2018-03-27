@@ -27,6 +27,10 @@ namespace Garden_Centre_MVC
                       "~/Content/darkly-theme.css",
                       "~/Content/site.css",
                 "~/Content/font-awesome.min.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/SiteScripts").Include("~/Scripts/Account/Account.js", 
+                "~/Scripts/Employee/Employee.js", 
+                "~/Scripts/Home/Home.js"));
         }
     }
 }

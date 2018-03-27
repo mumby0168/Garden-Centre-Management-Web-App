@@ -10,5 +10,7 @@ namespace Garden_Centre_MVC.ViewModels.EmployeeViewModels
     public class EmployeeLandingViewModels
     {
         public List<Employee> Employees { get; set; }
+
+        public int PageNum { get; set; }
     }
 }

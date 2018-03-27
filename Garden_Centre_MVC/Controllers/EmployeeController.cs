@@ -22,11 +22,32 @@ namespace Garden_Centre_MVC.Controllers
         // GET: Employee
         public ActionResult Index()
         {
-            var employees = _context.Employees.ToList();
+            var employees = _context.Employees.Take(10).ToList();
 
-            var vm = new EmployeeLandingViewModels {Employees = employees};
+            var vm = new EmployeeLandingViewModels {Employees = employees, PageNum = 1};
 
             //returns the home view
+            return PartialView("EmployeeLanding", vm);
+        }
+
+        public ActionResult CheckAmountOfRecords()
+        {
+            var count = _context.Employees.Count();
+
+            return Json(new {amount=count.ToString()});
+        }
+
+        public ActionResult LoadTablePage(int page)
+        {
+            var skipAmount = (page -1) * 10;
+            var employees = _context.Employees.OrderBy(e => e.EmployeeId).Skip(skipAmount).Take(10).ToList();
+
+            var vm = new EmployeeLandingViewModels()
+            {
+                Employees = employees,
+                PageNum = page
+            };
+
             return PartialView("EmployeeLanding", vm);
         }
 
@@ -135,7 +156,7 @@ namespace Garden_Centre_MVC.Controllers
             foreach (var emp in employees)
             {
                 var fullName = emp.FirstName + emp.SecondName;
-                if(fullName.Contains(str))
+                if(fullName.ToUpper().Contains(str.ToUpper()))
                     listToReturn.Add(emp);
             }
 
