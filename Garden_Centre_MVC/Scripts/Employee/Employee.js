@@ -1,4 +1,57 @@
-﻿$(document).ready(function() {
+﻿$(document).ready(function () {
+
+
+    //for the search box
+
+    $("#ResetSearch").click(function () {
+        alert("Clicked");
+        $.ajax({
+            url: "/Employee/Index/",
+            success: function (view) {
+                $("#MainPageContainer").html(view);
+            }
+        });
+
+    });
+
+    $("#SearchBtn").click(function () {
+
+        var inputBox = $("#SearchBox");
+        var filter = inputBox.val();
+
+        $.ajax({
+            url: "Employee/Search/",
+            data: {"str": filter},
+            success: function(view) {
+                $("#MainPageContainer").html(view);
+            }
+
+        });
+
+        
+
+
+        //var table = $("#Table");
+        //var i;
+        //var tr = $('#employeeTable > tbody > tr');
+
+        //for (i = 0; i < tr.length; i++) {
+
+        //    td = tr[i].getElementsByTagName("td")[0];
+        //    if (td) {
+        //        var t
+        //        if (td.innerText.toUpperCase().indexOf(filter) > -1) {
+        //            tr[i].style.display = "";
+        //        }
+        //        else {
+        //            tr[i].style.display = "none";
+        //        }
+
+        //    }
+        //}
+
+    });
+
 
     //loads the edit form
     $(".EditLink").click( function(e) {

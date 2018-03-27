@@ -27,7 +27,7 @@ namespace Garden_Centre_MVC.Controllers
             var vm = new EmployeeLandingViewModels {Employees = employees};
 
             //returns the home view
-            return View("EmployeeLanding", vm);
+            return PartialView("EmployeeLanding", vm);
         }
 
         [HttpPost]
@@ -125,6 +125,31 @@ namespace Garden_Centre_MVC.Controllers
         {
             return View();
         }
+        
+        public ActionResult Search(string str)
+        {
+            var employees = _context.Employees.ToList();
+
+            var listToReturn = new List<Employee>();
+
+            foreach (var emp in employees)
+            {
+                var fullName = emp.FirstName + emp.SecondName;
+                if(fullName.Contains(str))
+                    listToReturn.Add(emp);
+            }
+
+            var vm = new EmployeeLandingViewModels()
+            {
+                Employees = listToReturn
+            };
+
+            return PartialView("EmployeeLanding", vm);
+
+        }
+
+
+
 
         protected override void Dispose(bool disposing)
         {
