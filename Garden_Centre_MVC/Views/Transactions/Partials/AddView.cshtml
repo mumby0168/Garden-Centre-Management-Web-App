@@ -1,38 +1,85 @@
-﻿ @model Garden_Centre_MVC.ViewModels.Transactions.AddViewModel
+﻿@model Garden_Centre_MVC.ViewModels.Transactions.AddViewModel
 
 <h2>Add Transaction</h2>
 
 <form>
     <div class="form-group">
-        @Html.LabelFor(m => m._Customer)
+        <h2>Customer</h2>
         @Html.DropDownListFor(m => m._Customer, new SelectList(Model.CustomerList, "CustomerId", "FirstName"), "Select Customer", new { @id = "CustomerSelection", @class = "form-control" })
         @Html.ValidationMessageFor(m => m._Customer)
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m._Items)
+        <h2>Item</h2>
         @Html.DropDownListFor(m => m._Items, new SelectList(Model.ItemList, "ItemId", "Description"), "Select Item", new { @id = "ItemSelection", @class = "form-control" })
         @Html.ValidationMessageFor(m => m._Items)
     </div>
-
-    <button id="AddTransaction" class="btn btn-primary">Add</button>
 </form>
 
-<div style="border:solid;">
-    <h2>Adding</h2>
-    @foreach (Garden_Centre_MVC.Models.Item item in Model._Items)
+<div>
+    @if (Model._Items.Count != 0)
     {
-        <h2>@item.Description</h2>
-        <br />
-    }
-</div>
+        <h2>Transaction Summary</h2>
+        <table class="table table-bordered table-hover" id="transactionTable">
+            <thead>
+            <td>Item</td>
+            <td>Item Value</td>
+            </thead>
+            <tbody>
+                @{
+                    float val = 0.0f;
+                }
 
+                @foreach (Garden_Centre_MVC.Models.Item item in Model._Items)
+                {
+                    <tr>
+                        <td>@item.Description</td>
+                        <td>£ @item.ItemPrice</td>
+                    </tr>
+
+                    val += item.ItemPrice;
+                }
+
+                @if (val != 0.0f)
+                {
+                    <tr>
+                        <td>Total Value:</td>
+                        <td>£ @val</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <button id="AddTransaction" class="btn btn-primary">Save</button>
+    }
+    <button id="CancelTransaction" class="btn btn-primary">Cancel</button>
+</div>
 <script type="text/javascript">
     $(document).ready(function ()
     {
         $("#AddTransaction").on("click", function (e) {
             e.preventDefault();
-            $("#ActionView").html("");
+            $("#ActionView").delay(100).slideUp("slow");
+
+            $.ajax(
+            {
+                type: "POST",
+                data: ({ svm: '@Html.Raw(Json.Encode(Model))' }),
+                url: '@Url.Action("AddTransaction", "Transactions")',
+                success: function (result) {
+                    $("#HistoricView").html(result);
+                },
+                error: function (x, e, r) {
+                    alert(e + " " + r);
+                    alert(x.responseText);
+                }
+            });
+        });
+
+        $("#CancelTransaction").on("click", function (e) {
+            e.preventDefault();
+            $("#ActionView").delay(100).slideUp("slow");
+            $("#ExtendedView").delay(100).slideUp("slow");
+            $("#AddView").delay(100).slideUp("slow");
 
             $.ajax(
             {

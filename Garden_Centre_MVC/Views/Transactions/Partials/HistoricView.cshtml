@@ -1,17 +1,61 @@
 ﻿@model Garden_Centre_MVC.ViewModels.Transactions.HistoricViewModel
 
-@foreach (Garden_Centre_MVC.Models.TransactionOverview t in Model.Transactions)
-{
-<h2>
-    @t.Transactions[0].Customer.FirstName @t.Transactions[0].Customer.SecondName - @t.DateAndTime.Day/@t.DateAndTime.Month/@t.DateAndTime.Year - £@t.TotalValue
-</h2>
-    <div style="border:solid;">
-        @foreach (Garden_Centre_MVC.Models.Transaction a in t.Transactions)
-        {
-            <h2>
-                @a.Item.Description - £@a.Item.ItemPrice
-                <button>Edit</button><button>Delete</button>
-            </h2>
+<table class="table table-bordered table-hover" id="transactionTable">
+    <thead>
+        <tr>
+            <td>Transaction ID</td>
+            <td>Name</td>
+            <td>Date</td>
+            <td>Transaction Value</td>
+            <td>Operations</td>
+        </tr>
+    </thead>
+    <tbody id="transactionTableBody">
+        @{
+            int i = 1;
         }
-    </div>
-}
+
+        @foreach (Garden_Centre_MVC.Models.TransactionOverview t in Model.Transactions)
+         {
+            <tr>
+                <td>@t.ID</td>
+                <td>@t.Transactions[0].Customer.FirstName @t.Transactions[0].Customer.SecondName</td>
+                <td>@t.DateAndTime.Day/@t.DateAndTime.Month/@t.DateAndTime.Year</td>
+                <td>£ @t.TotalValue</td>
+                <td>
+                    <button class="view btn btn-primary" tableRowIndex="@i" transactionId="@t.ID">View</button>
+                </td>
+            </tr>
+            i++;
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $(document).ready(function ()
+    {
+        $(".view").on("click", function (e)
+        {
+            var id = $(this).attr("transactionId")
+            e.preventDefault();
+            $("#ActionView").delay(100).slideUp("slow");
+            $("#ExtendedView").delay(100).slideUp("slow", function () {
+                $.ajax(
+                {
+                    type: "POST",
+                    data: ({
+                        svm: '@Html.Raw(Json.Encode(Model))', transactionNumber: id
+                    }),
+                    url: '@Url.Action("ViewDetails", "Transactions")',
+                    success: function (result) {
+                        $("#ExtendedView").delay(100).slideDown("slow").html(result);
+                    },
+                    error: function (x, e, r) {
+                        alert(e + " " + r);
+                        alert(x.responseText);
+                    }
+                });
+            });
+        });
+    });
+</script>

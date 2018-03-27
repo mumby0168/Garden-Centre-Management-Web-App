@@ -1,11 +1,15 @@
 ﻿@model Garden_Centre_MVC.ViewModels.Transactions.IndexViewModel
 
-<h2><button id="AddButton">Add</button></h2>
+<h2><button class="btn btn-primary" id="AddButton">Add</button></h2>
 <div id="HistoricView">
 
 </div>
 
-<div id="ActionView">
+<div display="hidden" id="ExtendedView">
+
+</div>
+
+<div display="hidden" id="ActionView">
 
 </div>
 
@@ -25,13 +29,13 @@
             });
 
         $("#AddButton").on("click", function () {
-            var model = {}
+            $("#ExtendedView").delay(100).slideUp("slow");
             $.ajax(
                 {
                     type: "POST",
                     url: '@Url.Action("AddView", "Transactions")',
                     success: function (result) {
-                        $("#ActionView").html(result);
+                        $("#ActionView").delay(100).slideDown("slow").html(result);
                     },
                     error: function (x, e, r) {
                         alert(e + " " + r);

@@ -66,5 +66,13 @@ namespace Garden_Centre_MVC.Controllers
             HistoricViewModel retVm = new HistoricViewModel();
             return PartialView("Partials/HistoricView", retVm);
         }
+
+        public PartialViewResult ViewDetails(string svm, int transactionNumber)
+        {
+            HistoricViewModel vm = JsonConvert.DeserializeObject<HistoricViewModel>(svm);
+
+            ExtendedViewModel retVm = new ExtendedViewModel(vm.GroupTransactions(), transactionNumber);
+            return PartialView("Partials/ExtendedView", retVm);
+        }
     }
 }
