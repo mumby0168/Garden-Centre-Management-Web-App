@@ -17,20 +17,7 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
             _Customer = to.Transactions[0].Customer;
             _Items = new List<Item>();
             _Remove = new List<Transaction>();
-
-            if (ItemList == null || ItemList.Count == 0)
-                ItemList = m_Context.Items.ToList();
-
-            if (CustomerList == null || CustomerList.Count == 0)
-                CustomerList = m_Context.Customers.ToList();
-        }
-
-        public EditViewModel(TransactionOverview to, List<Transaction> remove, Customer cust)
-        {
-            TransactionOverview = to;
-            _Customer = cust;
-            _Items = new List<Item>();
-            _Remove = remove;
+            _NewItems = new List<Item>();
 
             if (ItemList == null || ItemList.Count == 0)
                 ItemList = m_Context.Items.ToList();
@@ -45,6 +32,7 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
             _Customer = customer;
             _Items = items;
             _Remove = remove;
+            _NewItems = new List<Item>();
 
             if (ItemList == null || ItemList.Count == 0)
                 ItemList = m_Context.Items.ToList();
@@ -89,11 +77,16 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
             m_Context.SaveChanges();
         }
 
+        public List<Item> _NewItems
+        {
+            get; set;
+        }
+
         public void UpdateVM()
         {
-            if (_Items.Count > 0)
+            if (_NewItems.Count > 0)
             {
-                foreach (Item i in _Items)
+                foreach (Item i in _NewItems)
                 {
                     Transaction transaction = new Transaction();
                     transaction.Customer = _Customer;
@@ -103,6 +96,7 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
                     transaction.Date = TransactionOverview.DateAndTime;
                     transaction.TransactionNumber = TransactionOverview.ID;
                     TransactionOverview.Transactions.Add(transaction);
+                    _Items.Add(i);
                 }
             }
         }

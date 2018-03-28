@@ -118,12 +118,12 @@ namespace Garden_Centre_MVC.Controllers
         public PartialViewResult EditAddItem(string svm, int itemId)
         {
             EditViewModel ivm = JsonConvert.DeserializeObject<EditViewModel>(svm);
-            EditViewModel vm = new EditViewModel(ivm.TransactionOverview, ivm._Remove, ivm._Customer);
+            EditViewModel vm = new EditViewModel(ivm.TransactionOverview, ivm._Items, ivm._Remove, ivm._Customer);
             foreach (Item i in m_Context.Items)
             {
                 if (i.ItemId == itemId)
                 {
-                    vm._Items.Add(i);
+                    vm._NewItems.Add(i);
                     break;
                 }
             }
