@@ -22,5 +22,7 @@ namespace Garden_Centre_MVC.ViewModels.AccountViewModels
         [Display(Name = "Valid Employee Number")]
         public int EmployeeNumber { get; set; }
 
+        public string ErrorMessage { get; set; }
+
     }
 }

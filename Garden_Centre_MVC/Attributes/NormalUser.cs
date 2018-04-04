@@ -12,7 +12,15 @@ namespace Garden_Centre_MVC.Attributes
     {
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            return httpContext.Session[CurrentUser.EmployeeLogin.Username] != null;
+            try
+            {
+                return httpContext.Session[CurrentUser.EmployeeLogin.Username] != null;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            
         }
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)

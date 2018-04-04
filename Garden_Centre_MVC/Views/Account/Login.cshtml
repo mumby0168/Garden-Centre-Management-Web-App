@@ -1,66 +1,106 @@
 ﻿
+@{
+    Layout = "";
+}
+
+
 @model Garden_Centre_MVC.ViewModels.AccountViewModels.LoginViewModel
 
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="../../Scripts/Account/Account.js" type="text/javascript"></script>
+</head>
+<body>
+    <h2 align="center" style="margin-bottom: 5px;">Garden Centre+</h2>
+<div class="container body-content">
+    <div id="CenteredDiv" align="center">
 
+        <div id="forgotPasswordModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" type="button" data-dismiss="modal">&times;</button>
+                        <h4>Fogotten Password</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="ForgotPasswordModalBody" class="jumbotron">
+                            @*Content loaded here using jquery*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-
-
-<script src="../../Scripts/Account/Account.js" type="text/javascript"></script>
-
-<div id="CenteredDiv" align="center">
-
-    <div id="ForogotPasswordDiv" style="display: none">
         <div class="jumbotron">
+            <h2 id="Title">Login</h2>
+
+            <br/>
+            <br/>
+
+            <div class="row">
+
+                <h2 style="color: red">@Model.ErrorMessage</h2>
+
+                <br/>
+                <br/>
+
+                @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+                {
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.EmployeeNumber)
+
+                        @Html.TextBoxFor(m => m.EmployeeNumber, new {@class = "form-control"})
+                        @Html.ValidationMessageFor(m => m.EmployeeNumber)
+                    </div>
+
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Email)
+
+                        @Html.TextBoxFor(m => m.Email, new {@class = "form-control"})
+                        @Html.ValidationMessageFor(m => m.Email)
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Password)
+
+                        @Html.PasswordFor(m => m.Password, new {@class = "form-control"})
+                        @Html.ValidationMessageFor(m => m.Password)
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Login</button>
+
+
+                    <br/>
+                    <br/>
+                    @Html.ActionLink("Don't have an account? Create one here. ", "Register", "Account")
+
+                    <br/>
+                    <br/>
+                    <a id="ForgottonPasswordLink">Forgotten Password?</a>
+
+                }
+
+
+            </div>
+
         </div>
     </div>
-
-    <div class="jumbotron">
-        <h2 id="Title">Login</h2>
-
-        <br />
-        <br />
-
-        <div class="row">
-            @using (Html.BeginForm("Login", "Account", FormMethod.Post))
-            {
-
-                <div class="form-group">
-                    @Html.LabelFor(m => m.EmployeeNumber)
-
-                    @Html.TextBoxFor(m => m.EmployeeNumber, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.EmployeeNumber)
-                </div>
-
-
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Email)
-
-                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Email)
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Password)
-
-                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Password)
-                </div>
-
-                <button type="submit" class="btn btn-primary">Login</button>
-
-
-                <br />
-                <br />
-                @Html.ActionLink("Don't have an account? Create one here. ", "Register", "Account")
-
-                <br />
-                <br />
-                <a id="ForgottonPasswordLink">Forgotten Password?</a>
-
-            }
-
-
-        </div>
-
-    </div>
+    <hr/>
+    <footer>
+        <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+    </footer>
 </div>
+
+</body>
+</html>

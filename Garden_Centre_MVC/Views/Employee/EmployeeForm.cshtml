@@ -1,33 +1,41 @@
-﻿@model Garden_Centre_MVC.ViewModels.EmployeeViewModels.EmployeeFormViewModel
+﻿@model Garden_Centre_MVC.Models.Employee
 
 <script src="../../Scripts/Employee/Employee.js" type="text/javascript"></script>
 
-
-
+<h4>Emmployee Form</h4>
 
 <form id="EmployeeForm">
     <div class="form-group">
-        @Html.LabelFor(m => m.Employee.FirstName)
-        @Html.TextBoxFor(m => m.Employee.FirstName, new { @class = "form-control" })
+        @Html.LabelFor(m => m.FirstName)
+        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.FirstName)
+        <span class="field-validation-valid" data-valmsg-for="FirstName" data-valmsg-replace="true" id="EmpSecondNameVal"></span>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Employee.SecondName)
-        @Html.TextBoxFor(m => m.Employee.SecondName, new {@class = "form-control"})
+        @Html.LabelFor(m => m.SecondName)
+        @Html.TextBoxFor(m => m.SecondName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.SecondName)
+        <span class="field-validation-valid" data-valmsg-for="SecondName" data-valmsg-replace="true" id="EmpFirstNameVal"></span>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Employee.EmployeeNumber)
-        @Html.TextBoxFor(m => m.Employee.EmployeeNumber, new { @class = "form-control" })
+        @Html.LabelFor(m => m.EmployeeNumber)
+        @Html.TextBoxFor(m => m.EmployeeNumber, new { @class = "form-control" })
+        <span class="field-validation-valid" data-valmsg-for="EmployeeNumber" data-valmsg-replace="true" id="EmpNumVal"></span>
     </div>
-    
+
     <div class="form-group">
-        @Html.LabelFor(m => m.Employee.Admin)
-        @Html.CheckBoxFor(m => m.Employee.Admin, new { @class = "form-control"})
+        @Html.LabelFor(m => m.Admin)
+        @Html.CheckBoxFor(m => m.Admin, new { @class = "checkbox" })
+        @Html.ValidationMessageFor(m => m.Admin)
     </div>
-    
-    @Html.HiddenFor(m => m.Employee.EmployeeId)
-    
+
+    @Html.HiddenFor(m => m.EmployeeId)
+
     <button type="submit" class="btn btn-primary">Submit</button>
+    <button id="CloseEmployeeForm" class="btn btn-default">Close</button>
 
 </form>
+
+

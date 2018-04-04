@@ -22,24 +22,51 @@ namespace Garden_Centre_MVC.Controllers
         // GET: Employee
         public ActionResult Index()
         {
-            var employees = _context.Employees.ToList();
+            var employees = _context.Employees.Take(10).ToList();
 
-            var vm = new EmployeeLandingViewModels {Employees = employees};
+            var vm = new EmployeeLandingViewModels {Employees = employees, PageNum = 1};
 
             //returns the home view
-            return View("EmployeeLanding", vm);
+            return PartialView("EmployeeLanding", vm);
+        }
+
+        public ActionResult CheckAmountOfRecords()
+        {
+            var count = _context.Employees.Count();
+
+            return Json(new {amount=count.ToString()});
+        }
+
+        public ActionResult LoadTablePage(int page)
+        {
+            var skipAmount = (page -1) * 10;
+            var employees = _context.Employees.OrderBy(e => e.EmployeeId).Skip(skipAmount).Take(10).ToList();
+
+            var vm = new EmployeeLandingViewModels()
+            {
+                Employees = employees,
+                PageNum = page
+            };
+
+            return PartialView("EmployeeLanding", vm);
         }
 
         [HttpPost]
-        public ActionResult Save(EmployeeFormViewModel emp)
+        public ActionResult Save(Employee emp)
         {
-            if (emp.Employee.EmployeeId == 0)
+
+            if (!ModelState.IsValid)
+                return View();
+
+            if (emp.EmployeeId == 0)
             {
-                var employee = new Employee();
-                employee.Admin = emp.Employee.Admin;
-                employee.EmployeeNumber = emp.Employee.EmployeeNumber;
-                employee.FirstName = emp.Employee.FirstName;
-                employee.SecondName = emp.Employee.SecondName;
+                var employee = new Employee
+                {
+                    Admin = emp.Admin,
+                    EmployeeNumber = emp.EmployeeNumber,
+                    FirstName = emp.FirstName,
+                    SecondName = emp.SecondName
+                };
 
                 _context.Employees.Add(employee);
                 _context.SaveChanges();
@@ -53,12 +80,12 @@ namespace Garden_Centre_MVC.Controllers
             }
             else
             {
-                var employee = _context.Employees.FirstOrDefault(e => e.EmployeeId == emp.Employee.EmployeeId);
+                var employee = _context.Employees.FirstOrDefault(e => e.EmployeeId == emp.EmployeeId);
 
-                employee.Admin = emp.Employee.Admin;
-                employee.EmployeeNumber = emp.Employee.EmployeeNumber;
-                employee.FirstName = emp.Employee.FirstName;
-                employee.SecondName = emp.Employee.SecondName;
+                employee.Admin = emp.Admin;
+                employee.EmployeeNumber = emp.EmployeeNumber;
+                employee.FirstName = emp.FirstName;
+                employee.SecondName = emp.SecondName;
                
                 _context.SaveChanges();
 
@@ -89,7 +116,7 @@ namespace Garden_Centre_MVC.Controllers
 
         public ActionResult Add()
         {
-            var vm = new EmployeeFormViewModel();
+            var vm = new Employee();
 
             return PartialView("EmployeeForm", vm);
         }
@@ -98,10 +125,8 @@ namespace Garden_Centre_MVC.Controllers
         {
             var employee = _context.Employees.FirstOrDefault(e => e.EmployeeId == id);
 
-            var vm = new EmployeeFormViewModel()
-            {
-                Employee = employee
-            };
+            var vm = employee;
+           
 
             return PartialView("EmployeeForm", vm);
 
@@ -121,6 +146,31 @@ namespace Garden_Centre_MVC.Controllers
         {
             return View();
         }
+        
+        public ActionResult Search(string str)
+        {
+            var employees = _context.Employees.ToList();
+
+            var listToReturn = new List<Employee>();
+
+            foreach (var emp in employees)
+            {
+                var fullName = emp.FirstName + emp.SecondName;
+                if(fullName.ToUpper().Contains(str.ToUpper()))
+                    listToReturn.Add(emp);
+            }
+
+            var vm = new EmployeeLandingViewModels()
+            {
+                Employees = listToReturn
+            };
+
+            return PartialView("EmployeeLanding", vm);
+
+        }
+
+
+
 
         protected override void Dispose(bool disposing)
         {

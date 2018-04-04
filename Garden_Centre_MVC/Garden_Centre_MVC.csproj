@@ -193,6 +193,10 @@
     <Compile Include="Migrations\201803231254074_RemovedValueFromTransaction.Designer.cs">
       <DependentUpon>201803231254074_RemovedValueFromTransaction.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804040826457_AddedCanResetField.cs" />
+    <Compile Include="Migrations\201804040826457_AddedCanResetField.Designer.cs">
+      <DependentUpon>201804040826457_AddedCanResetField.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Employee.cs" />
@@ -205,15 +209,17 @@
     <Compile Include="ViewModels\AccountViewModels\ForgotPasswordViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModels\RegisterViewModel.cs" />
+    <Compile Include="ViewModels\AccountViewModels\ResetPasswordViewModel.cs" />
     <Compile Include="ViewModels\AddViewModel.cs" />
-    <Compile Include="ViewModels\EmployeeViewModels\EmployeeFormViewModel.cs" />
     <Compile Include="ViewModels\EmployeeViewModels\EmployeeLandingViewModels.cs" />
+    <Compile Include="ViewModels\SharedViewModels\LayoutViewModel.cs" />
     <Compile Include="ViewModels\Transactions\IndexViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\darkly-theme.css" />
+    <Content Include="Content\datatables.min.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="favicon.ico" />
@@ -221,6 +227,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\ajaxLoader.gif" />
     <Content Include="Scripts\Account\Account.js" />
     <Content Include="Scripts\bootbox.js" />
     <Content Include="Scripts\bootbox.min.js" />
@@ -235,6 +242,8 @@
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\datatables.js" />
+    <Content Include="Scripts\datatables.min.js" />
     <Content Include="Scripts\Employee\Employee.js" />
     <Content Include="Scripts\Home\Home.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -265,6 +274,7 @@
     <Content Include="Views\Transactions\Index.cshtml" />
     <Content Include="Views\Employee\EmployeeLanding.cshtml" />
     <Content Include="Views\Employee\EmployeeForm.cshtml" />
+    <Content Include="Views\Account\ResetPasswordView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -300,6 +310,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803231254074_RemovedValueFromTransaction.resx">
       <DependentUpon>201803231254074_RemovedValueFromTransaction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804040826457_AddedCanResetField.resx">
+      <DependentUpon>201804040826457_AddedCanResetField.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

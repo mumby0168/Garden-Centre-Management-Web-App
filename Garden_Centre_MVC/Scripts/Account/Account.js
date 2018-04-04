@@ -8,12 +8,12 @@
         $.ajax({
             url: "/Account/ForgotPassword",
             success: function(content) {
-                $("#ForogotPasswordDiv").html(content);
+                $("#ForgotPasswordModalBody").html(content);
             }
 
         });
 
-        $("#ForogotPasswordDiv").delay(1000).slideDown("slow");
+        $("#forgotPasswordModal").delay(1000).modal();
     });
 
     //sends the email when the submit button is clicked
@@ -35,21 +35,9 @@
             data: form,
             datatype: JSON,
             success: function (data) {
-                $("#ForogotPasswordDiv").delay(1000).slideUp("slow");
                 bootbox.alert("The email with your username and password has been sent");
             }
         });
-
-        //stop the page from refreshing
-        
     });
-
-    //closes the form 
-    $("#CloseForgotPasswordFormBtn").click(function() {
-
-        $("#ForogotPasswordDiv").slideUp("Slow");
-
-    });
-
 });
 
