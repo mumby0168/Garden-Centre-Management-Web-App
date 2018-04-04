@@ -19,5 +19,7 @@ namespace Garden_Centre_MVC.Models
 
         public int EmployeeId { get; set; }
 
+        public bool CanReset { get; set; }
+
     }
 }

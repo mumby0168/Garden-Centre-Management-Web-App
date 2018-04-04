@@ -61,6 +61,8 @@ textarea {
     padding: 0px;
 }
 
-btn{
-    margin: 2px;
+.ForgotPasswordBackground {
+    border-radius: 3px;
+    background: #464545;
+    padding: 20px;
 }

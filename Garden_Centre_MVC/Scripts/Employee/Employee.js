@@ -50,7 +50,6 @@
       
     //Search Box Start
     $("#ResetSearch").click(function () {
-        alert("Clicked");
         $.ajax({
             url: "/Employee/Index/",
             success: function (view) {
@@ -84,7 +83,8 @@
         $.ajax({
             url: "/Employee/Edit/" + $(this).attr("empId"),
             success: function(view) {
-                $("#EmployeeFormDiv").delay(1000).slideDown("slow").html(view);
+                $("#EmployeeFormModalBody").html(view);
+                $("#EmployeeFormModal").modal();
             }
         });
 
@@ -108,7 +108,9 @@
             data: form,
             datatype: "JSON",
             type: "POST",
-            success: function(view) {
+            success: function (view) {
+                $("#EmployeeFormModal").hide();
+                $(".modal-backdrop").remove();
                 $("#MainPageContainer").html(view);
             }
         });
@@ -133,7 +135,8 @@
         $.ajax({
             url: "/Employee/Add",
             success: function(view) {
-                $("#EmployeeFormDiv").delay(1000).slideDown("slow").html(view);
+                $("#EmployeeFormModalBody").html(view);
+                $("#EmployeeFormModal").modal();
             }
         });
 

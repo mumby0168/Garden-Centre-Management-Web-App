@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using Garden_Centre_MVC.Assets;
 
 namespace Garden_Centre_MVC.Attributes
@@ -11,12 +12,20 @@ namespace Garden_Centre_MVC.Attributes
     {
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            return CurrentUser.EmployeeLogin.Employee.Admin;
+            try
+            {
+                return CurrentUser.EmployeeLogin.Employee.Admin;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            
         }
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
-            filterContext.Result= new HttpNotFoundResult("You are not an admin user please log out and log in as a admin user");
+            filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Home", action = "Index" }));
         }
     }
 }

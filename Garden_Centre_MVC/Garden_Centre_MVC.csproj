@@ -193,6 +193,10 @@
     <Compile Include="Migrations\201803231254074_RemovedValueFromTransaction.Designer.cs">
       <DependentUpon>201803231254074_RemovedValueFromTransaction.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804040826457_AddedCanResetField.cs" />
+    <Compile Include="Migrations\201804040826457_AddedCanResetField.Designer.cs">
+      <DependentUpon>201804040826457_AddedCanResetField.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Employee.cs" />
@@ -205,8 +209,10 @@
     <Compile Include="ViewModels\AccountViewModels\ForgotPasswordViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModels\RegisterViewModel.cs" />
+    <Compile Include="ViewModels\AccountViewModels\ResetPasswordViewModel.cs" />
     <Compile Include="ViewModels\AddViewModel.cs" />
     <Compile Include="ViewModels\EmployeeViewModels\EmployeeLandingViewModels.cs" />
+    <Compile Include="ViewModels\SharedViewModels\LayoutViewModel.cs" />
     <Compile Include="ViewModels\Transactions\IndexViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -268,6 +274,7 @@
     <Content Include="Views\Transactions\Index.cshtml" />
     <Content Include="Views\Employee\EmployeeLanding.cshtml" />
     <Content Include="Views\Employee\EmployeeForm.cshtml" />
+    <Content Include="Views\Account\ResetPasswordView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -303,6 +310,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803231254074_RemovedValueFromTransaction.resx">
       <DependentUpon>201803231254074_RemovedValueFromTransaction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804040826457_AddedCanResetField.resx">
+      <DependentUpon>201804040826457_AddedCanResetField.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
