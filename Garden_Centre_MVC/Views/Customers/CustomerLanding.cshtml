@@ -1,0 +1,30 @@
+﻿@model Garden_Centre_MVC.ViewModels.CustomerViewModels.CustomerLandingViewModels
+
+
+
+<div class="row">
+    <table class="table table-bordered table-hover" id="customerTable">
+        <thead>
+        <tr>
+            <td>Name</td>
+            <td>Admin</td>
+            <td>Operations</td>
+        </tr>
+        </thead>
+
+        <tbody>
+        @foreach (var emp in Model.Customer)
+        {
+            <tr>
+                <td>@emp.FirstName @emp.SecondName</td>
+                <td> @emp.Admin</td>
+                <td>@Ajax.ActionLink("Edit", "Edit", new { id = emp.CustomerId }, new AjaxOptions(){UpdateTargetId = "CustomerFormDiv", HttpMethod = "GET", InsertionMode = InsertionMode.Replace})</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    
+    <div id="CustomerFormDiv"></div>
+    
+
+</div>
