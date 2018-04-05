@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.Policy;
 using System.Web;
 using System.Web.Configuration;
+using System.Web.Script.Serialization;
 
 namespace Garden_Centre_MVC.Models
 {
@@ -21,6 +22,8 @@ namespace Garden_Centre_MVC.Models
         [MaxLength(15)]
         public string SecondName { get; set; }
 
+        public string FullName { get { return FirstName + " " + SecondName; } }
+
         [Required]
         [MaxLength(25)]
         public string AddressLine1 { get; set; }
@@ -33,6 +36,7 @@ namespace Garden_Centre_MVC.Models
         [Required]
         public string PostCode { get; set; }
 
+        [ScriptIgnore]
         public ICollection<Transaction> Transactions { get; set; }
 
         public Customer()

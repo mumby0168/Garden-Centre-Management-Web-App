@@ -1,34 +1,109 @@
-﻿@model Garden_Centre_MVC.ViewModels.TransactionsViewModel
+﻿@model Garden_Centre_MVC.ViewModels.Transactions.HistoricViewModel
 
-<div class="container _partial_outline" style="margin:1%;padding:1%;">
-    <h1 style="text-align:center;">Transactions</h1>
-    <br />
-    <button class="btn btn-primary">Add</button>
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>
-                    <h2>Tansaction ID</h2>
-                </th>
-                <th>
-                    <h2>Date</h2>
-                </th>
-                <th>
-                    <h2>Value</h2>
-                </th>
-                <th></th>
-                <th></th>
-            </tr>
-        </thead>
-        @for (int i = 0; i < Model.Transactions.Count && i < 20; i++)
-        {
-            <tr>
-                <td><h3>@Model.Transactions[i].TransactionNumber</h3></td>
-                <td><h3>@Model.Transactions[i].Date.Day/@Model.Transactions[i].Date.Month/@Model.Transactions[i].Date.Year</h3></td>
-                <td><h3>£ @Model.Transactions[i].Value</h3></td>
-                <td><button class="btn btn-primary" style="margin-top:15%; vertical-align:central;">Edit</button></td>
-                <td><button class="btn btn-primary" style="margin-top:10%; vertical-align:central;">Remove</button></td>
-            </tr>
+<table class="table table-bordered table-hover" id="transactionTable">
+    <thead>
+        <tr>
+            <td>Transaction ID</td>
+            <td>Name</td>
+            <td>Date</td>
+            <td>Transaction Value</td>
+            <td>Operations</td>
+        </tr>
+    </thead>
+    <tbody id="transactionTableBody">
+        @{
+            int i = 1;
         }
-    </table>
-</div>
+
+        @foreach (Garden_Centre_MVC.Models.TransactionOverview t in Model.Transactions)
+         {
+            <tr>
+                <td>@t.ID</td>
+                <td>@t.Transactions[0].Customer.FirstName @t.Transactions[0].Customer.SecondName</td>
+                <td>@t.DateAndTime.Day/@t.DateAndTime.Month/@t.DateAndTime.Year</td>
+                <td>£ @t.TotalValue</td>
+                <td>
+                    <button class="view btn btn-primary" tableRowIndex="@i" transactionId="@t.ID">View</button>
+                    <button class="edit btn btn-primary" tableRowIndex="@i" transactionId="@t.ID">Edit</button>
+                    <button class="del btn btn-primary" tableRowIndex="@i" transactionId="@t.ID">Delete</button>
+                </td>
+            </tr>
+            i++;
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $(document).ready(function ()
+    {
+        $(".view").on("click", function (e)
+        {
+            var id = $(this).attr("transactionId")
+            e.preventDefault();
+            $("#ActionView").delay(100).slideUp("slow");
+            $("#ExtendedView").delay(100).slideUp("slow", function () {
+                $.ajax(
+                {
+                    type: "POST",
+                    data: ({
+                        svm: '@Html.Raw(Json.Encode(Model))', transactionNumber: id
+                    }),
+                    url: '@Url.Action("ViewDetails", "Transactions")',
+                    success: function (result) {
+                        $("#ExtendedView").delay(100).slideDown("slow").html(result);
+                    },
+                    error: function (x, e, r) {
+                        alert(e + " " + r);
+                        alert(x.responseText);
+                    }
+                });
+            });
+        });
+
+        $(".edit").on("click", function (e)
+        {
+            var ws = $(this).attr("transactionId");
+
+            e.preventDefault();
+            $.ajax(
+            {
+                type: "POST",
+                data: ({
+                    svm: '@Html.Raw(Json.Encode(Model))', transactionNumber: ws
+                }),
+                url: '@Url.Action("EditTransaction", "Transactions")',
+                success: function (result) {
+                    $("#ActionView").delay(100).slideDown("slow").html(result);
+                },
+                error: function (x, e, r) {
+                    alert(e + " " + r);
+                    alert(x.responseText);
+                }
+            });
+        });
+
+        $(".del").on("click", function (e)
+        {
+            var id = $(this).attr("transactionId");
+            e.preventDefault();
+
+            if (confirm("Are you sure you want to delete this transaction ?")) {
+                $.ajax(
+                    {
+                        type: "POST",
+                        data: ({
+                            transactionNumber: id
+                        }),
+                        url: '@Url.Action("DeleteTransaction", "Transactions")',
+                        success: function (result) {
+                            $("#HistoricView").html(result);
+                        },
+                        error: function (x, e, r) {
+                            alert(e + " " + r);
+                            alert(x.responseText);
+                        }
+                    });
+            }
+        });
+    });
+</script>

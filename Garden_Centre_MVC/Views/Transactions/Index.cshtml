@@ -1,16 +1,47 @@
 ﻿@model Garden_Centre_MVC.ViewModels.Transactions.IndexViewModel
 
-@foreach(Garden_Centre_MVC.Models.TransactionOverview t in Model.Transactions)
-{
-    <h2>
-        @t.ID - @t.DateAndTime.Day/@t.DateAndTime.Month/@t.DateAndTime.Year - £@t.TotalValue
-    </h2>
-    <div style="border:solid;">
-        @foreach (Garden_Centre_MVC.Models.Transaction a in t.Transactions)
-        {
-            <h2>
-                @a.Id - @a.Item.Description - @a.Item.ItemPrice
-            </h2>
-        }
-    </div>
-}
+<h2><button class="btn btn-primary" id="AddButton">Add</button></h2>
+<div id="HistoricView">
+
+</div>
+
+<div display="hidden" id="ExtendedView">
+
+</div>
+
+<div display="hidden" id="ActionView">
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.ajax(
+            {
+                type: "POST",
+                url: '@Url.Action("HistoricView", "Transactions")',
+                success: function (result) {
+                    $("#HistoricView").html(result);
+                },
+                error: function (x, e, r) {
+                    alert(e + " " + r);
+                    alert(x.responseText);
+                }
+            });
+
+        $("#AddButton").on("click", function () {
+            $("#ExtendedView").delay(100).slideUp("slow");
+            $.ajax(
+            {
+                type: "POST",
+                url: '@Url.Action("AddView", "Transactions")',
+                success: function (result) {
+                    $("#ActionView").delay(100).slideDown("slow").html(result);
+                },
+                error: function (x, e, r) {
+                    alert(e + " " + r);
+                    alert(x.responseText);
+                }
+            });
+        });
+    });
+</script>
