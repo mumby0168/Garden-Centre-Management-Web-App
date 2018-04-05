@@ -6,7 +6,7 @@
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
-    padding: 70px;
+
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -43,4 +43,26 @@ textarea {
 
 .field-validation-error {
     color: red;   
+}
+
+#MainPageContainer {
+    margin-top: 2px;
+}
+
+.EditLink {
+    background: none;
+    border: none;
+    padding: 0px;
+    margin-right: 5px;
+}
+.RemoveLink {
+    background: none;
+    border: none;
+    padding: 0px;
+}
+
+.ForgotPasswordBackground {
+    border-radius: 3px;
+    background: #464545;
+    padding: 20px;
 }

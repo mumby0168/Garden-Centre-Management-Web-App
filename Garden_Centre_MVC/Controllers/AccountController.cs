@@ -8,6 +8,7 @@ using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 using Garden_Centre_MVC.Assets;
+using Garden_Centre_MVC.Attributes.Assets;
 using Garden_Centre_MVC.Models;
 using Garden_Centre_MVC.Persistance;
 using Garden_Centre_MVC.ViewModels.AccountViewModels;
@@ -28,32 +29,40 @@ namespace Garden_Centre_MVC.Controllers
         
         public ActionResult Index()
         {
-            return View("Login");
+            var vm = new LoginViewModel();
+            return View("Login", vm);
         }
 
         [HttpPost]
         public ActionResult Login(LoginViewModel loginVm)
         {
-
+            var errorMessage = "THIS LOGIN IS INCORRECT OR DOES NOT EXIST, TRY AGAIN";
+            LoginViewModel vm;
             var employee = _context.EmployeeLogins.Include(e => e.Employee).FirstOrDefault(e => e.Username == loginVm.Email);
 
             if (employee == null)
-                return View();
-
+            {
+                vm = new LoginViewModel() { ErrorMessage = errorMessage };
+                return View("Login", vm);
+            }
+            if (employee.Employee.EmployeeNumber != loginVm.EmployeeNumber)
+            {
+                vm = new LoginViewModel() {ErrorMessage = errorMessage};
+                return View("Login", vm);
+            }
             if (Encryptor.Check(loginVm.Password, employee.Password, employee.Salt))
             {
                 //succesful login
                 CurrentUser.EmployeeLogin = employee;
-                
-
-
+               
                 Session[employee.Username] = employee;
 
                 return RedirectToAction("Index", "Home");
             }
-                
 
-            return View();
+
+            vm = new LoginViewModel() { ErrorMessage = errorMessage };
+            return View("Login", vm);
         }
 
         public ActionResult Register()
@@ -82,7 +91,8 @@ namespace Garden_Centre_MVC.Controllers
                 Username = registerVm.Username,
                 Password = returned[0],
                 Salt = returned[1],
-                EmployeeId = employee.EmployeeId
+                EmployeeId = employee.EmployeeId,
+                CanReset = false
             };
 
             _context.EmployeeLogins.Add(emp);
@@ -112,12 +122,16 @@ namespace Garden_Centre_MVC.Controllers
 
             var employee = _context.EmployeeLogins.Include(m => m.Employee).FirstOrDefault(e => e.Username == vm.Email);
 
+            if (employee == null)
+                return PartialView("ForgottenPassword");
+
             if (employee.Employee.EmployeeNumber != vm.EmployeeId)
                 return PartialView("ForgottenPassword");
 
             if (SendEmail(employee))
             {
                 //email has been sent
+                employee.CanReset = true;
                 return View("ForgottenPassword");
             }
             else
@@ -129,14 +143,53 @@ namespace Garden_Centre_MVC.Controllers
 
         }
 
+        public ActionResult ResetPassword()
+        {
+            return View("ResetPasswordView");
+        }
+
+
+        //TODO: this needs testing and we need to think of a way to send a link out via email and verify that it is the user. 
+        public ActionResult CheckPasswordReset(ResetPasswordViewModel vm)
+        {
+            var employee = _context.EmployeeLogins.FirstOrDefault(e => e.Username == vm.Email);
+
+            if (employee == null)
+            {
+                //email does not exist
+            }
+
+            if (!employee.CanReset)
+            {
+                //they are not allowed to reset
+                
+            }
+
+            //check if the passwords match
+            if (vm.Password != vm.ReTypePassword)
+            {
+                //they do not match cannot reset
+            }
+
+            var bytes = Encryptor.Encrypt(vm.Password);
+
+            employee.Password = bytes[0];
+            employee.Salt = bytes[1];
+
+
+            _context.SaveChanges();
+            return Content("your password has been reset.");
+        }
+
         #region Private Functions
 
         private bool SendEmail(EmployeeLogin emp)
         {
+
             MailMessage msg = new MailMessage("greengardencentre@gmail.com", emp.Username)
             {
-                Subject = "test",
-                Body = "hello this is a test"
+                Subject = "Password Recovery",
+                Body = emp.Username
             };
 
             NetworkCredential creds = new NetworkCredential("greengardencentre@gmail.com", "hci12345");

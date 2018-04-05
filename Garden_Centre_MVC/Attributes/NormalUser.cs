@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Garden_Centre_MVC.Assets;
+using Garden_Centre_MVC.Attributes.Assets;
 
 namespace Garden_Centre_MVC.Attributes
 {
@@ -12,7 +13,15 @@ namespace Garden_Centre_MVC.Attributes
     {
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            return httpContext.Session[CurrentUser.EmployeeLogin.Username] != null;
+            try
+            {
+                return httpContext.Session[CurrentUser.EmployeeLogin.Username] != null;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            
         }
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)

@@ -9,13 +9,5 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
 {
     public class IndexViewModel
     {
-        private DatabaseContext m_Context = new DatabaseContext();
-        public List<TransactionOverview> Transactions
-        {
-            get
-            {
-                return m_Context.GroupedTransactions;
-            }
-        }
     }
 }
