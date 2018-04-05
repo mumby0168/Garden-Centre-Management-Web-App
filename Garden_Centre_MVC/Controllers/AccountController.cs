@@ -8,6 +8,7 @@ using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 using Garden_Centre_MVC.Assets;
+using Garden_Centre_MVC.Attributes.Assets;
 using Garden_Centre_MVC.Models;
 using Garden_Centre_MVC.Persistance;
 using Garden_Centre_MVC.ViewModels.AccountViewModels;
