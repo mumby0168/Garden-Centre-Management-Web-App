@@ -17,7 +17,7 @@ namespace Garden_Centre_MVC.Attributes
             {
                 return CurrentUser.EmployeeLogin.Employee.Admin;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }

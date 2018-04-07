@@ -9,8 +9,17 @@ namespace Garden_Centre_MVC.ViewModels.EmployeeViewModels
 {
     public class EmployeeLandingViewModels
     {
+        public EmployeeLandingViewModels()
+        {
+            IsSearch = false;
+        }
+
+
         public List<Employee> Employees { get; set; }
 
         public int PageNum { get; set; }
+
+       public bool IsSearch { get; set; }
+
     }
 }

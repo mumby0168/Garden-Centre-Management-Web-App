@@ -14,4 +14,16 @@
     });
 
 
+    $("#TransactionsLandingLink").click(function() {
+
+        $.ajax({
+            url: "Transactions/Index",
+            success: function(view) {
+                $("#MainPageContainer").html(view);
+            }
+        });
+
+    });
+
+
 });

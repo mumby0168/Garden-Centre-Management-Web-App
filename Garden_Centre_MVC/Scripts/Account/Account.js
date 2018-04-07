@@ -3,7 +3,9 @@
     $("#ForogotPasswordDiv").hidden = true;
 
     //loads the modal with a form from a partial view
-    $("#ForgottonPasswordLink").click(function() {
+    $("#ForgottonPasswordLink").click(function(e) {
+
+        e.preventDefault();
 
         $.ajax({
             url: "/Account/ForgotPassword",

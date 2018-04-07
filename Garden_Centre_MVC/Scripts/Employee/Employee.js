@@ -1,12 +1,21 @@
 ﻿$(document).ready(function () {
 
-    //Paging Start
+    //global variables
     var amountOfrecords;
+
+    //Paging Start
+   
     $.ajax({
         url: "/Employee/CheckAmountOfRecords",
         type: "JSON",
         success: function(obj) {
             amountOfrecords = obj.amount;
+
+            var num = amountOfrecords / 10;
+
+            var pages = ceil(num);
+
+            alert(pages);
         }
     });
 
@@ -20,6 +29,8 @@
             data: { "page": page },
             success: function (view) {
                 $("#MainPageContainer").html(view);
+
+
             }
         });
 
@@ -45,6 +56,17 @@
             }
         });
     });
+
+    $("#GoBackFromNullError").click(function() {
+        $.ajax({
+            url: "/Employee/Index",
+            success: function (view) {
+                $("#MainPageContainer").html(view);
+                $("#Loader").hide();
+            }
+        });
+    });
+
     //Paging End
 
       

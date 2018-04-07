@@ -20,13 +20,13 @@
 </head>
 <body>
 
-<h2>Garden Centre+</h2>
+    <a href="/Account/Index" style="text-decoration: none;"><h1 style="margin-bottom: 20px; color: lightskyblue" align="center">Garden Centre <i class="fa fa-plus-circle"></i></h1></a>
 <div class="container body-content">
     <div id="CenteredDiv" align="center">
 
         <div class="jumbotron">
 
-            <h2>Register</h2>
+            <h2 style="margin-bottom: 10px;">Register</h2>
 
             @using (Html.BeginForm("RegisterForm", "Account", FormMethod.Post))
             {
@@ -60,6 +60,8 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary">Register</button>
+
+                <br/>
             }
 
         </div>

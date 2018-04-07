@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Garden_Centre_MVC.Attributes;
 using Garden_Centre_MVC.Models;
 using Garden_Centre_MVC.Persistance;
 using Garden_Centre_MVC.ViewModels.EmployeeViewModels;
@@ -24,7 +25,7 @@ namespace Garden_Centre_MVC.Controllers
         {
             var employees = _context.Employees.Take(10).ToList();
 
-            var vm = new EmployeeLandingViewModels {Employees = employees, PageNum = 1};
+            var vm = new EmployeeLandingViewModels {Employees = employees, PageNum = 1, IsSearch = false};
 
             //returns the home view
             return PartialView("EmployeeLanding", vm);
@@ -41,6 +42,7 @@ namespace Garden_Centre_MVC.Controllers
         {
             var skipAmount = (page -1) * 10;
             var employees = _context.Employees.OrderBy(e => e.EmployeeId).Skip(skipAmount).Take(10).ToList();
+
 
             var vm = new EmployeeLandingViewModels()
             {
@@ -162,7 +164,9 @@ namespace Garden_Centre_MVC.Controllers
 
             var vm = new EmployeeLandingViewModels()
             {
-                Employees = listToReturn
+                Employees = listToReturn,
+                PageNum = 1,
+                IsSearch = true
             };
 
             return PartialView("EmployeeLanding", vm);

@@ -17,7 +17,7 @@ namespace Garden_Centre_MVC.Attributes
             {
                 return httpContext.Session[CurrentUser.EmployeeLogin.Username] != null;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }
