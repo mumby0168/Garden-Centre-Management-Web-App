@@ -20,18 +20,30 @@
         <td>Item Value</td>
         <td>Operations</td>
     </thead>
-    <tbody>
-        @foreach (Garden_Centre_MVC.Models.Transaction t in Model.TransactionOverview.Transactions)
-        {
-            <tr>
-                <td>@t.Item.Description</td>
-                <td>£ @t.Item.ItemPrice</td>
-                <td>
-                    <button class="editDel btn btn-primary" transactionId="@t.Id">Delete</button>
-                </td>
-            </tr>
-        }
-    </tbody>
+        <tbody>
+            @{
+                float val = 0.0f;
+            }
+            @foreach (Garden_Centre_MVC.Models.Transaction t in Model.TransactionOverview.Transactions)
+            {
+                <tr>
+                    <td>@t.Item.Description</td>
+                    <td>£ @t.Item.ItemPrice</td>
+                    <td>
+                        <button class="editDel btn btn-primary" transactionId="@t.Id">Delete</button>
+                    </td>
+                </tr>
+                val += t.Item.ItemPrice;
+            }
+            @if (val != 0.0f)
+            {
+                <tr>
+                    <td>Total Value:</td>
+                    <td>£ @val</td>
+                    <td></td>
+                </tr>
+            }
+        </tbody>
 </table>
 <button id="EditSave" class="btn btn-primary">Save</button>
 <button id="EditCancel" class="btn btn-primary">Cancel</button>
@@ -45,7 +57,6 @@
 
         $(".editDel").on("click", function (e) {
             var id = $(this).attr("transactionId");
-
             $.ajax(
             {
                 type: "POST",
@@ -55,7 +66,6 @@
                 url: '@Url.Action("EditDeleteTransaction", "Transactions")',
                 success: function (result) {
                     $("#ActionView").html(result);
-
                 },
                 error: function (x, e, r) {
                     alert(e + " " + r);

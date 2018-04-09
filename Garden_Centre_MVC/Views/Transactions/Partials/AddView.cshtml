@@ -49,7 +49,10 @@
                 }
             </tbody>
         </table>
-        <button id="AddTransaction" class="btn btn-primary">Save</button>
+        if (Model._Customer != null)
+        {
+            <button id="AddTransaction" class="btn btn-primary">Save</button>
+        }
     }
     <button id="CancelTransaction" class="btn btn-primary">Cancel</button>
 </div>
@@ -80,20 +83,6 @@
             $("#ActionView").delay(100).slideUp("slow");
             $("#ExtendedView").delay(100).slideUp("slow");
             $("#AddView").delay(100).slideUp("slow");
-
-            $.ajax(
-            {
-                type: "POST",
-                data: ({ svm: '@Html.Raw(Json.Encode(Model))' }),
-                url: '@Url.Action("AddTransaction", "Transactions")',
-                success: function (result) {
-                    $("#HistoricView").html(result);
-                },
-                error: function (x, e, r) {
-                    alert(e + " " + r);
-                    alert(x.responseText);
-                }
-            });
         });
 
         $("#CustomerSelection").on("change", (function (e)

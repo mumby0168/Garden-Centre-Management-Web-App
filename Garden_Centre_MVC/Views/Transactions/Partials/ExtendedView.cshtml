@@ -6,15 +6,26 @@
         <td>Item</td>
         <td>Item Value</td>
     </thead>
-    <tbody>
-        @foreach (Garden_Centre_MVC.Models.Transaction t in Model.TransactionOverview.Transactions)
-        {
-            <tr>
-                <td>@t.Item.Description</td>
-                <td>£ @t.Item.ItemPrice</td>
-            </tr>
-        }
-    </tbody>
+        <tbody>
+            @{
+                float val = 0.0f;
+            }
+            @foreach (Garden_Centre_MVC.Models.Transaction t in Model.TransactionOverview.Transactions)
+            {
+                <tr>
+                    <td>@t.Item.Description</td>
+                    <td>£ @t.Item.ItemPrice</td>
+                </tr>
+                val += t.Item.ItemPrice;
+            }
+            @if (val != 0.0f)
+            {
+                <tr>
+                    <td>Total Value:</td>
+                    <td>£ @val</td>
+                </tr>
+            }
+        </tbody>
 </table>
 <button id="ExtClose" class="btn btn-primary">Close</button>
 
