@@ -7,24 +7,23 @@ using Garden_Centre_MVC.Attributes;
 
 namespace Garden_Centre_MVC.Controllers
 {
+    [NormalUser]
     public class HomeController : Controller
     {
-        [NormalUser]
+        
         public ActionResult Index()
         {
             return View();
         }
 
-        [NormalUser]
+        
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
 
-            return View();
+            return View("Error");
         }
 
-        [AdminUser]
-        [NormalUser]
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";

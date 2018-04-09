@@ -13,10 +13,12 @@ namespace Garden_Centre_MVC.Controllers
     public class TransactionsController : Controller, IDisposable
     {
         private DatabaseContext m_Context = new DatabaseContext();
-        public void Dispose()
+        protected override void Dispose(bool disposing)
         {
             m_Context.Dispose();
+            base.Dispose(disposing);
         }
+
         public ActionResult Index()
         {
             IndexViewModel vm = new IndexViewModel();

@@ -5,19 +5,19 @@
 
     //Paging Start
    
-    $.ajax({
-        url: "/Employee/CheckAmountOfRecords",
-        type: "JSON",
-        success: function(obj) {
-            amountOfrecords = obj.amount;
+    //$.ajax({
+    //    url: "/Employee/CheckAmountOfRecords",
+    //    type: "JSON",
+    //    success: function(obj) {
+    //        amountOfrecords = obj.amount;
 
-            var num = amountOfrecords / 10;
+    //        var num = amountOfrecords / 10;
 
-            var pages = ceil(num);
+    //        var pages = ceil(num);
 
-            alert(pages);
-        }
-    });
+    //        alert(pages);
+    //    }
+    //});
 
     $("#NextPage").click(function() {
 
@@ -142,13 +142,40 @@
     //deletes the employee
     $(".RemoveLink").click(function (e) {
 
-        $.ajax({
-            url: "/Employee/Remove/" + $(this).attr("empId"),
-            success: function (view) {
-                $("#MainPageContainer").html(view);
+        var id = $(this).attr("empId");
+
+        bootbox.confirm({
+            message: "are you sure you want to delete this record",
+            buttons: {
+                confirm: {
+                    label: "Yes",
+                    className: "btn-danger"
+                },
+                cancel: {
+                    label: "No",
+                    className: "btn-default"
+                }
+            },
+            callback: function (result) {
+                if (result !== true) {
+                    return;
+                }
+
+                $.ajax({
+                    url: "/Employee/Remove/" + id,
+                    error: function(error, type, errorMessage) {
+                        bootbox.alert({
+                            message: errorMessage,
+                            size: "small"
+                        });
+                    },
+                    success: function (view) {
+                        $("#MainPageContainer").html(view);
+                    }
+                    
+                });
             }
         });
-
     });
 
     //loads the add screen

@@ -55,7 +55,7 @@ namespace Garden_Centre_MVC.Controllers
                 //succesful login
                 CurrentUser.EmployeeLogin = employee;
                
-                Session[employee.Username] = employee;
+                Session[employee.Username] = employee;                
 
                 return RedirectToAction("Index", "Home");
             }
@@ -73,6 +73,13 @@ namespace Garden_Centre_MVC.Controllers
         [HttpPost]
         public ActionResult RegisterForm(RegisterViewModel registerVm)
         {
+            var checkifExist = _context.EmployeeLogins.FirstOrDefault(e => e.Username == registerVm.Email);
+
+            if (checkifExist != null)
+                //just need to add a custom attribute to the Email attribute in 
+                return View("Register");
+
+
             if (registerVm.Password != registerVm.ReTypePasssword)
                 return View("Register");
 
@@ -88,7 +95,7 @@ namespace Garden_Centre_MVC.Controllers
 
             EmployeeLogin emp = new EmployeeLogin()
             {
-                Username = registerVm.Username,
+                Username = registerVm.Email,
                 Password = returned[0],
                 Salt = returned[1],
                 EmployeeId = employee.EmployeeId,
@@ -100,7 +107,7 @@ namespace Garden_Centre_MVC.Controllers
 
             var vm = new LoginViewModel()
             {
-                Email = registerVm.Username,
+                Email = registerVm.Email,
                 EmployeeNumber = registerVm.EmployeeNumber
             };
             
@@ -179,6 +186,17 @@ namespace Garden_Centre_MVC.Controllers
 
             _context.SaveChanges();
             return Content("your password has been reset.");
+        }
+
+        public ActionResult Logoff()
+        {
+
+            if (Session[CurrentUser.EmployeeLogin.Username] != null)
+            {
+                Session.Contents.Remove(CurrentUser.EmployeeLogin.Username);
+            }
+
+            return RedirectToAction("Index", "Account");
         }
 
         #region Private Functions

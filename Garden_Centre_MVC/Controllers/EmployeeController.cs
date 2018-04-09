@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Garden_Centre_MVC.Attributes;
+using Garden_Centre_MVC.Attributes.Assets;
 using Garden_Centre_MVC.Models;
 using Garden_Centre_MVC.Persistance;
 using Garden_Centre_MVC.ViewModels.EmployeeViewModels;
 
 namespace Garden_Centre_MVC.Controllers
 {
+    [NormalUser]
+    [AdminUser]
     public class EmployeeController : Controller
     {
         private DatabaseContext _context;
@@ -75,7 +79,7 @@ namespace Garden_Centre_MVC.Controllers
 
                 var vm = new EmployeeLandingViewModels()
                 {
-                    Employees = _context.Employees.ToList()
+                    Employees = _context.Employees.Take(10).ToList()
                 };
 
                 return View("EmployeeLanding", vm);
@@ -94,7 +98,7 @@ namespace Garden_Centre_MVC.Controllers
 
                 var vm = new EmployeeLandingViewModels()
                 {
-                    Employees = _context.Employees.ToList()
+                    Employees = _context.Employees.Take(10).ToList()
                 };
 
                 return PartialView("EmployeeLanding", vm);
@@ -105,13 +109,17 @@ namespace Garden_Centre_MVC.Controllers
         {
             var employee = _context.Employees.FirstOrDefault(e => e.EmployeeId == id);
 
+            if (employee.EmployeeNumber == CurrentUser.EmployeeLogin.Employee.EmployeeNumber)
+                return new HttpStatusCodeResult(500, "You cannot delete yourself as your are logged in.");
+
             _context.Employees.Remove(employee);
             _context.SaveChanges();
 
             var vm = new EmployeeLandingViewModels()
             {
-                Employees = _context.Employees.ToList()
+                Employees = _context.Employees.Take(10).ToList()
             };
+
 
             return PartialView("EmployeeLanding", vm);
         }
@@ -172,8 +180,6 @@ namespace Garden_Centre_MVC.Controllers
             return PartialView("EmployeeLanding", vm);
 
         }
-
-
 
 
         protected override void Dispose(bool disposing)

@@ -3,7 +3,7 @@
 
 @Scripts.Render("~/bundles/SiteScripts")
 
-<div class="row">
+<div align="center" class="row">
     <h2>Employees</h2>
 </div>
 
@@ -32,8 +32,8 @@
         
         @if (Model.Employees.Count == 0)
         {
-            <h2>No more employees in database</h2>
-            <button class="btn btn-default+" id="GoBackFromNullError">Go Back</button>
+            <h2>No Results</h2>
+            <button class="btn btn-default" id="GoBackFromNullError">Go Back</button>
         }
         else
         {

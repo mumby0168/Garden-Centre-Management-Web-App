@@ -161,6 +161,8 @@
     <Compile Include="Attributes\AdminUser.cs" />
     <Compile Include="Assets\CurrentUser.cs" />
     <Compile Include="Assets\Encryptor.cs" />
+    <Compile Include="Attributes\CheckIfAlreadyRegistered.cs" />
+    <Compile Include="Attributes\CheckIfEmailExists.cs" />
     <Compile Include="Attributes\NormalUser.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />

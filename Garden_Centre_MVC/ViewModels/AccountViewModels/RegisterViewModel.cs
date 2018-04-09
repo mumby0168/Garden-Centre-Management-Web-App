@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using Garden_Centre_MVC.Attributes;
 
 namespace Garden_Centre_MVC.ViewModels.AccountViewModels
 {
     public class RegisterViewModel
     {
         [Required]
-        public string Username { get; set; }
+        [EmailAddress]
+        [CheckIfEmailExists]
+        public string Email { get; set; }
 
         [Required]
         public string Password { get; set; }
@@ -20,6 +23,7 @@ namespace Garden_Centre_MVC.ViewModels.AccountViewModels
 
         [Required]
         [Display(Name = "Employee Number")]
+        [CheckIfAlreadyRegistered]
         public int EmployeeNumber { get; set; }
     }
 }
