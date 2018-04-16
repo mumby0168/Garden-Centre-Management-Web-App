@@ -19,27 +19,27 @@
     });
 
     //sends the email when the submit button is clicked
-    $("#forgottenPasswordForm").submit(function (e) {
+    //$("#forgottenPasswordForm").submit(function (e) {
 
-        e.preventDefault();
+    //    e.preventDefault();
 
-        if ($("#EmployeeId").val().toString().length !== 6) {
-            bootbox.alert("The employee Id must be 6 digits");
-            return;
-        }
+    //    if ($("#EmployeeId").val().toString().length !== 6) {
+    //        bootbox.alert("The employee Id must be 6 digits");
+    //        return;
+    //    }
             
 
 
-        var form = $("#forgottenPasswordForm").serialize();
+    //    var form = $("#forgottenPasswordForm").serialize();
 
-        $.ajax({
-            url: "/Account/SendRecoveryEmail",
-            data: form,
-            datatype: JSON,
-            success: function (data) {
-                bootbox.alert("The email with your username and password has been sent");
-            }
-        });
-    });
+    //    $.ajax({
+    //        url: "/Account/SendRecoveryEmail",
+    //        data: form,
+    //        datatype: JSON,
+    //        success: function (data) {
+    //            $("#MainPageContainer").html(data);
+    //        }
+    //    });
+    //});
 });
 
