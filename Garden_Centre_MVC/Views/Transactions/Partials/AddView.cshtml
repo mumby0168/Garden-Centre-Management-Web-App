@@ -57,12 +57,18 @@
             @if (Model.items.Count > 0 && Model.transactionOverview.Customer != null)
             {
                 @:if (confirm("Are you sure you would like to cancel this transaction ?")) {
-                    @:$("#Index_AddView").delay(100).slideUp("slow");
+                    @:$("#Index_AddView").delay(100).slideUp("slow", "swing", function (e)
+                    @:{
+                        @:$("#Index_AddView").html("");
+                    @:});
                 @:}
             }
             else
             {
-                @:$("#Index_AddView").delay(100).slideUp("slow");
+                @:$("#Index_AddView").delay(100).slideUp("slow", "swing", function (e)
+                    @:{
+                        @:$("#Index_AddView").html("");
+                    @:});
             }
          });
 
@@ -74,7 +80,10 @@
                         data: ({ prevVM: '@Html.Raw(Json.Encode(Model))' }),
                         url: '@Url.Action("SerializeAdd", "Transactions")',
                         success: function (result) {
-                            $("#Index_AddView").delay(100).slideUp("slow");
+                            $("#Index_AddView").delay(100).slideUp("slow", "swing", function (e)
+                            {
+                                $("#Index_AddView").html("");
+                            });
                             $("#View").html(result);
 
                         },

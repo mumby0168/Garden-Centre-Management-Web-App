@@ -1,5 +1,10 @@
 ﻿@model Garden_Centre_MVC.ViewModels.Transactions.HistoricViewModel
-
+@{
+    //TODO: Fix the table row disapearing try to animate it
+    //TODO: Sort the padding on the exteneded view
+    //TODO: Implement edit
+    //TODO: Implement delete
+}
 <table class="table table-bordered table-hover">
     <thead>
         <tr>
@@ -20,13 +25,13 @@
                 <td>@to.TotalValue</td>
                 <td>
                     <button transactionNumber="@to.TransactionNumber" class="viewBtn btn btn-primary">View</button>
-                    <button class="btn btn-primary">Edit</button>
-                    <button class="btn btn-primary">Delete</button>
+                    <button transactionNumber="@to.TransactionNumber" class="btn btn-primary">Edit</button>
+                    <button transactionNumber="@to.TransactionNumber" class="delBtn btn btn-primary">Delete</button>
                 </td>
             </tr>
-            <tr id='@("Historic_ExtendedViewTR"+@to.TransactionNumber)' style="display:none; padding:0px;">
-                <td id='@("Historic_ExtendedViewTD"+@to.TransactionNumber)' colspan="5">
-                    <div id='@("Historic_ExtendedView"+@to.TransactionNumber)' hidden="hidden">
+            <tr id='@("Historic_DropDownViewTR"+@to.TransactionNumber)' style="display:none; padding:0px;">
+                <td id='@("Historic_DropDownViewTD"+@to.TransactionNumber)' colspan="5">
+                    <div id='@("Historic_DropDownView"+@to.TransactionNumber)' hidden="hidden">
 
                     </div>
                 </td>
@@ -48,20 +53,56 @@
                 data: ({ _transactionNumber: transactionNumber }),
                 url: '@Url.Action("ExtendedView", "Transactions")',
                 success: function (result) {
-                    $("#Historic_ExtendedViewTR" + transactionNumber).attr("style", "display:table-row;");
-                    $("#Historic_ExtendedView" + transactionNumber).delay(100).slideDown("slow").html(result);
+                    $("#Historic_DropDownViewTR" + transactionNumber).attr("style", "display:table-row;");
+                    $("#Historic_DropDownView" + transactionNumber).delay(100).slideDown("slow").html(result);
 
-                    if (prevOpenedTN !== '0' && prevOpenedTN != transactionNumber) {
-                        $("#Historic_ExtendedView" + prevOpenedTN).delay(100).slideUp("slow", "swing", function (e) {
-                            $("#Historic_ExtendedViewTR" + prevOpenedTN).attr("style", "display:none;");
+                    if (prevOpenedTN !== '0' && prevOpenedTN !== transactionNumber) {
+                        $("#Historic_DropDownView" + prevOpenedTN).delay(100).slideUp("slow", "swing", function (e) {
+                            $("#Historic_DropDownViewTR" + prevOpenedTN).attr("style", "display:none;");
                             prevOpenedTN = transactionNumber;
                         });
                     }
-                    else 
+                    else
                     {
                         prevOpenedTN = transactionNumber;
                     }
-                    
+
+                },
+                error: function (x, e, r) {
+                    alert(e + " " + r);
+                    alert(x.responseText);
+                }
+            });
+        });
+
+        $(".delBtn").on("click", function (e) {
+            e.preventDefault();
+            var transactionNumber = $(this).attr("transactionNumber");
+
+            $.ajax(
+            {
+                type: "POST",
+                data: ({ _transactionNumber: transactionNumber }),
+                url: '@Url.Action("DeleteTransaction", "Transactions")',
+                success: function (result) {
+                    $("#View").html(result);
+                    alert(prevOpenedTN);
+                    if (prevOpenedTN !== '0') {
+                        $.ajax({
+                            type: "POST",
+                            data: ({ _transactionNumber: prevOpenedTN }),
+                            url: '@Url.Action("ExtendedView", "Transactions")',
+                            success: function (res) {
+                                alert(res);
+                                $("#Historic_DropDownViewTR" + transactionNumber).attr("style", "display:table-row;");
+                                $("#Historic_DropDownView" + transactionNumber).html(res);
+                            },
+                            error: function (x, e, r) {
+                                alert(e + " " + r);
+                                alert(x.responseText);
+                            }
+                        });
+                    }
                 },
                 error: function (x, e, r) {
                     alert(e + " " + r);

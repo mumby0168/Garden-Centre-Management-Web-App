@@ -23,19 +23,40 @@ namespace Garden_Centre_MVC.Controllers
             return View();
         }
 
+        /////////////////
+        //HISTORIC VIEW//
+        /////////////////
         public PartialViewResult HistoricView()
         {
             HistoricViewModel vm = new HistoricViewModel();
             return PartialView("Partials/HistoricView", vm);
         }
 
-        ///////////////////////////////
-        //HISTORIC VIEW/EXTENDED VIEW//
-        ///////////////////////////////
+        /////////////////
+        //EXTENDED VIEW//
+        /////////////////
         public PartialViewResult ExtendedView(int _transactionNumber)
         {
             ExtendedViewModel vm = new ExtendedViewModel(_transactionNumber);
             return PartialView("Partials/ExtendedView", vm);
+        }
+
+        //////////////////////
+        //DELETE TRANSACTION//
+        //////////////////////
+        public PartialViewResult DeleteTransaction(int _transactionNumber)
+        {
+            HistoricViewModel vm = new HistoricViewModel();
+
+            m_Context.TransactionOverviews.Remove(m_Context.TransactionOverviews.Where(to => to.TransactionNumber == _transactionNumber).First());
+            foreach (Transaction t in m_Context.Transactions.Where(t => t.TransactionNumber == _transactionNumber))
+            {
+                m_Context.Transactions.Remove(t);
+            }
+
+            m_Context.SaveChanges();
+
+            return PartialView("Partials/HistoricView", vm);
         }
 
         ////////////

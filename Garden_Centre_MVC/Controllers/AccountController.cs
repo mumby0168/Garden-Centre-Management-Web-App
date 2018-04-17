@@ -147,9 +147,7 @@ namespace Garden_Centre_MVC.Controllers
         {
             return View("ResetPasswordView");
         }
-
-
-        //TODO: this needs testing and we need to think of a way to send a link out via email and verify that it is the user. 
+        
         public ActionResult CheckPasswordReset(ResetPasswordViewModel vm)
         {
             var employee = _context.EmployeeLogins.FirstOrDefault(e => e.Username == vm.Email);

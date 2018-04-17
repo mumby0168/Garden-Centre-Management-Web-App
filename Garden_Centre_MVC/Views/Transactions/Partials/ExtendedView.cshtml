@@ -17,3 +17,16 @@
         }
     </tbody>
 </table>
+<button class="Extended_Close btn btn-primary">Close</button>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.Extended_Close').on("click", function (e) {
+            $("#Historic_DropDownView" + @Model.transactions.First().TransactionNumber).delay(100).slideUp("slow", "swing", function (e) {
+                $("#Historic_DropDownViewTR" + @Model.transactions.First().TransactionNumber).attr("style", "display:none;");
+                alert("ZEROED");
+                prevOpenedTN = '0';
+            });
+        });
+    });
+</script>
