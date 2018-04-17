@@ -86,23 +86,6 @@
                 url: '@Url.Action("DeleteTransaction", "Transactions")',
                 success: function (result) {
                     $("#View").html(result);
-                    alert(prevOpenedTN);
-                    if (prevOpenedTN !== '0') {
-                        $.ajax({
-                            type: "POST",
-                            data: ({ _transactionNumber: prevOpenedTN }),
-                            url: '@Url.Action("ExtendedView", "Transactions")',
-                            success: function (res) {
-                                alert(res);
-                                $("#Historic_DropDownViewTR" + transactionNumber).attr("style", "display:table-row;");
-                                $("#Historic_DropDownView" + transactionNumber).html(res);
-                            },
-                            error: function (x, e, r) {
-                                alert(e + " " + r);
-                                alert(x.responseText);
-                            }
-                        });
-                    }
                 },
                 error: function (x, e, r) {
                     alert(e + " " + r);

@@ -1,0 +1,83 @@
+﻿@model Garden_Centre_MVC.ViewModels.Transactions.EditViewModel
+
+<form>
+    <div class="form-group">
+        <h2>Customer</h2>
+        @Html.DropDownListFor(m => m.transactionOverview.Customer, new SelectList(Model.CustomerList, "CustomerId", "FullName"), "Select Customer", new { @id = "Edit_CustomerSelection", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.transactionOverview.Customer)
+    </div>
+
+    <div class="form-group">
+        <h2>Item</h2>
+        @Html.DropDownListFor(m => m.items, new SelectList(Model.ItemList, "ItemId", "Description"), "Select Item", new { @id = "Edit_ItemSelection", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.items)
+    </div>
+</form>
+@if (Model.items.Count > 0)
+{
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <td>Item</td>
+                <td>Price</td>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                float fVal = 0.0f;
+            }
+
+            @foreach (Garden_Centre_MVC.Models.Item item in Model.items)
+            {
+                <tr>
+                    <td>@item.Description</td>
+                    <td>@item.ItemPrice</td>
+                </tr>
+
+                fVal += item.ItemPrice;
+            }
+            <tr>
+                <td>Transaction Value:</td>
+                <td>@fVal</td>
+            </tr>
+        </tbody>
+    </table>
+}
+
+@if (Model.transactionOverview.Customer != null && Model.items.Count > 0)
+{
+    <button id="Edit_Save" class="btn btn-primary">Save</button>
+}
+<button id="Edit_Cancel" class="btn btn-primary">Cancel</button>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#Edit_CustomerSelection").prop("selectedIndex", @Model.transactionOverview.CustomerId).change(function (e) { this.val(e.val); e.preventDefault(); });
+
+        $("#Edit_ItemSelection").on("change", (function (e)
+            {
+                e.preventDefault();
+                if ($("#Edit_ItemSelection").val() !== 0)
+                {
+                    $.ajax(
+                    {
+                        type: "POST",
+                        data: ({ prevVM: '@Html.Raw(Json.Encode(Model))', itemId: $("#Edit_ItemSelection").val() }),
+                        url: '@Url.Action("EditAddItem", "Transactions")',
+                        success: function (result) {
+                            $("#Index_AddView").html(result);
+                            @if (Model.transactionOverview.Customer != null)
+                            {
+                                @:$("#Edit_CustomerSelection").prop("selectedIndex", '@Model.transactionOverview.CustomerId').change(function (e) { this.val(e.val()); e.preventDefault(); });
+                            }
+                            $("#Edit_ItemSelection").prop("selectedIndex", '0').change(function (e) { this.val(e.val); e.preventDefault(); });
+                        },
+                        error: function (x, e, r) {
+                            alert(e + " " + r);
+                            alert(x.responseText);
+                        }
+                    });
+                }
+            }));
+    });
+</script>
