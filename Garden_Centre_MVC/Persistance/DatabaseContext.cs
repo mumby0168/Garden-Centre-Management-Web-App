@@ -20,6 +20,8 @@ namespace Garden_Centre_MVC.Persistance
 
         public DbSet<Transaction> Transactions { get; set; }
 
+        public DbSet<TransactionOverview> TransactionOverviews { get; set; }
+
         public DatabaseContext()
         {
             

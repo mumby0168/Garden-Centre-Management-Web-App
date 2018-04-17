@@ -1,38 +1,19 @@
 ﻿@model Garden_Centre_MVC.ViewModels.Transactions.ExtendedViewModel
 
-<h2>@Model.TransactionOverview.ID - @Model.TransactionOverview.Transactions[0].Customer.FullName - @Model.TransactionOverview.DateAndTime.Day/@Model.TransactionOverview.DateAndTime.Month/@Model.TransactionOverview.DateAndTime.Year - £ @Model.TransactionOverview.TotalValue</h2>
-<table class="table table-bordered table-hover" id="transactionTable">
+<table class="table table-bordered table-hover">
     <thead>
-        <td>Item</td>
-        <td>Item Value</td>
+        <tr>
+            <td>Item</td>
+            <td>Value</td>
+        </tr>
     </thead>
-        <tbody>
-            @{
-                float val = 0.0f;
-            }
-            @foreach (Garden_Centre_MVC.Models.Transaction t in Model.TransactionOverview.Transactions)
-            {
-                <tr>
-                    <td>@t.Item.Description</td>
-                    <td>£ @t.Item.ItemPrice</td>
-                </tr>
-                val += t.Item.ItemPrice;
-            }
-            @if (val != 0.0f)
-            {
-                <tr>
-                    <td>Total Value:</td>
-                    <td>£ @val</td>
-                </tr>
-            }
-        </tbody>
+    <tbody>
+        @foreach (Garden_Centre_MVC.Models.Transaction t in Model.transactions)
+        {
+            <tr>
+                <td>@t.Item.Description</td>
+                <td>@t.Item.ItemPrice</td>
+            </tr>
+        }
+    </tbody>
 </table>
-<button id="ExtClose" class="btn btn-primary">Close</button>
-
-<script>
-    $(document).ready(function () {
-        $("#ExtClose").on("click", function (e) {
-            $("#ExtendedView").delay(100).slideUp("slow");
-        });
-    });
-</script>

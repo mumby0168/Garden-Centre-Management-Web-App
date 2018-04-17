@@ -1,37 +1,40 @@
-﻿using System;
+﻿using Garden_Centre_MVC.Models;
+using Garden_Centre_MVC.Persistance;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Garden_Centre_MVC.Models;
 
 namespace Garden_Centre_MVC.ViewModels.Transactions
 {
-    public class ExtendedViewModel
+    public class ExtendedViewModel : IDisposable
     {
-        public ExtendedViewModel(List<TransactionOverview> transactionOverviews, int transactionNum)
+        private DatabaseContext m_Context = new DatabaseContext();
+        public void Dispose()
         {
-            foreach (TransactionOverview to in transactionOverviews)
-            {
-                if(to.ID == transactionNum)
-                {
-                    m_TransactionOverview = to;
-                    break;
-                }
-            }
+            m_Context.Dispose();
         }
 
-        private ExtendedViewModel()
-        {
-            return;
-        }
-
-        private TransactionOverview m_TransactionOverview = null;
-        public TransactionOverview TransactionOverview
+        private int m_TransactionNumber = 0;
+        public List<Transaction> transactions
         {
             get
             {
-                return m_TransactionOverview;
+                List<Transaction> ret = m_Context.Transactions.Where(t => t.TransactionNumber == m_TransactionNumber).ToList();
+                foreach(Transaction t in ret)
+                {
+                    if(t.Item == null)
+                    {
+                        t.Item = m_Context.Items.Where(i => i.ItemId == t.ItemId).First();
+                    }
+                }
+                return ret;
             }
+        }
+
+        public ExtendedViewModel(int transactionNumber)
+        {
+            m_TransactionNumber = transactionNumber;
         }
     }
 }
