@@ -165,6 +165,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\ItemsController.cs" />
     <Compile Include="Controllers\TransactionsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -216,6 +217,7 @@
     <Compile Include="ViewModels\AccountViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModels\ResetPasswordViewModel.cs" />
     <Compile Include="ViewModels\EmployeeViewModels\EmployeeLandingViewModels.cs" />
+    <Compile Include="ViewModels\InventoryViewModels\InventoryViewModel.cs" />
     <Compile Include="ViewModels\ItemsViewModels\ItemsLandingPageViewModel.cs" />
     <Compile Include="ViewModels\Transactions\AddViewModel.cs" />
     <Compile Include="ViewModels\Transactions\EditViewModel.cs" />
@@ -288,6 +290,9 @@
     <Content Include="Views\Transactions\Partials\AddView.cshtml" />
     <Content Include="Views\Transactions\Partials\ExtendedView.cshtml" />
     <Content Include="Views\Transactions\Partials\EditView.cshtml" />
+    <Content Include="Views\Inventory\Index.cshtml" />
+    <Content Include="Views\Inventory\Partials\InventoryView.cshtml" />
+    <Content Include="Views\Inventory\Partials\NewItemView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

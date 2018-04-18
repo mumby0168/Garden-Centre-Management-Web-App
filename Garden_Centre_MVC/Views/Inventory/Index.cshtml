@@ -1,0 +1,43 @@
+﻿<div id="IndexInv_Feedback" style="text-align:center;" hidden="hidden">
+</div>
+
+<button id="Inventory_NewItemBtn" class="btn btn-primary">New Item</button>
+<div id="Inventory_NewItem" hidden="hidden">
+
+</div>
+
+<div id="InventoryContent">
+    <h1 style="text-align:center;">Loading...</h1>
+</div>
+
+<script>
+    $(document).ready(function (e) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("InventoryView", "Inventory")',
+            success: function (result) {
+                $("#InventoryContent").html(result);
+            },
+            error: function (x, e, r) {
+                alert(e + " " + r);
+                alert(x.responseText);
+            }
+        });
+
+        $("#Inventory_NewItemBtn").on("click", function (e) {
+            $.ajax({
+            type: "POST",
+            url: '@Url.Action("NewItemView", "Inventory")',
+            success: function (result) {
+                $("#Inventory_NewItem").delay(100).slideDown("slow").html(result);
+            },
+            error: function (x, e, r) {
+                alert(e + " " + r);
+                alert(x.responseText);
+            }
+        });
+
+            
+        });
+    });
+</script>
