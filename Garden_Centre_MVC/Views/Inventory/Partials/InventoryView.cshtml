@@ -26,6 +26,45 @@
                     <button invId="@i.ItemId" class="invEditBtn btn btn-primary">Edit</button>
                 </td>
             </tr>
-        }
+            <tr id='@("Inv_DropDownViewTR"+@i.ItemId)' style="display:none; padding:0px;">
+                <td id='@("Inv_DropDownViewTD"+@i.ItemId)' colspan="6">
+                    <div id='@("Inv_DropDownView"+@i.ItemId)' hidden="hidden">
+
+                    </div>
+                </td>
+            </tr>
+         }
     </tbody>
 </table>
+
+<script>
+    var prevInvOpenedTN = '0';
+    $(document).ready(function (e) {
+        $(".invEditBtn").on("click", function (e) {
+            var _itemId = $(this).attr("invId");
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("EditItemView", "Inventory")',
+                data: ({ itemId: _itemId }),
+                success: function (result) {
+                    $("#Inv_DropDownViewTR" + _itemId).attr("style", "display:table-row;");
+                    $("#Inv_DropDownView" + _itemId).delay(100).slideDown("slow").html(result);
+
+                    if (prevInvOpenedTN !== '0' && prevInvOpenedTN !== _itemId) {
+                        $("#Inv_DropDownView" + prevInvOpenedTN).delay(100).slideUp("slow", "swing", function (e) {
+                            $("#Inv_DropDownViewTR" + prevInvOpenedTN).attr("style", "display:none;");
+                            prevInvOpenedTN = _itemId;
+                        });
+                    }
+                    else {
+                        prevInvOpenedTN = _itemId;
+                    }
+                },
+                error: function (x, e, r) {
+                    alert(e + " " + r);
+                    alert(x.responseText);
+                }
+            });
+        });
+    });
+</script>

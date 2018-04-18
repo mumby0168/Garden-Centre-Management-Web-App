@@ -34,10 +34,15 @@
     @Html.HiddenFor(m => m.ItemId)
 
     <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="button" id="newItemClose" class="btn btn-primary">Close</button>
 </form>
 
 <script>
     $(document).ready(function (e) {
+        $("#newItemClose").on("click", function (e) {
+            $("#Inventory_NewItem").delay(100).slideUp("slow");
+        });
+
         $("#NewItemForm").submit(function (e) {
             e.preventDefault();
 

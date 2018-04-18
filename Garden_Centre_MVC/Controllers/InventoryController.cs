@@ -41,5 +41,25 @@ namespace Garden_Centre_MVC.Controllers
 
             return InventoryView();
         }
+
+        public PartialViewResult EditItemView(int itemId)
+        {
+            Item vm = m_Context.Items.Where(i => i.ItemId == itemId).First();
+            return PartialView("Partials/EditItemView", vm);
+        }
+
+        public PartialViewResult EditItemSerialize(Item editedItem)
+        {
+            var itemToUpdate = m_Context.Items.Where(i => i.ItemId == editedItem.ItemId).First();
+            itemToUpdate.ItemPrice = editedItem.ItemPrice;
+            itemToUpdate.OnOrder = editedItem.OnOrder;
+            itemToUpdate.Sold = editedItem.Sold;
+            itemToUpdate.Stock = editedItem.Stock;
+            itemToUpdate.Description = editedItem.Description;
+
+            m_Context.SaveChanges();
+
+            return InventoryView();
+        }
     }
 }
