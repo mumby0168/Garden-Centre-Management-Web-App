@@ -23,7 +23,7 @@
                 <td>@i.OnOrder</td>
                 <td>@i.Sold</td>
                 <td>
-                    <button invId="@i.ItemId" class="invEditBtn btn btn-primary">Edit</button>
+                    <button invId="@i.ItemId" class="invEditBtn btn btn-primary" title="Edit the properties of this item !"><i class="fa fa-edit"></i></button>
                 </td>
             </tr>
             <tr id='@("Inv_DropDownViewTR"+@i.ItemId)' style="display:none; padding:0px;">
@@ -47,6 +47,7 @@
                 url: '@Url.Action("EditItemView", "Inventory")',
                 data: ({ itemId: _itemId }),
                 success: function (result) {
+                    $("#Inventory_NewItem").delay(100).slideUp();
                     $("#Inv_DropDownViewTR" + _itemId).attr("style", "display:table-row;");
                     $("#Inv_DropDownView" + _itemId).delay(100).slideDown("slow").html(result);
 

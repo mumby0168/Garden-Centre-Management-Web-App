@@ -35,7 +35,7 @@
                     <td>@item.Description</td>
                     <td>£@item.ItemPrice</td>
                     <td>
-                        <button btnId="@i" class="remBtn btn btn-primary">Remove</button>
+                        <button btnId="@i" class="remBtn btn btn-primary" title="Remove this item from the pending transaction !"><i class="fa fa-remove"></i></button>
                     </td>
                 </tr>
 
@@ -52,9 +52,9 @@
 
 @if (Model.transactionOverview.Customer != null && Model.items.Count > 0)
 {
-    <button id="Add_Save" class="btn btn-primary">Save</button>
+    <button id="Add_Save" title="Add and save this transaction to the list of transactions !" class="btn btn-primary">Save</button>
 }
-<button id="Add_Cancel" class="btn btn-primary">Cancel</button>
+<button id="Add_Cancel" title="Discard this new transaction and close the add menu !" class="btn btn-primary">Cancel</button>
 
 <script type="text/javascript">
     $(document).ready(function () {
