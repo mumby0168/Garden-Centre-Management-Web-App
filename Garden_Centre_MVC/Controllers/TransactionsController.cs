@@ -91,6 +91,28 @@ namespace Garden_Centre_MVC.Controllers
             return PartialView("Partials/EditView", vm);
         }
 
+        public PartialViewResult EditRemItem(int index, string prevVM)
+        {
+            EditViewModel vm = JsonConvert.DeserializeObject<EditViewModel>(prevVM);
+
+            if(index >= vm._items.Count)
+            {
+                index -= vm._items.Count;
+                vm._transactionOverview.TotalValue -= vm._newItems[index].ItemPrice;
+                vm._newItems.RemoveAt(index);
+            }
+            else
+            {
+                vm._transactionOverview.TotalValue -= vm._items[index].ItemPrice;
+                vm._remItemsIndex.Add(index);
+                vm._items.RemoveAt(index);
+            }
+
+            vm.HasChanged = true;
+
+            return PartialView("Partials/EditView", vm);
+        }
+
         public PartialViewResult SerializeEdit(string prevVM)
         {
             EditViewModel editVM = JsonConvert.DeserializeObject<EditViewModel>(prevVM);
@@ -107,6 +129,21 @@ namespace Garden_Centre_MVC.Controllers
             entry.CustomerId = to.CustomerId;
             entry.Date = to.Date;
 
+            if (editVM._remItemsIndex.Count > 0)
+            {
+                List<Transaction> remList = new List<Transaction>();
+                var ts = m_Context.Transactions.Where(t => t.TransactionNumber == to.TransactionNumber).ToList();
+                foreach (int index in editVM._remItemsIndex)
+                {
+                    if(index < ts.Count)
+                        remList.Add(ts[index]);
+                }
+
+                foreach (Transaction rem in remList)
+                {
+                    m_Context.Transactions.Remove(rem);
+                }
+            }
             foreach (Item i in editVM._newItems)
             {
                 Transaction t = new Transaction();
@@ -144,18 +181,12 @@ namespace Garden_Centre_MVC.Controllers
             return PartialView("Partials/AddView", vm);
         }
 
-        public PartialViewResult AddRemItem(bool bRem, int itemId, string prevVM)
+        public PartialViewResult AddRemItem(int index, string prevVM)
         {
             AddViewModel vm = JsonConvert.DeserializeObject<AddViewModel>(prevVM);
-            foreach (Item i in vm.items)
-            {
-                if(i.ItemId == itemId)
-                {
-                    vm.items.Remove(i);
-                    vm.transactionOverview.TotalValue = i.ItemPrice;
-                    break;
-                }
-            }
+
+            vm.transactionOverview.TotalValue -= vm.items[index].ItemPrice;
+            vm.items.RemoveAt(index);
 
             return PartialView("Partials/AddView", vm);
         }

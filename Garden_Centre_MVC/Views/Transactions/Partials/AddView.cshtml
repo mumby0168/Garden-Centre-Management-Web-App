@@ -26,6 +26,7 @@
         <tbody>
             @{
                 float fVal = 0.0f;
+                int i = 0;
             }
 
             @foreach (Garden_Centre_MVC.Models.Item item in Model.items)
@@ -33,13 +34,17 @@
                 <tr>
                     <td>@item.Description</td>
                     <td>£@item.ItemPrice</td>
+                    <td>
+                        <button btnId="@i" class="remBtn btn btn-primary">Remove</button>
+                    </td>
                 </tr>
 
                 fVal += item.ItemPrice;
+                i++;
             }
             <tr>
                 <td>Transaction Value:</td>
-                <td>£@fVal</td>
+                <td colspan="2">£@fVal</td>
             </tr>
         </tbody>
     </table>
@@ -53,6 +58,22 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        $(".remBtn").on("click", function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                data: ({ index: $(this).attr("btnId"), prevVM: '@Html.Raw(Json.Encode(Model))' }),
+                url: '@Url.Action("AddRemItem", "Transactions")',
+                success: function (result) {
+                    $("#Index_AddView").html(result);
+                },
+                error: function (x, e, r) {
+                    alert(e + " " + r);
+                    alert(x.responseText);
+                }
+            });
+         });
+
         $("#Add_Cancel").on("click", function (e) {
             e.preventDefault();
             @if (Model.items.Count > 0 && Model.transactionOverview.Customer != null)

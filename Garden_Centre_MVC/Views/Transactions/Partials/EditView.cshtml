@@ -25,6 +25,7 @@
         <tbody>
             @{
                 float fVal = 0.0f;
+                int i = 0;
             }
 
             @foreach (Garden_Centre_MVC.Models.Item item in Model._items)
@@ -32,9 +33,27 @@
                 <tr>
                     <td>@item.Description</td>
                     <td>£@item.ItemPrice</td>
+                    <td>
+                        <button btnId="@i" class="editRemBtn btn btn-primary">Remove</button>
+                    </td>
                 </tr>
 
                 fVal += item.ItemPrice;
+                i++;
+            }
+
+            @foreach (Garden_Centre_MVC.Models.Item item in Model._newItems)
+            {
+                    <tr>
+                        <td>@item.Description</td>
+                        <td>£@item.ItemPrice</td>
+                        <td>
+                            <button btnId="@i" class="editRemBtn btn btn-primary">Remove</button>
+                        </td>
+                    </tr>
+
+                fVal += item.ItemPrice;
+                i++;
             }
             <tr>
                 <td>Transaction Value:</td>
@@ -54,6 +73,22 @@
     $(document).ready(function () {
         var transactionNumber = @Model._transactionOverview.TransactionNumber;
         $("#Edit_CustomerSelection" + transactionNumber).prop("selectedIndex", '@Model._transactionOverview.CustomerId');
+
+        $(".editRemBtn").on("click", function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                data: ({ index: $(this).attr("btnId"), prevVM: '@Html.Raw(Json.Encode(Model))' }),
+                url: '@Url.Action("EditRemItem", "Transactions")',
+                success: function (result) {
+                    $("#Historic_DropDownView" + transactionNumber).html(result);
+                },
+                error: function (x, e, r) {
+                    alert(e + " " + r);
+                    alert(x.responseText);
+                }
+            });
+         });
 
         $("#Edit_CustomerSelection" + transactionNumber).on("change", function (e) {
             e.preventDefault();

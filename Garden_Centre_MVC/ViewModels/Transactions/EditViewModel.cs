@@ -51,9 +51,15 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
             get; set;
         }
 
+        public List<int> _remItemsIndex
+        {
+            get; set;
+        }
+
         public EditViewModel()
         {
             _newItems = new List<Item>();
+            _remItemsIndex = new List<int>();
             HasChanged = false;
             return;
         }
@@ -61,9 +67,9 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
         public EditViewModel(Item item, EditViewModel vm)
         {
             _newItems = vm._newItems;
+            _remItemsIndex = vm._remItemsIndex;
             _items = vm._items;
             _transactionOverview = vm._transactionOverview;
-            _items.Add(item);
             _newItems.Add(item);
             _transactionOverview.TotalValue += item.ItemPrice;
 
@@ -73,6 +79,7 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
         public EditViewModel(Customer customer, EditViewModel vm)
         {
             _newItems = vm._newItems;
+            _remItemsIndex = vm._remItemsIndex;
             _items = vm._items;
             _transactionOverview = vm._transactionOverview;
             _transactionOverview.Customer = customer;
