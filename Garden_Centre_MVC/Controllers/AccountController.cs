@@ -139,7 +139,8 @@ namespace Garden_Centre_MVC.Controllers
             {
                 //email has been sent
                 employee.CanReset = true;
-                return View("ForgottenPassword");
+                _context.SaveChanges();
+                return View("EmailSent");
             }
             else
             {
@@ -155,6 +156,10 @@ namespace Garden_Centre_MVC.Controllers
             return View("ResetPasswordView");
         }
 
+        public ActionResult Reset()
+        {
+            return View("ResetPassword");
+        }
 
         //TODO: this needs testing and we need to think of a way to send a link out via email and verify that it is the user. 
         public ActionResult CheckPasswordReset(ResetPasswordViewModel vm)
@@ -163,19 +168,19 @@ namespace Garden_Centre_MVC.Controllers
 
             if (employee == null)
             {
-                //email does not exist
+                return View();
             }
 
             if (!employee.CanReset)
             {
-                //they are not allowed to reset
-                
+                return View();
+
             }
 
             //check if the passwords match
             if (vm.Password != vm.ReTypePassword)
             {
-                //they do not match cannot reset
+                return View();
             }
 
             var bytes = Encryptor.Encrypt(vm.Password);
@@ -207,7 +212,7 @@ namespace Garden_Centre_MVC.Controllers
             MailMessage msg = new MailMessage("greengardencentre@gmail.com", emp.Username)
             {
                 Subject = "Password Recovery",
-                Body = emp.Username
+                Body = "Hello " + emp.Username + Environment.NewLine + " Please use the following link to reset your account:  http://localhost:56163/Account/Reset "
             };
 
             NetworkCredential creds = new NetworkCredential("greengardencentre@gmail.com", "hci12345");

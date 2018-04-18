@@ -280,12 +280,13 @@
     <Content Include="Views\Transactions\Index.cshtml" />
     <Content Include="Views\Employee\EmployeeLanding.cshtml" />
     <Content Include="Views\Employee\EmployeeForm.cshtml" />
-    <Content Include="Views\Account\ResetPasswordView.cshtml" />
     <Content Include="Views\Items\Index.cshtml" />
     <Content Include="Views\Transactions\Partials\AddView.cshtml" />
     <Content Include="Views\Transactions\Partials\EditView.cshtml" />
     <Content Include="Views\Transactions\Partials\ExtendedView.cshtml" />
     <Content Include="Views\Transactions\Partials\HistoricView.cshtml" />
+    <Content Include="Views\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Account\EmailSent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
