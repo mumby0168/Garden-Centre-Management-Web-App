@@ -52,6 +52,10 @@ namespace Garden_Centre_MVC.Controllers
             foreach (Transaction t in m_Context.Transactions.Where(t => t.TransactionNumber == _transactionNumber))
             {
                 m_Context.Transactions.Remove(t);
+
+                var item = m_Context.Items.Where(i => i.ItemId == t.ItemId).First();
+                item.Stock++;
+                item.Sold--;
             }
 
             m_Context.SaveChanges();
@@ -95,7 +99,7 @@ namespace Garden_Centre_MVC.Controllers
         {
             EditViewModel vm = JsonConvert.DeserializeObject<EditViewModel>(prevVM);
 
-            if(index >= vm._items.Count)
+            if (index > vm._items.Count)
             {
                 index -= vm._items.Count;
                 vm._transactionOverview.TotalValue -= vm._newItems[index].ItemPrice;
@@ -105,6 +109,7 @@ namespace Garden_Centre_MVC.Controllers
             {
                 vm._transactionOverview.TotalValue -= vm._items[index].ItemPrice;
                 vm._remItemsIndex.Add(index);
+                vm._remItemsIds.Add(vm._items[index].ItemId);
                 vm._items.RemoveAt(index);
             }
 
@@ -142,8 +147,13 @@ namespace Garden_Centre_MVC.Controllers
                 foreach (Transaction rem in remList)
                 {
                     m_Context.Transactions.Remove(rem);
+
+                    var item = m_Context.Items.Where(i => i.ItemId == rem.ItemId).First();
+                    item.Stock++;
+                    item.Sold--;
                 }
             }
+
             foreach (Item i in editVM._newItems)
             {
                 Transaction t = new Transaction();
@@ -151,7 +161,12 @@ namespace Garden_Centre_MVC.Controllers
                 t.TransactionNumber = editVM._transactionOverview.TransactionNumber;
                 t.Date = editVM._transactionOverview.Date;
                 t.CustomerId = editVM._transactionOverview.CustomerId;
+
                 m_Context.Transactions.Add(t);
+
+                var item = m_Context.Items.Where(it => it.ItemId == t.ItemId).First();
+                item.Stock--;
+                item.Sold++;
             }
 
             m_Context.SaveChanges();
@@ -211,6 +226,10 @@ namespace Garden_Centre_MVC.Controllers
                 t.Date = addVM.transactionOverview.Date;
                 t.CustomerId = addVM.transactionOverview.CustomerId;
                 m_Context.Transactions.Add(t);
+
+                var item = m_Context.Items.Where(it => it.ItemId == t.ItemId).First();
+                item.Stock--;
+                item.Sold++;
             }
 
             m_Context.SaveChanges();

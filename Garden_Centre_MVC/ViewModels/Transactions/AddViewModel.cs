@@ -73,7 +73,31 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
         {
             get
             {
-                return m_Context.Items.ToList();
+                var preFix = m_Context.Items.ToList();
+                foreach(Item i in items)
+                {
+                    foreach(Item it in preFix)
+                    {
+                        if (i.ItemId == it.ItemId)
+                        {
+                            it.Stock -= 1;
+                        }
+                    }
+                }
+
+                List<Item> postFix = new List<Item>();
+                foreach(Item i in preFix)
+                {
+                    if(i.Stock > 0)
+                    {
+                        postFix.Add(i);
+                    }
+                }
+
+                m_Context.Dispose();
+                m_Context = new DatabaseContext();
+
+                return postFix;
             }
         }
     }

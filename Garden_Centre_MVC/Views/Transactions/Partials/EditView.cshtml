@@ -1,4 +1,7 @@
 ﻿@model Garden_Centre_MVC.ViewModels.Transactions.EditViewModel
+@{ 
+    //TODO: Come up with a better way of having ids for the editremove button as I think its causing bugs, the remove function is buggy
+}
 
 <form>
     <div class="form-group">
@@ -110,7 +113,7 @@
             e.preventDefault();
             $.ajax({
                 type: "POST",
-                data: ({ itemId: $("#Edit_ItemSelection" + transactionNumber).prop("selectedIndex"), prevVM: '@Html.Raw(Json.Encode(Model))' }),
+                data: ({ itemId: $("#Edit_ItemSelection" + transactionNumber).val(), prevVM: '@Html.Raw(Json.Encode(Model))' }),
                 url: '@Url.Action("EditAddItem", "Transactions")',
                 success: function (result) {
                     $("#Historic_DropDownView" + transactionNumber).html(result);

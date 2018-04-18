@@ -17,7 +17,7 @@ namespace Garden_Centre_MVC.Controllers
             m_Context.Dispose();
         }
 
-        //TODO: Come up with a better fix for this mess, it works like
+        //TODO: This probably shouldnt update the total value as these transactions have already passed, need to fix it so the price of the item in previous transactions doesn update
         //this method ensures that the values of the transaction overviews are upto date when the item price changes
         public void UpdateTransactionOverviewValues(int itemId)
         {
@@ -99,7 +99,6 @@ namespace Garden_Centre_MVC.Controllers
             var itemToUpdate = m_Context.Items.Where(i => i.ItemId == editedItem.ItemId).First();
             itemToUpdate.ItemPrice = editedItem.ItemPrice;
             itemToUpdate.OnOrder = editedItem.OnOrder;
-            itemToUpdate.Sold = editedItem.Sold;
             itemToUpdate.Stock = editedItem.Stock;
             itemToUpdate.Description = editedItem.Description;
 

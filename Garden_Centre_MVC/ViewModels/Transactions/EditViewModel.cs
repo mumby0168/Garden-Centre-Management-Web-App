@@ -27,7 +27,43 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
         {
             get
             {
-                return m_Context.Items.ToList();
+                var preFix = m_Context.Items.ToList();
+                foreach(Item i in _newItems)
+                {
+                    foreach(Item it in preFix)
+                    {
+                        if (i.ItemId == it.ItemId)
+                        {
+                            it.Stock -= 1;
+                        }
+                    }
+                }
+
+                foreach (int s in _remItemsIds)
+                {
+                    var i = m_Context.Items.Where(n => n.ItemId == s).First();
+                    foreach (Item it in preFix)
+                    {
+                        if (i.ItemId == it.ItemId)
+                        {
+                            it.Stock += 1;
+                        }
+                    }
+                }
+
+                List<Item> postFix = new List<Item>();
+                foreach(Item i in preFix)
+                {
+                    if(i.Stock > 0)
+                    {
+                        postFix.Add(i);
+                    }
+                }
+
+                m_Context.Dispose();
+                m_Context = new DatabaseContext();
+
+                return postFix;
             }
         }
 
@@ -56,10 +92,16 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
             get; set;
         }
 
+        public List<int> _remItemsIds
+        {
+            get; set;
+        }
+
         public EditViewModel()
         {
             _newItems = new List<Item>();
             _remItemsIndex = new List<int>();
+            _remItemsIds = new List<int>();
             HasChanged = false;
             return;
         }
@@ -68,6 +110,7 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
         {
             _newItems = vm._newItems;
             _remItemsIndex = vm._remItemsIndex;
+            _remItemsIds = vm._remItemsIds;
             _items = vm._items;
             _transactionOverview = vm._transactionOverview;
             _newItems.Add(item);
@@ -80,6 +123,7 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
         {
             _newItems = vm._newItems;
             _remItemsIndex = vm._remItemsIndex;
+            _remItemsIds = vm._remItemsIds;
             _items = vm._items;
             _transactionOverview = vm._transactionOverview;
             _transactionOverview.Customer = customer;
