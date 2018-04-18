@@ -102,6 +102,9 @@
                         data: ({ prevVM: '@Html.Raw(Json.Encode(Model))' }),
                         url: '@Url.Action("SerializeAdd", "Transactions")',
                         success: function (result) {
+                            $("#Index_Feedback").slideUp("slow", "swing", function (e) {
+                                $("#Index_Feedback").delay(100).slideDown("slow").html("<h1>Successfully Added The Transaction</h1>").delay(3000).slideUp("slow");
+                            });
                             $("#Index_AddView").delay(100).slideUp("slow", "swing", function (e)
                             {
                                 $("#Index_AddView").html("");

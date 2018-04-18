@@ -139,6 +139,9 @@
                     $("#Historic_DropDownView" + @Model._transactionOverview.TransactionNumber).delay(100).slideUp("slow", "swing", function (e) {
                         $("#Historic_DropDownViewTR" + @Model._transactionOverview.TransactionNumber).attr("style", "display:none;");
                         $("#View").html(result);
+                        $("#Index_Feedback").slideUp("slow", "swing", function (e) {
+                            $("#Index_Feedback").delay(100).slideDown("slow").html("<h1>Successfully Edited The Transaction</h1>").delay(3000).slideUp("slow");
+                        });
                         prevOpenedTN = '0';
                     });
                 },
