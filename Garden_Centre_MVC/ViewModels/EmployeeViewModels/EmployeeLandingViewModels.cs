@@ -12,6 +12,7 @@ namespace Garden_Centre_MVC.ViewModels.EmployeeViewModels
         public EmployeeLandingViewModels()
         {
             IsSearch = false;
+            PageNum = 1;
         }
 
 
