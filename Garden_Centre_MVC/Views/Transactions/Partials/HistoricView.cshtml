@@ -55,6 +55,8 @@
                 data: ({ _transactionNumber: transactionNumber }),
                 url: '@Url.Action("ExtendedView", "Transactions")',
                 success: function (result) {
+                    $("#Index_AddView").delay(100).slideUp("slow");
+
                     $("#Historic_DropDownViewTR" + transactionNumber).attr("style", "display:table-row;");
                     $("#Historic_DropDownView" + transactionNumber).delay(100).slideDown("slow").html(result);
 
@@ -87,6 +89,8 @@
                 data: ({ _transactionNumber: transactionNumber }),
                 url: '@Url.Action("EditView", "Transactions")',
                 success: function (result) {
+                    $("#Index_AddView").delay(100).slideUp("slow");
+
                     $("#Historic_DropDownViewTR" + transactionNumber).attr("style", "display:table-row;");
                     $("#Historic_DropDownView" + transactionNumber).delay(100).slideDown("slow").html(result);
 

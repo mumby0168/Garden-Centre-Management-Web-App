@@ -31,6 +31,11 @@
                 url: '@Url.Action("AddView", "Transactions")',
                 type: "JSON",
                 success: function (res) {
+                    $("#Historic_DropDownView" + prevOpenedTN).delay(100).slideUp("slow", "swing", function (e) {
+                        $("#Historic_DropDownViewTR" + prevOpenedTN).attr("style", "display:none;");
+                        prevOpenedTN = '0';
+                    });
+
                     $('#Index_AddView').delay(100).slideDown("slow").html(res);
                 },
                 error: function (x, e, r) {
