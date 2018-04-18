@@ -16,53 +16,6 @@ namespace Garden_Centre_MVC.Controllers
         {
             m_Context.Dispose();
         }
-
-        //TODO: This probably shouldnt update the total value as these transactions have already passed, need to fix it so the price of the item in previous transactions doesn update
-        //this method ensures that the values of the transaction overviews are upto date when the item price changes
-        public void UpdateTransactionOverviewValues(int itemId)
-        {
-            var affectedTransactions = m_Context.Transactions.Where(t => t.ItemId == itemId).ToList();
-            List<int> affectedTransactionNumbers = new List<int>();
-            foreach (Transaction t in affectedTransactions)
-            {
-                bool bAdd = true;
-                if (affectedTransactionNumbers.Count > 0)
-                {
-                    foreach (int i in affectedTransactionNumbers)
-                    {
-                        if(i == t.TransactionNumber)
-                        {
-                            bAdd = false;
-                            break;
-                        }
-                    }
-
-                    if(bAdd)
-                    {
-                        affectedTransactionNumbers.Add(t.TransactionNumber);
-                        continue;
-                    }
-                }
-                else
-                {
-                    affectedTransactionNumbers.Add(t.TransactionNumber);
-                    continue;
-                }
-            }
-
-            foreach (int i in affectedTransactionNumbers)
-            {
-                var to = m_Context.TransactionOverviews.Where(t => t.TransactionNumber == i).First();
-                to.TotalValue = 0;
-                foreach(Transaction t in m_Context.Transactions.Where(a => a.TransactionNumber == i).ToList())
-                {
-                    to.TotalValue += m_Context.Items.Where(b => b.ItemId == t.ItemId).First().ItemPrice;
-                }
-            }
-
-            m_Context.SaveChanges();
-        }
-
         public ActionResult Index()
         {
             return View();
@@ -103,8 +56,6 @@ namespace Garden_Centre_MVC.Controllers
             itemToUpdate.Description = editedItem.Description;
 
             m_Context.SaveChanges();
-
-            UpdateTransactionOverviewValues(editedItem.ItemId);
 
             return InventoryView();
         }
