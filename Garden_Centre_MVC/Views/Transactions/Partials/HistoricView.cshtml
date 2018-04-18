@@ -3,12 +3,15 @@
     //TODO: Fix the table row disapearing try to animate it
     //TODO: Sort the padding on the exteneded view
     //TODO: Implement a smooth change between view and edit for the same transaction
+    //TODO: Fix weird bug that causes the time to lose an hour when saving an edit
+    //TODO: Implement a way to remove items from the edit and add list while in them menus
 }
 <table class="table table-bordered table-hover">
     <thead>
         <tr>
             <td>Transaction Number</td>
             <td>Date</td>
+            <td>Time</td>
             <td>Customer</td>
             <td>Total Value</td>
             <td>Actions</td>
@@ -19,9 +22,10 @@
         {
             <tr>
                 <td>@to.TransactionNumber</td>
-                <td>@to.Date</td>
+                <td>@to.Date.Day/@to.Date.Month/@to.Date.Year</td>
+                <td>@to.Date.Hour:@to.Date.Minute:@to.Date.Second</td>
                 <td>@to.Customer.FullName</td>
-                <td>@to.TotalValue</td>
+                <td>£@to.TotalValue</td>
                 <td>
                     <button transactionNumber="@to.TransactionNumber" class="viewBtn btn btn-primary">View</button>
                     <button transactionNumber="@to.TransactionNumber" class="editBtn btn btn-primary">Edit</button>
@@ -29,7 +33,7 @@
                 </td>
             </tr>
             <tr id='@("Historic_DropDownViewTR"+@to.TransactionNumber)' style="display:none; padding:0px;">
-                <td id='@("Historic_DropDownViewTD"+@to.TransactionNumber)' colspan="5">
+                <td id='@("Historic_DropDownViewTD"+@to.TransactionNumber)' colspan="6">
                     <div id='@("Historic_DropDownView"+@to.TransactionNumber)' hidden="hidden">
 
                     </div>

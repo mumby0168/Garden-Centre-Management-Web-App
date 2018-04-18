@@ -144,6 +144,22 @@ namespace Garden_Centre_MVC.Controllers
             return PartialView("Partials/AddView", vm);
         }
 
+        public PartialViewResult AddRemItem(bool bRem, int itemId, string prevVM)
+        {
+            AddViewModel vm = JsonConvert.DeserializeObject<AddViewModel>(prevVM);
+            foreach (Item i in vm.items)
+            {
+                if(i.ItemId == itemId)
+                {
+                    vm.items.Remove(i);
+                    vm.transactionOverview.TotalValue = i.ItemPrice;
+                    break;
+                }
+            }
+
+            return PartialView("Partials/AddView", vm);
+        }
+
         public PartialViewResult SerializeAdd(string prevVM)
         {
             AddViewModel addVM = JsonConvert.DeserializeObject<AddViewModel>(prevVM);

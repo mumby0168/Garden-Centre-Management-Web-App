@@ -20,6 +20,7 @@
             <tr>
                 <td>Item</td>
                 <td>Price</td>
+                <td>Operations</td>
             </tr>
         </thead>
         <tbody>
@@ -31,14 +32,14 @@
             {
                 <tr>
                     <td>@item.Description</td>
-                    <td>@item.ItemPrice</td>
+                    <td>£@item.ItemPrice</td>
                 </tr>
 
                 fVal += item.ItemPrice;
             }
             <tr>
                 <td>Transaction Value:</td>
-                <td>@fVal</td>
+                <td>£@fVal</td>
             </tr>
         </tbody>
     </table>
