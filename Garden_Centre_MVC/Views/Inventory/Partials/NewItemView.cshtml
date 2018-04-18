@@ -1,0 +1,67 @@
+﻿@model Garden_Centre_MVC.Models.Item
+@{ 
+    //TODO: Add validation
+    //TODO: Tidy the form
+    //TODO: Discuss the delete option ! What if there is a transaction with that item in ?
+}
+<form id="NewItemForm">
+    <div class="form-group">
+        @Html.LabelFor(m => m.Description)
+        @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Description)
+        <span class="field-validation-valid" data-valmsg-for="FirstName" data-valmsg-replace="true" id="EmpSecondNameVal"></span>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ItemPrice)
+        @Html.TextBoxFor(m => m.ItemPrice, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.ItemPrice)
+        <span class="field-validation-valid" data-valmsg-for="SecondName" data-valmsg-replace="true" id="EmpFirstNameVal"></span>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Stock)
+        @Html.TextBoxFor(m => m.Stock, new { @class = "form-control" })
+        <span class="field-validation-valid" data-valmsg-for="EmployeeNumber" data-valmsg-replace="true" id="EmpNumVal"></span>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.OnOrder)
+        @Html.TextBoxFor(m => m.OnOrder, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.OnOrder)
+    </div>
+
+    @Html.HiddenFor(m => m.ItemId)
+
+    <button type="submit" title="Save this new item into the inventory !" class="btn btn-primary">Save</button>
+    <button type="button" id="newItemClose" title="Discard this new item and close the add item menu !" class="btn btn-primary">Cancel</button>
+</form>
+
+<script>
+    $(document).ready(function (e) {
+        $("#newItemClose").on("click", function (e) {
+            $("#Inventory_NewItem").delay(100).slideUp("slow");
+        });
+
+        $("#NewItemForm").submit(function (e) {
+            e.preventDefault();
+
+            var form = $("#NewItemForm").serialize();
+
+            $.ajax({
+                url: '@Url.Action("NewItemSerialize", "Inventory")',
+                data: form,
+                datatype: "JSON",
+                type: "POST",
+                success: function (result) {
+                    $("#IndexInv_Feedback").slideUp("slow", "swing", function (e) {
+                        $("#IndexInv_Feedback").delay(100).slideDown("slow").html("<h1>Successfully Added The New Item</h1>").delay(3000).slideUp("slow");
+                    });
+
+                    $("#Inventory_NewItem").delay(100).slideUp("slow");
+                    $("#InventoryContent").html(result);
+                }
+            });
+        });
+    });
+</script>

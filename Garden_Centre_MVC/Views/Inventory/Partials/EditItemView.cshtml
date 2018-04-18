@@ -1,0 +1,69 @@
+﻿@model Garden_Centre_MVC.Models.Item
+@{
+    //TODO: Only allow saving if it has been edited
+}
+
+<form id="EditItemForm">
+    <div class="form-group">
+        @Html.LabelFor(m => m.Description)
+        @Html.TextBoxFor(m => m.Description, new { @id = "Desc" + Model.ItemId, @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Description)
+        <span class="field-validation-valid" data-valmsg-for="FirstName" data-valmsg-replace="true" id="EmpSecondNameVal"></span>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ItemPrice)
+        @Html.TextBoxFor(m => m.ItemPrice, new { @id = "Price" + Model.ItemId, @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.ItemPrice)
+        <span class="field-validation-valid" data-valmsg-for="SecondName" data-valmsg-replace="true" id="EmpFirstNameVal"></span>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Stock)
+        @Html.TextBoxFor(m => m.Stock, new { @id = "Stock" + Model.ItemId, @class = "form-control" })
+        <span class="field-validation-valid" data-valmsg-for="EmployeeNumber" data-valmsg-replace="true" id="EmpNumVal"></span>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.OnOrder)
+        @Html.TextBoxFor(m => m.OnOrder, new { @id = "OnOrder" + Model.ItemId, @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.OnOrder)
+    </div>
+
+    @Html.HiddenFor(m => m.ItemId)
+
+    <button type="submit" title="Save the changes made to this item !" class="btn btn-primary">Save</button>
+    <button type="button" title="Discard the changes made to this item and close the edit menu !" class="invClose btn btn-primary">Cancel</button>
+</form>
+
+<script>
+    $(document).ready(function (e) {
+            $("#EditItemForm").submit(function (e) {
+            e.preventDefault();
+
+            var form = $("#EditItemForm").serialize();
+
+            $.ajax({
+                url: '@Url.Action("EditItemSerialize", "Inventory")',
+                data: form,
+                datatype: "JSON",
+                type: "POST",
+                success: function (result) {
+                    $("#IndexInv_Feedback").slideUp("slow", "swing", function (e) {
+                        $("#IndexInv_Feedback").delay(100).slideDown("slow").html("<h1>Successfully Edited The Item</h1>").delay(3000).slideUp("slow");
+                    });
+
+                    $("#Inventory_NewItem").delay(100).slideUp("slow");
+                    $("#InventoryContent").html(result);
+                }
+            });
+        });
+
+            $(".invClose").on("click", function (e) {
+                $("#Inv_DropDownView" + @Model.ItemId).delay(100).slideUp("slow", "swing", function (e) {
+                    $("#Inv_DropDownViewTR" + @Model.ItemId).attr("style", "display:none;");
+                prevOpenedTN = '0';
+            });
+            });
+    });
+</script>

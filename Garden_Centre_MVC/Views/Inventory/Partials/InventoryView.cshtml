@@ -1,0 +1,71 @@
+﻿@model Garden_Centre_MVC.ViewModels.InventoryViewModels.InventoryViewModel
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <td>Item ID</td>
+            <td>Name</td>
+            <td>Price</td>
+            <td>In Stock</td>
+            <td>On Order</td>
+            <td>Sold</td>
+            <td>Operations</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Garden_Centre_MVC.Models.Item i in Model.inventory)
+        {
+            <tr>
+                <td>@i.ItemId</td>
+                <td>@i.Description</td>
+                <td>£@i.ItemPrice</td>
+                <td>@i.Stock</td>
+                <td>@i.OnOrder</td>
+                <td>@i.Sold</td>
+                <td>
+                    <button invId="@i.ItemId" class="invEditBtn btn btn-primary" title="Edit the properties of this item !"><i class="fa fa-edit"></i></button>
+                </td>
+            </tr>
+            <tr id='@("Inv_DropDownViewTR"+@i.ItemId)' style="display:none; padding:0px;">
+                <td id='@("Inv_DropDownViewTD"+@i.ItemId)' colspan="6">
+                    <div id='@("Inv_DropDownView"+@i.ItemId)' hidden="hidden">
+
+                    </div>
+                </td>
+            </tr>
+         }
+    </tbody>
+</table>
+
+<script>
+    var prevInvOpenedTN = '0';
+    $(document).ready(function (e) {
+        $(".invEditBtn").on("click", function (e) {
+            var _itemId = $(this).attr("invId");
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("EditItemView", "Inventory")',
+                data: ({ itemId: _itemId }),
+                success: function (result) {
+                    $("#Inventory_NewItem").delay(100).slideUp();
+                    $("#Inv_DropDownViewTR" + _itemId).attr("style", "display:table-row;");
+                    $("#Inv_DropDownView" + _itemId).delay(100).slideDown("slow").html(result);
+
+                    if (prevInvOpenedTN !== '0' && prevInvOpenedTN !== _itemId) {
+                        $("#Inv_DropDownView" + prevInvOpenedTN).delay(100).slideUp("slow", "swing", function (e) {
+                            $("#Inv_DropDownViewTR" + prevInvOpenedTN).attr("style", "display:none;");
+                            prevInvOpenedTN = _itemId;
+                        });
+                    }
+                    else {
+                        prevInvOpenedTN = _itemId;
+                    }
+                },
+                error: function (x, e, r) {
+                    alert(e + " " + r);
+                    alert(x.responseText);
+                }
+            });
+        });
+    });
+</script>

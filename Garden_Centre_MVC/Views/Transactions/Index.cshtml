@@ -1,41 +1,42 @@
 ﻿@model Garden_Centre_MVC.ViewModels.Transactions.IndexViewModel
 
-<h2><button class="btn btn-primary" id="AddButton">Add</button></h2>
-<div id="HistoricView">
-    <h1 style="text-align: center;">Loading...</h1>
+<div id="Index_Feedback" style="text-align:center;" hidden="hidden">
 </div>
 
-<div display="hidden" id="ExtendedView">
-
+<button title="Add a new transaction !" style="margin-bottom: 5px;" id="Index_AddButton" class="btn btn-primary">Add</button>
+<div style="margin-bottom: 5px;" hidden="hidden" id="Index_AddView">
 </div>
 
-<div display="hidden" id="ActionView">
-
+<div id="View">
+    <h1 style="text-align:center;">Loading...</h1>
 </div>
 
 <script type="text/javascript">
     $(document).ready(function () {
         $.ajax(
-            {
-                type: "POST",
-                url: '@Url.Action("HistoricView", "Transactions")',
-                success: function (result) {
-                    $("#HistoricView").html(result);
-                },
-                error: function (x, e, r) {
-                    alert(e + " " + r);
-                    alert(x.responseText);
-                }
-            });
+        {
+            type: "POST",
+            url: '@Url.Action("HistoricView", "Transactions")',
+            success: function (result) {
+                $("#View").html(result);
+            },
+            error: function (x, e, r) {
+                alert(e + " " + r);
+                alert(x.responseText);
+            }
+        });
 
-        $("#AddButton").on("click", function () {
-            $("#ExtendedView").delay(100).slideUp("slow");
-            $.ajax(
-            {
-                type: "POST",
+        $('#Index_AddButton').on("click", function (e) {
+            $.ajax({
                 url: '@Url.Action("AddView", "Transactions")',
-                success: function (result) {
-                    $("#ActionView").delay(100).slideDown("slow").html(result);
+                type: "JSON",
+                success: function (res) {
+                    $("#Historic_DropDownView" + prevOpenedTN).delay(100).slideUp("slow", "swing", function (e) {
+                        $("#Historic_DropDownViewTR" + prevOpenedTN).attr("style", "display:none;");
+                        prevOpenedTN = '0';
+                    });
+
+                    $('#Index_AddView').delay(100).slideDown("slow").html(res);
                 },
                 error: function (x, e, r) {
                     alert(e + " " + r);

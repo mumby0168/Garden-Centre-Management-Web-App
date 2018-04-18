@@ -167,6 +167,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\ItemsController.cs" />
     <Compile Include="Controllers\TransactionsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -200,6 +201,10 @@
     <Compile Include="Migrations\201804040826457_AddedCanResetField.Designer.cs">
       <DependentUpon>201804040826457_AddedCanResetField.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804160859263_addTransactionOverview.cs" />
+    <Compile Include="Migrations\201804160859263_addTransactionOverview.Designer.cs">
+      <DependentUpon>201804160859263_addTransactionOverview.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Employee.cs" />
@@ -214,6 +219,7 @@
     <Compile Include="ViewModels\AccountViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModels\ResetPasswordViewModel.cs" />
     <Compile Include="ViewModels\EmployeeViewModels\EmployeeLandingViewModels.cs" />
+    <Compile Include="ViewModels\InventoryViewModels\InventoryViewModel.cs" />
     <Compile Include="ViewModels\ItemsViewModels\ItemsLandingPageViewModel.cs" />
     <Compile Include="ViewModels\Transactions\AddViewModel.cs" />
     <Compile Include="ViewModels\Transactions\EditViewModel.cs" />
@@ -277,16 +283,19 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\ForgottenPassword.cshtml" />
-    <Content Include="Views\Transactions\Index.cshtml" />
     <Content Include="Views\Employee\EmployeeLanding.cshtml" />
     <Content Include="Views\Employee\EmployeeForm.cshtml" />
+    <Content Include="Views\Account\ResetPasswordView.cshtml" />
     <Content Include="Views\Items\Index.cshtml" />
-    <Content Include="Views\Transactions\Partials\AddView.cshtml" />
-    <Content Include="Views\Transactions\Partials\EditView.cshtml" />
-    <Content Include="Views\Transactions\Partials\ExtendedView.cshtml" />
+    <Content Include="Views\Transactions\Index.cshtml" />
     <Content Include="Views\Transactions\Partials\HistoricView.cshtml" />
-    <Content Include="Views\Account\ResetPassword.cshtml" />
-    <Content Include="Views\Account\EmailSent.cshtml" />
+    <Content Include="Views\Transactions\Partials\AddView.cshtml" />
+    <Content Include="Views\Transactions\Partials\ExtendedView.cshtml" />
+    <Content Include="Views\Transactions\Partials\EditView.cshtml" />
+    <Content Include="Views\Inventory\Index.cshtml" />
+    <Content Include="Views\Inventory\Partials\InventoryView.cshtml" />
+    <Content Include="Views\Inventory\Partials\NewItemView.cshtml" />
+    <Content Include="Views\Inventory\Partials\EditItemView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -325,6 +334,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804040826457_AddedCanResetField.resx">
       <DependentUpon>201804040826457_AddedCanResetField.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804160859263_addTransactionOverview.resx">
+      <DependentUpon>201804160859263_addTransactionOverview.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
