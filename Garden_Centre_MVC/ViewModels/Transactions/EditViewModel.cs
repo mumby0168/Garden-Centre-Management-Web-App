@@ -1,9 +1,9 @@
-﻿using Garden_Centre_MVC.Models;
-using Garden_Centre_MVC.Persistance;
+﻿using Garden_Centre_MVC.Persistance;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Garden_Centre_MVC.Models;
 
 namespace Garden_Centre_MVC.ViewModels.Transactions
 {
@@ -13,45 +13,6 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
         public void Dispose()
         {
             m_Context.Dispose();
-        }
-
-        public EditViewModel()
-        {
-            return;
-        }
-
-        public EditViewModel(TransactionOverview to, List<Item> _items)
-        {
-            transactionOverview = to;
-            items = _items;
-
-            return;
-        }
-
-        public EditViewModel(Item _item, EditViewModel prevVM)
-        {
-            items = prevVM.items;
-            items.Add(_item);
-            transactionOverview = prevVM.transactionOverview;
-            transactionOverview.TotalValue += _item.ItemPrice;
-        }
-
-        public EditViewModel(Customer _customer, EditViewModel prevVM)
-        {
-            items = prevVM.items;
-            transactionOverview = prevVM.transactionOverview;
-            transactionOverview.Customer = _customer;
-            transactionOverview.CustomerId = _customer.CustomerId;
-        }
-
-        public List<Item> items
-        {
-            get; set;
-        }
-
-        public TransactionOverview transactionOverview
-        {
-            get; set;
         }
 
         public List<Customer> CustomerList
@@ -68,6 +29,56 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
             {
                 return m_Context.Items.ToList();
             }
+        }
+
+        public bool HasChanged
+        {
+            get; set;
+        }
+
+        public TransactionOverview _transactionOverview
+        {
+            get; set;
+        }
+
+        public List<Item> _items
+        {
+            get; set;
+        }
+
+        public List<Item> _newItems
+        {
+            get; set;
+        }
+
+        public EditViewModel()
+        {
+            _newItems = new List<Item>();
+            HasChanged = false;
+            return;
+        }
+
+        public EditViewModel(Item item, EditViewModel vm)
+        {
+            _newItems = vm._newItems;
+            _items = vm._items;
+            _transactionOverview = vm._transactionOverview;
+            _items.Add(item);
+            _newItems.Add(item);
+            _transactionOverview.TotalValue += item.ItemPrice;
+
+            HasChanged = true;
+        }
+
+        public EditViewModel(Customer customer, EditViewModel vm)
+        {
+            _newItems = vm._newItems;
+            _items = vm._items;
+            _transactionOverview = vm._transactionOverview;
+            _transactionOverview.Customer = customer;
+            _transactionOverview.CustomerId = customer.CustomerId;
+
+            HasChanged = true;
         }
     }
 }

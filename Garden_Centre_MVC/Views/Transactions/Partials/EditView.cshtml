@@ -3,17 +3,17 @@
 <form>
     <div class="form-group">
         <h2>Customer</h2>
-        @Html.DropDownListFor(m => m.transactionOverview.Customer, new SelectList(Model.CustomerList, "CustomerId", "FullName"), "Select Customer", new { @id = "Edit_CustomerSelection", @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.transactionOverview.Customer)
+        @Html.DropDownListFor(m => m._transactionOverview.Customer, new SelectList(Model.CustomerList, "CustomerId", "FullName"), "Select Customer", new { @id = "Edit_CustomerSelection" + Model._transactionOverview.TransactionNumber, @class = "testa form-control" })
+        @Html.ValidationMessageFor(m => m._transactionOverview.Customer)
     </div>
 
     <div class="form-group">
         <h2>Item</h2>
-        @Html.DropDownListFor(m => m.items, new SelectList(Model.ItemList, "ItemId", "Description"), "Select Item", new { @id = "Edit_ItemSelection", @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.items)
+        @Html.DropDownListFor(m => m._items, new SelectList(Model.ItemList, "ItemId", "Description"), "Select Item", new { @id = "Edit_ItemSelection" + Model._transactionOverview.TransactionNumber, @class = "testb form-control" })
+        @Html.ValidationMessageFor(m => m._items)
     </div>
 </form>
-@if (Model.items.Count > 0)
+@if (Model._items.Count > 0)
 {
     <table class="table table-bordered table-hover">
         <thead>
@@ -27,7 +27,7 @@
                 float fVal = 0.0f;
             }
 
-            @foreach (Garden_Centre_MVC.Models.Item item in Model.items)
+            @foreach (Garden_Centre_MVC.Models.Item item in Model._items)
             {
                 <tr>
                     <td>@item.Description</td>
@@ -44,40 +44,75 @@
     </table>
 }
 
-@if (Model.transactionOverview.Customer != null && Model.items.Count > 0)
+@if (Model._transactionOverview.Customer != null && Model._items.Count > 0 && Model.HasChanged == true)
 {
-    <button id="Edit_Save" class="btn btn-primary">Save</button>
+    <button class="editSaveBtn btn btn-primary">Save</button>
 }
-<button id="Edit_Cancel" class="btn btn-primary">Cancel</button>
+<button class="editCancelBtn btn btn-primary">Cancel</button>
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#Edit_CustomerSelection").prop("selectedIndex", @Model.transactionOverview.CustomerId).change(function (e) { this.val(e.val); e.preventDefault(); });
+        var transactionNumber = @Model._transactionOverview.TransactionNumber;
+        $("#Edit_CustomerSelection" + transactionNumber).prop("selectedIndex", '@Model._transactionOverview.CustomerId');
 
-        $("#Edit_ItemSelection").on("change", (function (e)
-            {
-                e.preventDefault();
-                if ($("#Edit_ItemSelection").val() !== 0)
-                {
-                    $.ajax(
-                    {
-                        type: "POST",
-                        data: ({ prevVM: '@Html.Raw(Json.Encode(Model))', itemId: $("#Edit_ItemSelection").val() }),
-                        url: '@Url.Action("EditAddItem", "Transactions")',
-                        success: function (result) {
-                            $("#Index_AddView").html(result);
-                            @if (Model.transactionOverview.Customer != null)
-                            {
-                                @:$("#Edit_CustomerSelection").prop("selectedIndex", '@Model.transactionOverview.CustomerId').change(function (e) { this.val(e.val()); e.preventDefault(); });
-                            }
-                            $("#Edit_ItemSelection").prop("selectedIndex", '0').change(function (e) { this.val(e.val); e.preventDefault(); });
-                        },
-                        error: function (x, e, r) {
-                            alert(e + " " + r);
-                            alert(x.responseText);
-                        }
-                    });
+        $("#Edit_CustomerSelection" + transactionNumber).on("change", function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                data: ({ customerId: $("#Edit_CustomerSelection" + transactionNumber).prop("selectedIndex"), prevVM: '@Html.Raw(Json.Encode(Model))' }),
+                url: '@Url.Action("EditSelectCustomer", "Transactions")',
+                success: function (result) {
+                    $("#Historic_DropDownView" + transactionNumber).html(result);
+                },
+                error: function (x, e, r) {
+                    alert(e + " " + r);
+                    alert(x.responseText);
                 }
-            }));
+            });
+        });
+
+        $("#Edit_ItemSelection" + transactionNumber).on("change", function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                data: ({ itemId: $("#Edit_ItemSelection" + transactionNumber).prop("selectedIndex"), prevVM: '@Html.Raw(Json.Encode(Model))' }),
+                url: '@Url.Action("EditAddItem", "Transactions")',
+                success: function (result) {
+                    $("#Historic_DropDownView" + transactionNumber).html(result);
+                    $("#Edit_ItemSelection" + "@Model._transactionOverview.TransactionNumber").prop("selectedIndex", '0').change(function (e) { this.val(e.val); e.preventDefault(); });
+                },
+                error: function (x, e, r) {
+                    alert(e + " " + r);
+                    alert(x.responseText);
+                }
+            });
+        });
+
+        $(".editCancelBtn").on("click", function (e) {
+            $("#Historic_DropDownView" + @Model._transactionOverview.TransactionNumber).delay(100).slideUp("slow", "swing", function (e) {
+                $("#Historic_DropDownViewTR" + @Model._transactionOverview.TransactionNumber).attr("style", "display:none;");
+                prevOpenedTN = '0';
+            });
+        });
+
+        $(".editSaveBtn").on("click", function (e) {
+            $.ajax({
+                type: "POST",
+                data: ({ prevVM: '@Html.Raw(Json.Encode(Model))' }),
+                url: '@Url.Action("SerializeEdit", "Transactions")',
+                success: function (result) {
+                    $("#Historic_DropDownView" + @Model._transactionOverview.TransactionNumber).delay(100).slideUp("slow", "swing", function (e) {
+                        $("#Historic_DropDownViewTR" + @Model._transactionOverview.TransactionNumber).attr("style", "display:none;");
+                        $("#View").html(result);
+                        prevOpenedTN = '0';
+                    });
+                },
+                error: function (x, e, r) {
+                    alert(e + " " + r);
+                    alert(x.responseText);
+                }
+            });
+
+        });
     });
 </script>

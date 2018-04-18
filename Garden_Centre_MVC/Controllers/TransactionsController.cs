@@ -60,6 +60,70 @@ namespace Garden_Centre_MVC.Controllers
         }
 
         ////////////
+        //EDIT VIEW//
+        ////////////
+        public PartialViewResult EditView(int _transactionNumber)
+        {
+            EditViewModel vm = new EditViewModel();
+            vm._transactionOverview = m_Context.TransactionOverviews.Where(to => to.TransactionNumber == _transactionNumber).First();
+            vm._transactionOverview.Customer = m_Context.Customers.Where(c => c.CustomerId == vm._transactionOverview.CustomerId).First();
+            List<Item> items = new List<Item>();
+
+            foreach (Transaction t in m_Context.Transactions.Where(n => n.TransactionNumber == _transactionNumber).ToList())
+            {
+                items.Add(m_Context.Items.Where(i => i.ItemId == t.ItemId).First());
+            }
+
+            vm._items = items;
+
+            return PartialView("Partials/EditView", vm);
+        }
+
+        public PartialViewResult EditSelectCustomer(int customerId, string prevVM)
+        {
+            EditViewModel vm = new EditViewModel(m_Context.Customers.Where(c => c.CustomerId == customerId).First(), JsonConvert.DeserializeObject<EditViewModel>(prevVM));
+            return PartialView("Partials/EditView", vm);
+        }
+
+        public PartialViewResult EditAddItem(int itemId, string prevVM)
+        {
+            EditViewModel vm = new EditViewModel(m_Context.Items.Where(i => i.ItemId == itemId).First(), JsonConvert.DeserializeObject<EditViewModel>(prevVM));
+            return PartialView("Partials/EditView", vm);
+        }
+
+        public PartialViewResult SerializeEdit(string prevVM)
+        {
+            EditViewModel editVM = JsonConvert.DeserializeObject<EditViewModel>(prevVM);
+
+            TransactionOverview to = new TransactionOverview();
+            to.CustomerId = editVM._transactionOverview.CustomerId;
+            to.Date = editVM._transactionOverview.Date;
+            to.TransactionNumber = editVM._transactionOverview.TransactionNumber;
+            to.TotalValue = editVM._transactionOverview.TotalValue;
+
+            var entry = m_Context.TransactionOverviews.Where(t => t.TransactionNumber == editVM._transactionOverview.TransactionNumber).First();
+            entry.TransactionNumber = to.TransactionNumber;
+            entry.TotalValue = to.TotalValue;
+            entry.CustomerId = to.CustomerId;
+            entry.Date = to.Date;
+
+            foreach (Item i in editVM._newItems)
+            {
+                Transaction t = new Transaction();
+                t.ItemId = i.ItemId;
+                t.TransactionNumber = editVM._transactionOverview.TransactionNumber;
+                t.Date = editVM._transactionOverview.Date;
+                t.CustomerId = editVM._transactionOverview.CustomerId;
+                m_Context.Transactions.Add(t);
+            }
+
+            m_Context.SaveChanges();
+
+            HistoricViewModel vm = new HistoricViewModel();
+            return PartialView("Partials/HistoricView", vm);
+        }
+
+        ////////////
         //ADD VIEW//
         ////////////
         public PartialViewResult AddView()

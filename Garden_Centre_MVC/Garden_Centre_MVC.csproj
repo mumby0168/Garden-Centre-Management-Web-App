@@ -218,6 +218,7 @@
     <Compile Include="ViewModels\EmployeeViewModels\EmployeeLandingViewModels.cs" />
     <Compile Include="ViewModels\ItemsViewModels\ItemsLandingPageViewModel.cs" />
     <Compile Include="ViewModels\Transactions\AddViewModel.cs" />
+    <Compile Include="ViewModels\Transactions\EditViewModel.cs" />
     <Compile Include="ViewModels\Transactions\ExtendedViewModel.cs" />
     <Compile Include="ViewModels\Transactions\HistoricViewModel.cs" />
     <Compile Include="ViewModels\Transactions\IndexViewModel.cs" />
@@ -286,6 +287,7 @@
     <Content Include="Views\Transactions\Partials\HistoricView.cshtml" />
     <Content Include="Views\Transactions\Partials\AddView.cshtml" />
     <Content Include="Views\Transactions\Partials\ExtendedView.cshtml" />
+    <Content Include="Views\Transactions\Partials\EditView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
