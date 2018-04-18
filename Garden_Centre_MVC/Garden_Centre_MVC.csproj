@@ -205,11 +205,17 @@
     <Compile Include="Migrations\201804160859263_addTransactionOverview.Designer.cs">
       <DependentUpon>201804160859263_addTransactionOverview.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804182028214_AddedTheLogAndActionTable.cs" />
+    <Compile Include="Migrations\201804182028214_AddedTheLogAndActionTable.Designer.cs">
+      <DependentUpon>201804182028214_AddedTheLogAndActionTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\ActionType.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\EmployeeLogin.cs" />
     <Compile Include="Models\Item.cs" />
+    <Compile Include="Models\Log.cs" />
     <Compile Include="Models\Transaction.cs" />
     <Compile Include="Models\TransactionOverview.cs" />
     <Compile Include="Persistance\DatabaseContext.cs" />
@@ -337,6 +343,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804160859263_addTransactionOverview.resx">
       <DependentUpon>201804160859263_addTransactionOverview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804182028214_AddedTheLogAndActionTable.resx">
+      <DependentUpon>201804182028214_AddedTheLogAndActionTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
