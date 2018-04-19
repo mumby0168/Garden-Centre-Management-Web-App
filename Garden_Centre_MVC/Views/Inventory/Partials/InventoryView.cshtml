@@ -9,23 +9,29 @@
             <td>In Stock</td>
             <td>On Order</td>
             <td>Sold</td>
-            <td>Operations</td>
+            @if (Garden_Centre_MVC.Attributes.Assets.CurrentUser.EmployeeLogin.Employee.Admin)
+            {
+                <td>Operations</td>
+            }
         </tr>
     </thead>
     <tbody>
         @foreach (Garden_Centre_MVC.Models.Item i in Model.inventory)
         {
-            <tr>
-                <td>@i.ItemId</td>
-                <td>@i.Description</td>
-                <td>£@i.ItemPrice</td>
-                <td>@i.Stock</td>
-                <td>@i.OnOrder</td>
-                <td>@i.Sold</td>
+        <tr>
+            <td>@i.ItemId</td>
+            <td>@i.Description</td>
+            <td>£@i.ItemPrice</td>
+            <td>@i.Stock</td>
+            <td>@i.OnOrder</td>
+            <td>@i.Sold</td>
+            @if (Garden_Centre_MVC.Attributes.Assets.CurrentUser.EmployeeLogin.Employee.Admin)
+            {
                 <td>
                     <button invId="@i.ItemId" class="invEditBtn btn btn-primary" title="Edit the properties of this item !"><i class="fa fa-edit"></i></button>
                 </td>
-            </tr>
+            }
+        </tr>
             <tr id='@("Inv_DropDownViewTR"+@i.ItemId)' style="display:none; padding:0px;">
                 <td id='@("Inv_DropDownViewTD"+@i.ItemId)' colspan="6">
                     <div id='@("Inv_DropDownView"+@i.ItemId)' hidden="hidden">

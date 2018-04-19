@@ -27,8 +27,11 @@
                 <td>£@to.TotalValue</td>
                 <td>
                     <button transactionNumber="@to.TransactionNumber" class="viewBtn btn btn-primary" title="View the indiviudal items that make up this transaction !"><i class="fa fa-eye"></i></button>
-                    <button transactionNumber="@to.TransactionNumber" class="editBtn btn btn-primary" title="Edit the contents of this transaction !"><i class="fa fa-edit"></i></button>
-                    <button transactionNumber="@to.TransactionNumber" class="delBtn btn btn-primary" title="Delete this transaction !"><i class="fa fa-trash"></i></button>
+                    @if (Garden_Centre_MVC.Attributes.Assets.CurrentUser.EmployeeLogin.Employee.Admin)
+                    {
+                        <button transactionNumber="@to.TransactionNumber" class="editBtn btn btn-primary" title="Edit the contents of this transaction !"><i class="fa fa-edit"></i></button>
+                        <button transactionNumber="@to.TransactionNumber" class="delBtn btn btn-primary" title="Delete this transaction !"><i class="fa fa-trash"></i></button>
+                    }
                 </td>
             </tr>
             <tr id='@("Historic_DropDownViewTR"+@to.TransactionNumber)' style="display:none; padding:0px;">

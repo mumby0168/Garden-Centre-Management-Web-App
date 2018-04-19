@@ -127,10 +127,12 @@
         });
 
         $(".editCancelBtn").on("click", function (e) {
-            $("#Historic_DropDownView" + @Model._transactionOverview.TransactionNumber).delay(100).slideUp("slow", "swing", function (e) {
-                $("#Historic_DropDownViewTR" + @Model._transactionOverview.TransactionNumber).attr("style", "display:none;");
-                prevOpenedTN = '0';
-            });
+            if (confirm("Are you sure you would like discard changes to this transaction ?")) {
+                $("#Historic_DropDownView" + @Model._transactionOverview.TransactionNumber).delay(100).slideUp("slow", "swing", function (e) {
+                    $("#Historic_DropDownViewTR" + @Model._transactionOverview.TransactionNumber).attr("style", "display:none;");
+                    prevOpenedTN = '0';
+                });
+            }
         });
 
         $(".editSaveBtn").on("click", function (e) {

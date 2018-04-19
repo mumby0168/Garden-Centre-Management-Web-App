@@ -1,4 +1,5 @@
-﻿using Garden_Centre_MVC.Models;
+﻿using Garden_Centre_MVC.Attributes;
+using Garden_Centre_MVC.Models;
 using Garden_Centre_MVC.Persistance;
 using Garden_Centre_MVC.ViewModels.Transactions;
 using Newtonsoft.Json;
@@ -19,6 +20,7 @@ namespace Garden_Centre_MVC.Controllers
             base.Dispose(disposing);
         }
 
+        [NormalUser]
         public ActionResult Index()
         {
             return View();
@@ -27,6 +29,7 @@ namespace Garden_Centre_MVC.Controllers
         /////////////////
         //HISTORIC VIEW//
         /////////////////
+        [NormalUser]
         public PartialViewResult HistoricView()
         {
             HistoricViewModel vm = new HistoricViewModel();
@@ -36,6 +39,7 @@ namespace Garden_Centre_MVC.Controllers
         /////////////////
         //EXTENDED VIEW//
         /////////////////
+        [NormalUser]
         public PartialViewResult ExtendedView(int _transactionNumber)
         {
             ExtendedViewModel vm = new ExtendedViewModel(_transactionNumber);
@@ -45,6 +49,7 @@ namespace Garden_Centre_MVC.Controllers
         //////////////////////
         //DELETE TRANSACTION//
         //////////////////////
+        [AdminUser]
         public PartialViewResult DeleteTransaction(int _transactionNumber)
         {
             HistoricViewModel vm = new HistoricViewModel();
@@ -67,6 +72,7 @@ namespace Garden_Centre_MVC.Controllers
         ////////////
         //EDIT VIEW//
         ////////////
+        [AdminUser]
         public PartialViewResult EditView(int _transactionNumber)
         {
             EditViewModel vm = new EditViewModel();
@@ -84,18 +90,21 @@ namespace Garden_Centre_MVC.Controllers
             return PartialView("Partials/EditView", vm);
         }
 
+        [AdminUser]
         public PartialViewResult EditSelectCustomer(int customerId, string prevVM)
         {
             EditViewModel vm = new EditViewModel(m_Context.Customers.Where(c => c.CustomerId == customerId).First(), JsonConvert.DeserializeObject<EditViewModel>(prevVM));
             return PartialView("Partials/EditView", vm);
         }
 
+        [AdminUser]
         public PartialViewResult EditAddItem(int itemId, string prevVM)
         {
             EditViewModel vm = new EditViewModel(m_Context.Items.Where(i => i.ItemId == itemId).First(), JsonConvert.DeserializeObject<EditViewModel>(prevVM));
             return PartialView("Partials/EditView", vm);
         }
 
+        [AdminUser]
         public PartialViewResult EditRemItem(int index, string prevVM)
         {
             EditViewModel vm = JsonConvert.DeserializeObject<EditViewModel>(prevVM);
@@ -119,6 +128,7 @@ namespace Garden_Centre_MVC.Controllers
             return PartialView("Partials/EditView", vm);
         }
 
+        [AdminUser]
         public PartialViewResult SerializeEdit(string prevVM)
         {
             EditViewModel editVM = JsonConvert.DeserializeObject<EditViewModel>(prevVM);
@@ -179,24 +189,28 @@ namespace Garden_Centre_MVC.Controllers
         ////////////
         //ADD VIEW//
         ////////////
+        [NormalUser]
         public PartialViewResult AddView()
         {
             AddViewModel vm = new AddViewModel();
             return PartialView("Partials/AddView", vm);
         }
 
+        [NormalUser]
         public PartialViewResult AddItem(int itemId, string prevVM)
         {
             AddViewModel vm = new AddViewModel(m_Context.Items.Where(i => i.ItemId == itemId).First(), JsonConvert.DeserializeObject<AddViewModel>(prevVM));
             return PartialView("Partials/AddView", vm);
         }
 
+        [NormalUser]
         public PartialViewResult SelectCustomer(int customerId, string prevVM)
         {
             AddViewModel vm = new AddViewModel(m_Context.Customers.Where(c => c.CustomerId == customerId).First(), JsonConvert.DeserializeObject<AddViewModel>(prevVM));
             return PartialView("Partials/AddView", vm);
         }
 
+        [NormalUser]
         public PartialViewResult AddRemItem(int index, string prevVM)
         {
             AddViewModel vm = JsonConvert.DeserializeObject<AddViewModel>(prevVM);
@@ -207,6 +221,7 @@ namespace Garden_Centre_MVC.Controllers
             return PartialView("Partials/AddView", vm);
         }
 
+        [NormalUser]
         public PartialViewResult SerializeAdd(string prevVm)
         {
             AddViewModel addVM = JsonConvert.DeserializeObject<AddViewModel>(prevVm);
