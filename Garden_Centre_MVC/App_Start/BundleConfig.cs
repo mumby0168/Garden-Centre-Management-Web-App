@@ -24,7 +24,7 @@ namespace Garden_Centre_MVC
                       "~/Scripts/respond.js", "~/Scripts/bootbox.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/darkly-theme.css",
+                      "~/Content/flatly.css",
                       "~/Content/site.css",
                 "~/Content/font-awesome.min.css"));
 

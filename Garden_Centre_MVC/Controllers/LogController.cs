@@ -20,7 +20,7 @@ namespace Garden_Centre_MVC.Controllers
 
         public ActionResult Index()
         {
-            var logs =_context.Logs.Include(l => l.ActionType).Include(e => e.EmployeeLogin.Employee).ToList();
+            var logs =_context.Logs.Include(l => l.ActionType).Include(e => e.EmployeeLogin.Employee).OrderByDescending(l => l.DateOfAction).ToList();
 
             var vm = new LogLandingViewModel()
             {

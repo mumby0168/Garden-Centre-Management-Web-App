@@ -6,12 +6,15 @@
 
 <div class="jumbotron" style="padding: 15px;">
     <div class="row" style="margin-bottom: 5px;">
-        <div align="left" class="col-md-6">
-            <h5>Logged in as: @CurrentUser.EmployeeLogin.Username</h5>
+        <div align="left" class="col-md-4">
+            <h3>@CurrentUser.EmployeeLogin.Employee.FirstName @CurrentUser.EmployeeLogin.Employee.SecondName</h3>
         </div>
-        <div align="right" class="col-md-6">
-            <a href="Account/Logoff" style="color: white;">
-                <h5>Logoff</h5>
+        <div class="col-md-4" align="center">
+            <a href="/Home"><h3 align="center" style="margin-bottom: 20px; color:black">Garden Centre <i class="fa fa fa-plus-circle"></i></h3></a>
+        </div>
+        <div align="right" class="col-md-4">
+            <a href="Account/Logoff">
+                <h3 style="color: black">Logoff</h3>
             </a>
         </div>
     </div>
@@ -24,7 +27,7 @@
     <div class="row">
 
         <div align="center" class="col-md-6">
-            <a style="cursor: pointer; color: lightskyblue;" id="TransactionsLandingLink">
+            <a style="cursor: pointer; color: black;" id="TransactionsLandingLink">
                 <div class="jumbotron">
                     <i class="fa fa-5x fa-gbp"></i>
                     <h3>Transactions Landing Page</h3>
@@ -35,7 +38,7 @@
 
 
         <div align="center" class="col-md-6">
-            <a style="cursor: pointer; color: lightskyblue;" id="CustomerLandingLink">
+            <a style="cursor: pointer; color: black;" id="CustomerLandingLink">
                 <div class="jumbotron">
                     <i class="fa fa-5x fa-users"></i>
                     <h3>Customer Landing Page</h3>
@@ -47,7 +50,7 @@
                                                              
     <div align="center" class="row">
         <div class="col-md-6">
-            <a style="cursor: pointer; color: lightskyblue;" id="InventoryLandingLink">
+            <a style="cursor: pointer; color: black;" id="InventoryLandingLink">
                 <div class="jumbotron">
                     <i class="fa fa-5x fa-list-alt"></i>
                     <h3>Inventory Landing Page</h3>
@@ -58,7 +61,7 @@
         @if (CurrentUser.EmployeeLogin.Employee.Admin)
         {
             <div align="center" class="col-md-6">
-                <a style="cursor: pointer; color: lightskyblue;" id="EmployeeLandingLink">
+                <a style="cursor: pointer; color: black;" id="EmployeeLandingLink">
                     <div class="jumbotron">
                         <i class="fa fa-5x fa-user"></i>
                         <h3>Employee Landing Page</h3>
@@ -69,7 +72,7 @@
         else
         {
             <div align="center" style="opacity: 0.5; " class="col-md-6">
-                <a style="cursor: pointer; color: lightskyblue;  pointer-events: none; cursor: default; text-decoration: none;color: gray; opacity: 0.2;" id="EmployeeLandingLink">
+                <a style="cursor: pointer; color: black;  pointer-events: none; cursor: default; text-decoration: none;color: gray; opacity: 0.2;" id="EmployeeLandingLink">
                     <div class="jumbotron">
                         <i class="fa fa-5x fa-lock"></i>
                         <h3>Employee Landing Page</h3>
@@ -84,7 +87,7 @@
         @if (CurrentUser.EmployeeLogin.Employee.Admin)
     {
         <div align="center" class="col-sm-12">
-            <a style="cursor: pointer; color: lightskyblue;" id="ActionLogLandingLink">
+            <a style="cursor: pointer; color: black;" id="ActionLogLandingLink">
                 <div class="jumbotron">
                     <div align="center">
                         <i class="fa fa-pencil fa-3x"></i>

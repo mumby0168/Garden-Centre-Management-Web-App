@@ -166,6 +166,7 @@
     <Compile Include="Attributes\CheckIfEmailExists.cs" />
     <Compile Include="Attributes\NormalUser.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InventoryController.cs" />
@@ -229,6 +230,8 @@
     <Compile Include="ViewModels\AccountViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModels\ResetPasswordViewModel.cs" />
+    <Compile Include="ViewModels\CustomerViewModels\CustomerFormViewModel.cs" />
+    <Compile Include="ViewModels\CustomerViewModels\CustomerLandingViewModels.cs" />
     <Compile Include="ViewModels\EmployeeViewModels\EmployeeLandingViewModels.cs" />
     <Compile Include="ViewModels\InventoryViewModels\InventoryViewModel.cs" />
     <Compile Include="ViewModels\ItemsViewModels\ItemsLandingPageViewModel.cs" />
@@ -244,10 +247,12 @@
     <Content Include="App_Data\Garden_Centre_MVC.Persistance.DatabaseContext_log.ldf">
       <DependentUpon>Garden_Centre_MVC.Persistance.DatabaseContext.mdf</DependentUpon>
     </Content>
+    <Content Include="Content\bootstrap-lumen.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\darkly-theme.css" />
     <Content Include="Content\datatables.min.css" />
+    <Content Include="Content\flatly.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="favicon.ico" />
@@ -270,6 +275,7 @@
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\Customers\Customers.js" />
     <Content Include="Scripts\datatables.js" />
     <Content Include="Scripts\datatables.min.js" />
     <Content Include="Scripts\Employee\Employee.js" />
@@ -314,6 +320,9 @@
     <Content Include="Views\Inventory\Partials\NewItemView.cshtml" />
     <Content Include="Views\Inventory\Partials\EditItemView.cshtml" />
     <Content Include="Views\Log\LogLandingPage.cshtml" />
+    <Content Include="Views\Account\EmailSent.cshtml" />
+    <Content Include="Views\Customer\CustomerForm.cshtml" />
+    <Content Include="Views\Customer\CustomerLanding.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

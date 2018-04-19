@@ -29,8 +29,6 @@
             data: { "page": page },
             success: function (view) {
                 $("#MainPageContainer").html(view);
-
-
             }
         });
 
