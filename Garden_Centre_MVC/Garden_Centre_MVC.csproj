@@ -165,6 +165,7 @@
     <Compile Include="Attributes\CheckIfEmailExists.cs" />
     <Compile Include="Attributes\NormalUser.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ItemsController.cs" />
@@ -213,6 +214,8 @@
     <Compile Include="ViewModels\AccountViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModels\ResetPasswordViewModel.cs" />
+    <Compile Include="ViewModels\CustomerViewModels\CustomerFormViewModel.cs" />
+    <Compile Include="ViewModels\CustomerViewModels\CustomerLandingViewModels.cs" />
     <Compile Include="ViewModels\EmployeeViewModels\EmployeeLandingViewModels.cs" />
     <Compile Include="ViewModels\ItemsViewModels\ItemsLandingPageViewModel.cs" />
     <Compile Include="ViewModels\Transactions\AddViewModel.cs" />
@@ -248,6 +251,7 @@
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\Customers\Customers.js" />
     <Content Include="Scripts\datatables.js" />
     <Content Include="Scripts\datatables.min.js" />
     <Content Include="Scripts\Employee\Employee.js" />
@@ -286,6 +290,8 @@
     <Content Include="Views\Transactions\Partials\EditView.cshtml" />
     <Content Include="Views\Transactions\Partials\ExtendedView.cshtml" />
     <Content Include="Views\Transactions\Partials\HistoricView.cshtml" />
+    <Content Include="Views\Customer\CustomerForm.cshtml" />
+    <Content Include="Views\Customer\CustomerLanding.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
