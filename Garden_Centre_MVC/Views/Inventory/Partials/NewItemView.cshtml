@@ -1,9 +1,12 @@
 ﻿@model Garden_Centre_MVC.Models.Item
-@{ 
+@{
     //TODO: Add validation
     //TODO: Tidy the form
     //TODO: Discuss the delete option ! What if there is a transaction with that item in ?
 }
+
+@Scripts.Render("~/bundles/jqueryval")
+
 <form id="NewItemForm">
     <div class="form-group">
         @Html.LabelFor(m => m.Description)
