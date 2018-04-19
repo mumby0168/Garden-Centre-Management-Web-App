@@ -5,7 +5,7 @@
         $("#Loader").show("fast");
 
         $.ajax({
-            url: "/Employee/Index",
+            url: "Employee/Index",
             success: function (view) {
                 $("#MainPageContainer").html(view);
                 $("#Loader").hide();
@@ -42,6 +42,17 @@
         $.ajax({
             url: "Inventory/Index",
             success: function(view) {
+                $("#MainPageContainer").html(view);
+            }
+        });
+
+    });
+
+    $("#CustomerLandingLink").click(function () {
+
+        $.ajax({
+            url: "Customer/Index",
+            success: function (view) {
                 $("#MainPageContainer").html(view);
             }
         });

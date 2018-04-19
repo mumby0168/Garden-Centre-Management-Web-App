@@ -1,32 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Garden_Centre_MVC.Attributes;
+using Garden_Centre_MVC.Attributes.Assets;
+using Garden_Centre_MVC.Models;
 using Garden_Centre_MVC.Persistance;
 using Garden_Centre_MVC.ViewModels.CustomerViewModels;
 
 namespace Garden_Centre_MVC.Controllers
 {
-    public class CustomersController : Controller
+    
+    
+    public class CustomerController : Controller
     {
         private DatabaseContext _context;
 
-        public CustomersController()
+        public CustomerController()
         {
             _context = new DatabaseContext();
         }
-
-
-        // GET: Customers
+        
         public ActionResult Index()
         {
-            var customers = _context.Customers.ToList();
+            var customers = _context.Customers.Take(10).ToList();
 
-            var vm = new CustomerLandingViewModels {Customers = customers};
+            var vm = new CustomerLandingViewModels { Customers = customers, PageNum = 1, IsSearch = false };
 
             //returns the home view
-            return View("CustomerLanding", vm);
+            return PartialView("CustomerLanding", vm);
         }
 
         public ActionResult Save(int id)
@@ -43,21 +47,8 @@ namespace Garden_Centre_MVC.Controllers
             }
         }
 
-        public ActionResult Edit(int id)
-        {
-            var customer = _context.Customers.FirstOrDefault(e => e.CustomerId == id);
-
-            var vm = new CustomerFormViewModel()
-            {
-                Customer = customer
-            };
-
-            return PartialView("CustomerForm", vm);
-
-        }
-
         /// <summary>
-        /// gets all of the employees to be viewed in the table
+        /// gets all of the customers to be viewed in the table
         /// </summary>
         /// <returns></returns>
         [HttpGet]
