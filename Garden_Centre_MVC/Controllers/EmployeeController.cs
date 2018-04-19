@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Garden_Centre_MVC.Assets;
 using Garden_Centre_MVC.Attributes;
 using Garden_Centre_MVC.Attributes.Assets;
 using Garden_Centre_MVC.Models;
@@ -23,12 +24,10 @@ namespace Garden_Centre_MVC.Controllers
             _context = new DatabaseContext();
         }
 
-
         // GET: Employee
         public ActionResult Index()
         {
             var employees = _context.Employees.Take(10).ToList();
-
             var vm = new EmployeeLandingViewModels {Employees = employees, PageNum = 1, IsSearch = false};
 
             //returns the home view
@@ -38,32 +37,23 @@ namespace Garden_Centre_MVC.Controllers
         public ActionResult CheckAmountOfRecords()
         {
             var count = _context.Employees.Count();
-
-            return Json(new {amount=count.ToString()});
+            return Json(new {amount = count.ToString()});
         }
 
         public ActionResult LoadTablePage(int page)
         {
-            var skipAmount = (page -1) * 10;
+            var skipAmount = (page - 1) * 10;
             var employees = _context.Employees.OrderBy(e => e.EmployeeId).Skip(skipAmount).Take(10).ToList();
-
-
-            var vm = new EmployeeLandingViewModels()
-            {
-                Employees = employees,
-                PageNum = page
-            };
-
+            var vm = new EmployeeLandingViewModels() {Employees = employees, PageNum = page};
             return PartialView("EmployeeLanding", vm);
         }
 
         [HttpPost]
         public ActionResult Save(Employee emp)
         {
+            if (!ModelState.IsValid) return View();
 
-            if (!ModelState.IsValid)
-                return View();
-
+            //new so add them to the database
             if (emp.EmployeeId == 0)
             {
                 var employee = new Employee
@@ -73,34 +63,22 @@ namespace Garden_Centre_MVC.Controllers
                     FirstName = emp.FirstName,
                     SecondName = emp.SecondName
                 };
-
                 _context.Employees.Add(employee);
                 _context.SaveChanges();
-
-                var vm = new EmployeeLandingViewModels()
-                {
-                    Employees = _context.Employees.Take(10).ToList()
-                };
-
+                var vm = new EmployeeLandingViewModels() {Employees = _context.Employees.Take(10).ToList()};
+                Logger.LogAction("Employee Added", employee.FirstName + employee.SecondName + "Added.");
                 return View("EmployeeLanding", vm);
             }
             else
             {
                 var employee = _context.Employees.FirstOrDefault(e => e.EmployeeId == emp.EmployeeId);
-
                 employee.Admin = emp.Admin;
                 employee.EmployeeNumber = emp.EmployeeNumber;
                 employee.FirstName = emp.FirstName;
                 employee.SecondName = emp.SecondName;
-               
                 _context.SaveChanges();
-
-
-                var vm = new EmployeeLandingViewModels()
-                {
-                    Employees = _context.Employees.Take(10).ToList()
-                };
-
+                var vm = new EmployeeLandingViewModels() {Employees = _context.Employees.Take(10).ToList()};
+                Logger.LogAction("Employee Edited", employee.FirstName + employee.SecondName + "Edited.");
                 return PartialView("EmployeeLanding", vm);
             }
         }
@@ -108,38 +86,26 @@ namespace Garden_Centre_MVC.Controllers
         public ActionResult Remove(int id)
         {
             var employee = _context.Employees.FirstOrDefault(e => e.EmployeeId == id);
-
             if (employee.EmployeeNumber == CurrentUser.EmployeeLogin.Employee.EmployeeNumber)
                 return new HttpStatusCodeResult(500, "You cannot delete yourself as your are logged in.");
-
             _context.Employees.Remove(employee);
             _context.SaveChanges();
-
-            var vm = new EmployeeLandingViewModels()
-            {
-                Employees = _context.Employees.Take(10).ToList()
-            };
-
-
+            var vm = new EmployeeLandingViewModels() {Employees = _context.Employees.Take(10).ToList()};
+            Logger.LogAction("Employee Deleted", employee.FirstName + employee.SecondName + "Deleted.");
             return PartialView("EmployeeLanding", vm);
         }
 
         public ActionResult Add()
         {
             var vm = new Employee();
-
             return PartialView("EmployeeForm", vm);
         }
 
         public ActionResult Edit(int id)
         {
             var employee = _context.Employees.FirstOrDefault(e => e.EmployeeId == id);
-
             var vm = employee;
-           
-
             return PartialView("EmployeeForm", vm);
-
         }
 
         /// <summary>
@@ -156,31 +122,20 @@ namespace Garden_Centre_MVC.Controllers
         {
             return View();
         }
-        
+
         public ActionResult Search(string str)
         {
             var employees = _context.Employees.ToList();
-
             var listToReturn = new List<Employee>();
-
             foreach (var emp in employees)
             {
                 var fullName = emp.FirstName + emp.SecondName;
-                if(fullName.ToUpper().Contains(str.ToUpper()))
-                    listToReturn.Add(emp);
+                if (fullName.ToUpper().Contains(str.ToUpper())) listToReturn.Add(emp);
             }
 
-            var vm = new EmployeeLandingViewModels()
-            {
-                Employees = listToReturn,
-                PageNum = 1,
-                IsSearch = true
-            };
-
+            var vm = new EmployeeLandingViewModels() {Employees = listToReturn, PageNum = 1, IsSearch = true};
             return PartialView("EmployeeLanding", vm);
-
         }
-
 
         protected override void Dispose(bool disposing)
         {

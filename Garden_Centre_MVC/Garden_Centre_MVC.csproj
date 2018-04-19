@@ -158,6 +158,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Assets\Logger.cs" />
     <Compile Include="Attributes\AdminUser.cs" />
     <Compile Include="Assets\CurrentUser.cs" />
     <Compile Include="Assets\Encryptor.cs" />
@@ -168,7 +169,6 @@
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InventoryController.cs" />
-    <Compile Include="Controllers\ItemsController.cs" />
     <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\TransactionsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -209,6 +209,10 @@
     <Compile Include="Migrations\201804182028214_AddedTheLogAndActionTable.cs" />
     <Compile Include="Migrations\201804182028214_AddedTheLogAndActionTable.Designer.cs">
       <DependentUpon>201804182028214_AddedTheLogAndActionTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804190751126_EditedTheEmployeeLinkInTheLogTable.cs" />
+    <Compile Include="Migrations\201804190751126_EditedTheEmployeeLinkInTheLogTable.Designer.cs">
+      <DependentUpon>201804190751126_EditedTheEmployeeLinkInTheLogTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ActionType.cs" />
@@ -352,6 +356,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804182028214_AddedTheLogAndActionTable.resx">
       <DependentUpon>201804182028214_AddedTheLogAndActionTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804190751126_EditedTheEmployeeLinkInTheLogTable.resx">
+      <DependentUpon>201804190751126_EditedTheEmployeeLinkInTheLogTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

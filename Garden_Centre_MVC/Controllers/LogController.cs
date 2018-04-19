@@ -20,7 +20,7 @@ namespace Garden_Centre_MVC.Controllers
 
         public ActionResult Index()
         {
-            var logs =_context.Logs.Include(l => l.ActionType).ToList();
+            var logs =_context.Logs.Include(l => l.ActionType).Include(e => e.EmployeeLogin.Employee).ToList();
 
             var vm = new LogLandingViewModel()
             {
@@ -29,6 +29,7 @@ namespace Garden_Centre_MVC.Controllers
 
             return View("LogLandingPage", vm);
         }
+
 
         protected override void Dispose(bool disposing)
         {

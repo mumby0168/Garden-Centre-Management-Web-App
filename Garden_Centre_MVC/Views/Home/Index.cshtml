@@ -23,7 +23,7 @@
 <div id="MainPageContainer">
     <div class="row">
 
-        <div class="col-md-6">
+        <div align="center" class="col-md-6">
             <a style="cursor: pointer; color: lightskyblue;" id="TransactionsLandingLink">
                 <div class="jumbotron">
                     <i class="fa fa-5x fa-gbp"></i>
@@ -34,7 +34,7 @@
 
 
 
-        <div class="col-md-6">
+        <div align="center" class="col-md-6">
             <a style="cursor: pointer; color: lightskyblue;" id="CustomerLandingLink">
                 <div class="jumbotron">
                     <i class="fa fa-5x fa-users"></i>
@@ -45,7 +45,7 @@
 
     </div>
                                                              
-    <div class="row">
+    <div align="center" class="row">
         <div class="col-md-6">
             <a style="cursor: pointer; color: lightskyblue;" id="InventoryLandingLink">
                 <div class="jumbotron">
@@ -57,7 +57,7 @@
         
         @if (CurrentUser.EmployeeLogin.Employee.Admin)
         {
-            <div class="col-md-6">
+            <div align="center" class="col-md-6">
                 <a style="cursor: pointer; color: lightskyblue;" id="EmployeeLandingLink">
                     <div class="jumbotron">
                         <i class="fa fa-5x fa-user"></i>
@@ -68,7 +68,7 @@
         }
         else
         {
-            <div style="opacity: 0.5; " class="col-md-6">
+            <div align="center" style="opacity: 0.5; " class="col-md-6">
                 <a style="cursor: pointer; color: lightskyblue;  pointer-events: none; cursor: default; text-decoration: none;color: gray; opacity: 0.2;" id="EmployeeLandingLink">
                     <div class="jumbotron">
                         <i class="fa fa-5x fa-lock"></i>
@@ -83,7 +83,7 @@
 
         @if (CurrentUser.EmployeeLogin.Employee.Admin)
     {
-        <div class="col-sm-12">
+        <div align="center" class="col-sm-12">
             <a style="cursor: pointer; color: lightskyblue;" id="ActionLogLandingLink">
                 <div class="jumbotron">
                     <div align="center">
@@ -99,7 +99,7 @@
 }
 else
 {
-    <div class="col-sm-12">
+    <div align="center" class="col-sm-12">
         <a style="cursor: pointer; color: lightskyblue;  pointer-events: none; cursor: default; text-decoration: none;color: gray; opacity: 0.2;" id="ActionLogLandingLink">
             <div class="jumbotron">
                 <div align="center">

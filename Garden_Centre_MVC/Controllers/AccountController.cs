@@ -54,6 +54,17 @@ namespace Garden_Centre_MVC.Controllers
             {
                 //succesful login
                 CurrentUser.EmployeeLogin = employee;
+
+                Log log = new Log()
+                {
+                    EmployeeLogin = CurrentUser.EmployeeLogin,
+                    ActionType = _context.ActionTypes.FirstOrDefault(l => l.Description == "Logged In"),
+                    PropertyEffected = "None",
+                    DateOfAction = DateTime.Now
+                };
+
+                _context.Logs.Add(log);
+                _context.SaveChanges();
                
                 Session[employee.Username] = employee;                
 
@@ -110,6 +121,8 @@ namespace Garden_Centre_MVC.Controllers
                 Email = registerVm.Email,
                 EmployeeNumber = registerVm.EmployeeNumber
             };
+
+            Logger.LogAction("Registered", "None.");
             
             return View("Login", vm);
         }
@@ -198,6 +211,13 @@ namespace Garden_Centre_MVC.Controllers
 
             if (Session[CurrentUser.EmployeeLogin.Username] != null)
             {
+                Log log = new Log()
+                {
+                    EmployeeLogin = CurrentUser.EmployeeLogin,
+                    ActionType = _context.ActionTypes.FirstOrDefault(a => a.Description == "Logged Out"),
+                    PropertyEffected = "None",
+                    DateOfAction = DateTime.Now
+                };
                 Session.Contents.Remove(CurrentUser.EmployeeLogin.Username);
             }
 

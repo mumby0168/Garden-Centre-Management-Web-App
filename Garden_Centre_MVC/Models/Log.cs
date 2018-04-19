@@ -10,9 +10,9 @@ namespace Garden_Centre_MVC.Models
     {
         public int LogId { get; set; }
 
-        public Employee Employee { get; set; }
+        public EmployeeLogin EmployeeLogin { get; set; }
 
-        public int EmployeeId { get; set; }
+        public int EmployeeLoginId { get; set; }
 
         public ActionType ActionType { get; set; }
 
