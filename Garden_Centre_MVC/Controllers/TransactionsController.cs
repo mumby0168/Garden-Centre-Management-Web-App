@@ -79,7 +79,7 @@ namespace Garden_Centre_MVC.Controllers
             vm._transactionOverview = m_Context.TransactionOverviews.Where(to => to.TransactionNumber == _transactionNumber).First();
             vm._transactionOverview.Customer = m_Context.Customers.Where(c => c.CustomerId == vm._transactionOverview.CustomerId).First();
             List<Item> items = new List<Item>();
-
+            
             foreach (Transaction t in m_Context.Transactions.Where(n => n.TransactionNumber == _transactionNumber).ToList())
             {
                 items.Add(m_Context.Items.Where(i => i.ItemId == t.ItemId).First());
@@ -109,7 +109,7 @@ namespace Garden_Centre_MVC.Controllers
         {
             EditViewModel vm = JsonConvert.DeserializeObject<EditViewModel>(prevVM);
 
-            if (index > vm._items.Count)
+            if (index >= vm._items.Count)
             {
                 index -= vm._items.Count;
                 vm._transactionOverview.TotalValue -= vm._newItems[index].ItemPrice;
@@ -135,7 +135,7 @@ namespace Garden_Centre_MVC.Controllers
 
             TransactionOverview to = new TransactionOverview();
             to.CustomerId = editVM._transactionOverview.CustomerId;
-            to.Date = editVM._transactionOverview.Date;
+            to.Date = m_Context.TransactionOverviews.Where(i => i.TransactionNumber == editVM._transactionOverview.TransactionNumber).First().Date;
             to.TransactionNumber = editVM._transactionOverview.TransactionNumber;
             to.TotalValue = editVM._transactionOverview.TotalValue;
 

@@ -16,7 +16,7 @@
         @Html.ValidationMessageFor(m => m._items)
     </div>
 </form>
-@if (Model._items.Count > 0)
+@if (Model._items.Count > 0 || Model._newItems.Count > 0)
 {
     <table class="table table-bordered table-hover">
         <thead>
@@ -117,7 +117,7 @@
                 url: '@Url.Action("EditAddItem", "Transactions")',
                 success: function (result) {
                     $("#Historic_DropDownView" + transactionNumber).html(result);
-                    $("#Edit_ItemSelection" + "@Model._transactionOverview.TransactionNumber").prop("selectedIndex", '0').change(function (e) { this.val(e.val); e.preventDefault(); });
+                    $("#Edit_ItemSelection" + "@Model._transactionOverview.TransactionNumber").prop("selectedIndex", '0').change(function (e) { this.val(e.val()); e.preventDefault(); });
                 },
                 error: function (x, e, r) {
                     alert(e + " " + r);
