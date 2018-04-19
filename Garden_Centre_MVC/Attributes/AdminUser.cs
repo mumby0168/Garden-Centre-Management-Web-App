@@ -26,7 +26,6 @@ namespace Garden_Centre_MVC.Attributes
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
-            
             filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Home", action = "Index" }));
         }
     }

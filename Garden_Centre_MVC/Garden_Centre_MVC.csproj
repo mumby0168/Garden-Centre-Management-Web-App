@@ -169,6 +169,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\ItemsController.cs" />
+    <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\TransactionsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -227,6 +228,7 @@
     <Compile Include="ViewModels\EmployeeViewModels\EmployeeLandingViewModels.cs" />
     <Compile Include="ViewModels\InventoryViewModels\InventoryViewModel.cs" />
     <Compile Include="ViewModels\ItemsViewModels\ItemsLandingPageViewModel.cs" />
+    <Compile Include="ViewModels\LogViewModels\LogLandingViewModel.cs" />
     <Compile Include="ViewModels\Transactions\AddViewModel.cs" />
     <Compile Include="ViewModels\Transactions\EditViewModel.cs" />
     <Compile Include="ViewModels\Transactions\ExtendedViewModel.cs" />
@@ -234,6 +236,10 @@
     <Compile Include="ViewModels\Transactions\IndexViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\Garden_Centre_MVC.Persistance.DatabaseContext.mdf" />
+    <Content Include="App_Data\Garden_Centre_MVC.Persistance.DatabaseContext_log.ldf">
+      <DependentUpon>Garden_Centre_MVC.Persistance.DatabaseContext.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\darkly-theme.css" />
@@ -271,6 +277,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\Log\Log.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -302,10 +309,9 @@
     <Content Include="Views\Inventory\Partials\InventoryView.cshtml" />
     <Content Include="Views\Inventory\Partials\NewItemView.cshtml" />
     <Content Include="Views\Inventory\Partials\EditItemView.cshtml" />
+    <Content Include="Views\Log\LogLandingPage.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
   </ItemGroup>

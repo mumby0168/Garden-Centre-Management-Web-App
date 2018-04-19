@@ -21,33 +21,8 @@
 
 
 <div id="MainPageContainer">
-<div class="row">
-
-    
-    <div class="col-md-6">
-        <a style="cursor: pointer; color: lightskyblue;" id="EmployeeLandingLink">
-            <div class="jumbotron">
-                <i class="fa fa-5x fa-user"></i>
-                <h3>Employee Landing Page</h3>
-            </div>
-        </a>
-    </div>
-    
-    
-    <div class="col-md-6">
-        <a style="cursor: pointer; color: lightskyblue;" id="CustomerLandingLink">
-            <div class="jumbotron">
-                <i class="fa fa-5x fa-users"></i>
-                <h3>Customer Landing Page</h3>
-            </div>
-        </a>
-    </div>
-    
-</div>
-                                                             
     <div class="row">
 
-        
         <div class="col-md-6">
             <a style="cursor: pointer; color: lightskyblue;" id="TransactionsLandingLink">
                 <div class="jumbotron">
@@ -56,8 +31,21 @@
                 </div>
             </a>
         </div>
-        
-        
+
+
+
+        <div class="col-md-6">
+            <a style="cursor: pointer; color: lightskyblue;" id="CustomerLandingLink">
+                <div class="jumbotron">
+                    <i class="fa fa-5x fa-users"></i>
+                    <h3>Customer Landing Page</h3>
+                </div>
+            </a>
+        </div>
+
+    </div>
+                                                             
+    <div class="row">
         <div class="col-md-6">
             <a style="cursor: pointer; color: lightskyblue;" id="InventoryLandingLink">
                 <div class="jumbotron">
@@ -67,6 +55,62 @@
             </a>
         </div>
         
+        @if (CurrentUser.EmployeeLogin.Employee.Admin)
+        {
+            <div class="col-md-6">
+                <a style="cursor: pointer; color: lightskyblue;" id="EmployeeLandingLink">
+                    <div class="jumbotron">
+                        <i class="fa fa-5x fa-user"></i>
+                        <h3>Employee Landing Page</h3>
+                    </div>
+                </a>
+            </div>
+        }
+        else
+        {
+            <div style="opacity: 0.5; " class="col-md-6">
+                <a style="cursor: pointer; color: lightskyblue;  pointer-events: none; cursor: default; text-decoration: none;color: gray; opacity: 0.2;" id="EmployeeLandingLink">
+                    <div class="jumbotron">
+                        <i class="fa fa-5x fa-lock"></i>
+                        <h3>Employee Landing Page</h3>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+    
+    <div class="row">
+
+        @if (CurrentUser.EmployeeLogin.Employee.Admin)
+    {
+        <div class="col-sm-12">
+            <a style="cursor: pointer; color: lightskyblue;" id="ActionLogLandingLink">
+                <div class="jumbotron">
+                    <div align="center">
+                        <i class="fa fa-pencil fa-3x"></i>
+                        <h3>Action log</h3>
+                    </div>
+                    <div align="left">
+
+                    </div>
+                </div>
+            </a>
+        </div>
+}
+else
+{
+    <div class="col-sm-12">
+        <a style="cursor: pointer; color: lightskyblue;  pointer-events: none; cursor: default; text-decoration: none;color: gray; opacity: 0.2;" id="ActionLogLandingLink">
+            <div class="jumbotron">
+                <div align="center">
+                    <i align="left" class="fa fa-lock fa-5x"></i>
+                    <h3>Action log</h3>
+                </div>                
+            </div>
+        </a>
+    </div>
+}
+
     </div>
 
 </div>

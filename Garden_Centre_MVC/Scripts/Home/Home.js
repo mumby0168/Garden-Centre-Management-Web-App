@@ -25,5 +25,16 @@
 
     });
 
+    $("#ActionLogLandingLink").click(function() {
+
+        $.ajax({
+            url: "Log/Index",
+            success: function(view) {
+                $("#MainPageContainer").html(view);
+            }
+        });
+
+    });
+
 
 });
