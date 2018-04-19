@@ -207,9 +207,9 @@ namespace Garden_Centre_MVC.Controllers
             return PartialView("Partials/AddView", vm);
         }
 
-        public PartialViewResult SerializeAdd(string prevVM)
+        public PartialViewResult SerializeAdd(string prevVm)
         {
-            AddViewModel addVM = JsonConvert.DeserializeObject<AddViewModel>(prevVM);
+            AddViewModel addVM = JsonConvert.DeserializeObject<AddViewModel>(prevVm);
 
             TransactionOverview to = new TransactionOverview();
             to.CustomerId = addVM.transactionOverview.CustomerId;

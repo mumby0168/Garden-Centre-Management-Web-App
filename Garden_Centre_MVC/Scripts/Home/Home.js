@@ -23,12 +23,24 @@
             }
         });
 
+
     });
 
     $("#ActionLogLandingLink").click(function() {
 
         $.ajax({
             url: "Log/Index",
+            success: function(view) {
+                $("#MainPageContainer").html(view);
+            }
+        });
+
+    });
+
+    $("#InventoryLandingLink").click(function() {
+
+        $.ajax({
+            url: "Inventory/Index",
             success: function(view) {
                 $("#MainPageContainer").html(view);
             }
