@@ -1,9 +1,11 @@
 ﻿using Garden_Centre_MVC.Models;
 using Garden_Centre_MVC.Persistance;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Script.Serialization;
 
 namespace Garden_Centre_MVC.ViewModels.Transactions
 {
@@ -27,6 +29,17 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
                 }
 
                 return ret;
+            }
+        }
+
+        public string TransactionOverviewsJSON
+        {
+            get
+            {
+                
+                String s = JsonConvert.SerializeObject(TransactionOverviews);
+                
+                return s;
             }
         }
     }
