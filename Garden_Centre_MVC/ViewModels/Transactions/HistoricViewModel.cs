@@ -38,7 +38,6 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
             {
                 
                 String s = JsonConvert.SerializeObject(TransactionOverviews);
-                
                 return s;
             }
         }

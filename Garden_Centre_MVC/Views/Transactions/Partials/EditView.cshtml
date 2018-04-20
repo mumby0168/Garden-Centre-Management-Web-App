@@ -127,6 +127,16 @@
         });
 
         $(".editCancelBtn").on("click", function (e) {
+            @if (!Model.HasChanged)
+            {
+                @:$("#Historic_DropDownView" + @Model._transactionOverview.TransactionNumber).delay(100).slideUp("slow", "swing", function (e) {
+                    @:$("#Historic_DropDownViewTR" + @Model._transactionOverview.TransactionNumber).attr("style", "display:none;");
+                    @:prevOpenedTN = '0';
+                @:});
+
+                @:return;
+            }
+
             if (confirm("Are you sure you would like discard changes to this transaction ?")) {
                 $("#Historic_DropDownView" + @Model._transactionOverview.TransactionNumber).delay(100).slideUp("slow", "swing", function (e) {
                     $("#Historic_DropDownViewTR" + @Model._transactionOverview.TransactionNumber).attr("style", "display:none;");
