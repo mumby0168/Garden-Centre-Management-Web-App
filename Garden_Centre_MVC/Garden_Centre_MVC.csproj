@@ -215,6 +215,10 @@
     <Compile Include="Migrations\201804190751126_EditedTheEmployeeLinkInTheLogTable.Designer.cs">
       <DependentUpon>201804190751126_EditedTheEmployeeLinkInTheLogTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804200754187_AddedAccountCreatedFlagToEmployee.cs" />
+    <Compile Include="Migrations\201804200754187_AddedAccountCreatedFlagToEmployee.Designer.cs">
+      <DependentUpon>201804200754187_AddedAccountCreatedFlagToEmployee.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ActionType.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -368,6 +372,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804190751126_EditedTheEmployeeLinkInTheLogTable.resx">
       <DependentUpon>201804190751126_EditedTheEmployeeLinkInTheLogTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804200754187_AddedAccountCreatedFlagToEmployee.resx">
+      <DependentUpon>201804200754187_AddedAccountCreatedFlagToEmployee.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
