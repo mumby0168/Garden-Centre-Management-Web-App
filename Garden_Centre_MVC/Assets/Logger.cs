@@ -10,7 +10,7 @@ namespace Garden_Centre_MVC.Assets
 {
     public static class Logger
     {
-        public static void LogAction(string ActionType, string message, EmployeeLogin empLog = null)
+        public static void LogAction(string actionType, string message, EmployeeLogin empLog = null)
         {
 
             Log log;
@@ -22,7 +22,7 @@ namespace Garden_Centre_MVC.Assets
                 {
                     EmployeeLoginId = CurrentUser.EmployeeLogin.EmployeeLoginId,
                     DateOfAction = DateTime.Now,
-                    ActionType = _context.ActionTypes.FirstOrDefault(a => a.Description == ActionType),
+                    ActionType = _context.ActionTypes.FirstOrDefault(a => a.Description == actionType),
                     PropertyEffected = message
                 };
             }
@@ -32,7 +32,7 @@ namespace Garden_Centre_MVC.Assets
                 {
                     EmployeeLoginId = empLog.EmployeeLoginId,
                     DateOfAction = DateTime.Now,
-                    ActionType = _context.ActionTypes.FirstOrDefault(a => a.Description == ActionType),
+                    ActionType = _context.ActionTypes.FirstOrDefault(a => a.Description == actionType),
                     PropertyEffected = message
                 };
             }

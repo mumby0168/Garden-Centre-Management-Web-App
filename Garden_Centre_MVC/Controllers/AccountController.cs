@@ -189,7 +189,7 @@ namespace Garden_Centre_MVC.Controllers
 
             if (!employee.CanReset)
             {
-                return View();
+                return Content("You need to send yourself a email in order to reset your password");
 
             }
 
@@ -203,6 +203,7 @@ namespace Garden_Centre_MVC.Controllers
 
             employee.Password = bytes[0];
             employee.Salt = bytes[1];
+            employee.CanReset = false;
 
 
             _context.SaveChanges();
