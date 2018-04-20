@@ -21,7 +21,6 @@ namespace Garden_Centre_MVC.Models
         public string SecondName { get; set; }
 
         [Required]
-        [CheckifIdHasBeenGiven]
         public int EmployeeNumber { get; set; }
 
         [Required]
