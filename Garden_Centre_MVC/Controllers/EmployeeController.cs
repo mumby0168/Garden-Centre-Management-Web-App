@@ -10,6 +10,7 @@ using Garden_Centre_MVC.Attributes.Assets;
 using Garden_Centre_MVC.Models;
 using Garden_Centre_MVC.Persistance;
 using Garden_Centre_MVC.ViewModels.EmployeeViewModels;
+using Microsoft.Ajax.Utilities;
 
 namespace Garden_Centre_MVC.Controllers
 {
@@ -126,15 +127,33 @@ namespace Garden_Centre_MVC.Controllers
 
         public ActionResult Search(string str)
         {
-            var employees = _context.Employees.ToList();
-            var listToReturn = new List<Employee>();
-            foreach (var emp in employees)
+            EmployeeLandingViewModels vm;
+            List<Employee> employees;
+
+            if (str.IsNullOrWhiteSpace())
             {
-                var fullName = emp.FirstName + emp.SecondName;
-                if (fullName.ToUpper().Contains(str.ToUpper())) listToReturn.Add(emp);
+                employees = _context.Employees.Take(10).ToList();
+
+                vm = new EmployeeLandingViewModels()
+                {
+                    Employees = employees,
+                    PageNum = 1,
+                    IsSearch = false
+                };
+            }
+            else
+            {
+                employees = _context.Employees.ToList();
+                var listToReturn = new List<Employee>();
+                foreach (var emp in employees)
+                {
+                    var fullName = emp.FirstName + emp.SecondName;
+                    if (fullName.ToUpper().Contains(str.ToUpper())) listToReturn.Add(emp);
+                }
+
+                vm = new EmployeeLandingViewModels() { Employees = listToReturn, PageNum = 1, IsSearch = true };
             }
 
-            var vm = new EmployeeLandingViewModels() {Employees = listToReturn, PageNum = 1, IsSearch = true};
             return PartialView("EmployeeLanding", vm);
         }
 
