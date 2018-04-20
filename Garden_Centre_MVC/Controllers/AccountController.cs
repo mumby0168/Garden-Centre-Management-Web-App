@@ -87,20 +87,20 @@ namespace Garden_Centre_MVC.Controllers
             var checkifExist = _context.EmployeeLogins.FirstOrDefault(e => e.Username == registerVm.Email);
 
             if (checkifExist != null)
-                //just need to add a custom attribute to the Email attribute in 
                 return View("Register");
 
 
             if (registerVm.Password != registerVm.ReTypePasssword)
                 return View("Register");
 
-            var employeeLogins = _context.Employees.ToList();
 
-            var employee = employeeLogins.FirstOrDefault(e => e.EmployeeNumber == registerVm.EmployeeNumber);
+            var employee = _context.Employees.FirstOrDefault(e => e.EmployeeNumber == registerVm.EmployeeNumber);
 
             if (employee == null)
                 return View("Register");
 
+            if (employee.AccountCreated)
+                return View("Register");
 
             var returned = Encryptor.Encrypt(registerVm.Password);
 
@@ -114,6 +114,9 @@ namespace Garden_Centre_MVC.Controllers
             };
 
             _context.EmployeeLogins.Add(emp);
+
+            employee.AccountCreated = true;
+
             _context.SaveChanges();
 
             var vm = new LoginViewModel()
@@ -122,7 +125,7 @@ namespace Garden_Centre_MVC.Controllers
                 EmployeeNumber = registerVm.EmployeeNumber
             };
 
-            Logger.LogAction("Registered", "None.");
+            Logger.LogAction("Registered", "None.", emp);
             
             return View("Login", vm);
         }
@@ -186,7 +189,7 @@ namespace Garden_Centre_MVC.Controllers
 
             if (!employee.CanReset)
             {
-                return View();
+                return Content("You need to send yourself a email in order to reset your password");
 
             }
 
@@ -200,6 +203,7 @@ namespace Garden_Centre_MVC.Controllers
 
             employee.Password = bytes[0];
             employee.Salt = bytes[1];
+            employee.CanReset = false;
 
 
             _context.SaveChanges();

@@ -25,6 +25,9 @@ namespace Garden_Centre_MVC.Models
         [Required]
         public bool Admin { get; set; }
 
+        [Required]
+        public bool AccountCreated { get; set; }
+
     }
     
 }

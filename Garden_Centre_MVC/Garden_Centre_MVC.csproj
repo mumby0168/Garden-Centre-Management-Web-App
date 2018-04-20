@@ -215,6 +215,10 @@
     <Compile Include="Migrations\201804190751126_EditedTheEmployeeLinkInTheLogTable.Designer.cs">
       <DependentUpon>201804190751126_EditedTheEmployeeLinkInTheLogTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804200754187_AddedAccountCreatedFlagToEmployee.cs" />
+    <Compile Include="Migrations\201804200754187_AddedAccountCreatedFlagToEmployee.Designer.cs">
+      <DependentUpon>201804200754187_AddedAccountCreatedFlagToEmployee.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ActionType.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -309,7 +313,6 @@
     <Content Include="Views\Account\ForgottenPassword.cshtml" />
     <Content Include="Views\Employee\EmployeeLanding.cshtml" />
     <Content Include="Views\Employee\EmployeeForm.cshtml" />
-    <Content Include="Views\Account\ResetPasswordView.cshtml" />
     <Content Include="Views\Items\Index.cshtml" />
     <Content Include="Views\Transactions\Index.cshtml" />
     <Content Include="Views\Transactions\Partials\HistoricView.cshtml" />
@@ -324,6 +327,7 @@
     <Content Include="Views\Account\EmailSent.cshtml" />
     <Content Include="Views\Customer\CustomerForm.cshtml" />
     <Content Include="Views\Customer\CustomerLanding.cshtml" />
+    <Content Include="Views\Account\ResetPassword.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -369,6 +373,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804190751126_EditedTheEmployeeLinkInTheLogTable.resx">
       <DependentUpon>201804190751126_EditedTheEmployeeLinkInTheLogTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804200754187_AddedAccountCreatedFlagToEmployee.resx">
+      <DependentUpon>201804200754187_AddedAccountCreatedFlagToEmployee.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

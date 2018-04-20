@@ -10,18 +10,33 @@ namespace Garden_Centre_MVC.Assets
 {
     public static class Logger
     {
-        public static void LogAction(string ActionType, string message)
+        public static void LogAction(string actionType, string message, EmployeeLogin empLog = null)
         {
+
+            Log log;
             DatabaseContext _context = new DatabaseContext();
 
-            Log log = new Log()
+            if (empLog == null)
             {
-                EmployeeLogin = CurrentUser.EmployeeLogin,
-                DateOfAction = DateTime.Now,
-                ActionType = _context.ActionTypes.FirstOrDefault(a => a.Description == ActionType),
-                PropertyEffected = message
-            };
-
+                log = new Log()
+                {
+                    EmployeeLoginId = CurrentUser.EmployeeLogin.EmployeeLoginId,
+                    DateOfAction = DateTime.Now,
+                    ActionType = _context.ActionTypes.FirstOrDefault(a => a.Description == actionType),
+                    PropertyEffected = message
+                };
+            }
+            else
+            {
+                log = new Log()
+                {
+                    EmployeeLoginId = empLog.EmployeeLoginId,
+                    DateOfAction = DateTime.Now,
+                    ActionType = _context.ActionTypes.FirstOrDefault(a => a.Description == actionType),
+                    PropertyEffected = message
+                };
+            }
+        
             _context.Logs.Add(log);
 
             _context.SaveChanges();

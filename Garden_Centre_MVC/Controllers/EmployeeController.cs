@@ -61,7 +61,8 @@ namespace Garden_Centre_MVC.Controllers
                     Admin = emp.Admin,
                     EmployeeNumber = emp.EmployeeNumber,
                     FirstName = emp.FirstName,
-                    SecondName = emp.SecondName
+                    SecondName = emp.SecondName,
+                    AccountCreated = false
                 };
                 _context.Employees.Add(employee);
                 _context.SaveChanges();
