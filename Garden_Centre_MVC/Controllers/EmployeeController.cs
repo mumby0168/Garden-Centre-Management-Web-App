@@ -55,25 +55,55 @@ namespace Garden_Centre_MVC.Controllers
         [System.Web.Mvc.HttpPost]
         public ActionResult Save(Employee emp)
         {
-            if (!ModelState.IsValid)
-            {
+
+            int errorCounter = 0;
                 
-
-                Error er = new Error()
-                {
-                    Property = emp,
-                    ErrorMessage = "Employee Number Not Valid"
-                };
-
-                var json = JsonConvert.SerializeObject(er);
+            Error error = new Error();
+            error.ErrorMessages = new List<string>();
+            error.Property = emp;
 
 
-                return new HttpStatusCodeResult(HttpStatusCode.NotAcceptable, json);
+
+            if (emp.FirstName.IsNullOrWhiteSpace() || emp.SecondName.IsNullOrWhiteSpace())
+            {
+                error.ErrorMessages.Add("Please enter a first and last name.");
+                errorCounter++;
             }
+
+
+            if (emp.EmployeeNumber.ToString().Trim().Length != 6)
+            {
+                error.ErrorMessages.Add("The Employee number must be 6 digits.");
+                errorCounter++;
+            }
+
+            if (errorCounter != 0 && emp.EmployeeId != 0)
+            {
+                var obj = JsonConvert.SerializeObject(error);
+                return new HttpStatusCodeResult(HttpStatusCode.ExpectationFailed, obj);
+            }
+            
+            
 
             //new so add them to the database
             if (emp.EmployeeId == 0)
             {
+                if (_context.Employees.FirstOrDefault(e => e.EmployeeNumber == emp.EmployeeNumber) != null)
+                {
+                    error.ErrorMessages.Add("The Employee Number has already been assigned.");
+
+                    var obj = JsonConvert.SerializeObject(error);
+
+                    return new HttpStatusCodeResult(HttpStatusCode.ExpectationFailed, obj);
+                }
+
+                if (errorCounter != 0)
+                {
+                    var obj = JsonConvert.SerializeObject(error);
+
+                    return new HttpStatusCodeResult(HttpStatusCode.ExpectationFailed, obj);
+                }
+
                 var employee = new Employee
                 {
                     Admin = emp.Admin,
@@ -85,10 +115,10 @@ namespace Garden_Centre_MVC.Controllers
                 _context.Employees.Add(employee);
                 _context.SaveChanges();
                 var vm = new EmployeeLandingViewModels() {Employees = _context.Employees.Take(10).ToList()};
-                Logger.LogAction("Employee Added", employee.FirstName + employee.SecondName + "Added.");
+                Logger.LogAction("Employee Added ", employee.FirstName + employee.SecondName + " Added.");
                 return View("EmployeeLanding", vm);
             }
-            else
+            else if(errorCounter == 0)
             {
                 var employee = _context.Employees.FirstOrDefault(e => e.EmployeeId == emp.EmployeeId);
                 employee.Admin = emp.Admin;
@@ -97,9 +127,13 @@ namespace Garden_Centre_MVC.Controllers
                 employee.SecondName = emp.SecondName;
                 _context.SaveChanges();
                 var vm = new EmployeeLandingViewModels() {Employees = _context.Employees.Take(10).ToList()};
-                Logger.LogAction("Employee Edited", employee.FirstName + employee.SecondName + "Edited.");
+                Logger.LogAction("Employee Edited ", employee.FirstName + employee.SecondName + " Edited.");
                 return PartialView("EmployeeLanding", vm);
             }
+
+            var ob1j = JsonConvert.SerializeObject(error);
+             
+            return new HttpStatusCodeResult(HttpStatusCode.ExpectationFailed, ob1j);
         }
 
         public ActionResult Remove(int id)

@@ -215,13 +215,8 @@ namespace Garden_Centre_MVC.Controllers
 
             if (Session[CurrentUser.EmployeeLogin.Username] != null)
             {
-                Log log = new Log()
-                {
-                    EmployeeLogin = CurrentUser.EmployeeLogin,
-                    ActionType = _context.ActionTypes.FirstOrDefault(a => a.Description == "Logged Out"),
-                    PropertyEffected = "None",
-                    DateOfAction = DateTime.Now
-                };
+                Logger.LogAction("Logged Out", "None.");
+
                 Session.Contents.Remove(CurrentUser.EmployeeLogin.Username);
             }
 

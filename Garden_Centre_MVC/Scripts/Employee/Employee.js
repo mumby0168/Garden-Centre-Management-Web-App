@@ -115,11 +115,11 @@
     $("#EmployeeForm").submit(function(e) {
         e.preventDefault();
 
-        if ($("#EmployeeNumber").val().toString().length !== 6) {
-            //bootbox.alert("The employee Id must be 6 digits");
-            $("#EmpNumVal").html("The employee Id must be 6 digits");
-            return;
-        }
+        //if ($("#EmployeeNumber").val().toString().length !== 6) {
+        //    //bootbox.alert("The employee Id must be 6 digits");
+        //    $("#EmpNumVal").html("The employee Id must be 6 digits");
+        //    return;
+        //}
 
         var form = $("#EmployeeForm").serialize();
 
@@ -134,8 +134,30 @@
                 $("#MainPageContainer").html(view);
             },
             error: function (error, type, errorMessage) {
+
+                
+
+
                 var errorobj = JSON.parse(errorMessage);
-                $("#EmpNumVal").html(errorobj.ErrorMessage);
+
+                $("#ErrorDiv").html("");
+
+                var div = document.getElementById("ErrorDiv");
+
+                var list = document.createElement("ul");              
+
+                for (var i = 0; i < errorobj.ErrorMessages.length; i++) {
+                    var li = document.createElement("li");
+
+                    li.innerHTML = errorobj.ErrorMessages[i];
+
+                    list.appendChild(li);
+                }
+
+                div.setAttribute("style", "color:red");
+
+                div.appendChild(list);
+
 
             }
         });

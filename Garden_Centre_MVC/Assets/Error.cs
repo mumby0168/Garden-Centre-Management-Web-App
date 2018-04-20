@@ -9,6 +9,6 @@ namespace Garden_Centre_MVC.Assets
     {
         public object Property { get; set; }
 
-        public string ErrorMessage { get; set; }
+        public List<string> ErrorMessages { get; set; }
     }
 }
