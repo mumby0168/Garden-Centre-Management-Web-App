@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using Antlr.Runtime.Tree;
+using Garden_Centre_MVC.Attributes;
 
 namespace Garden_Centre_MVC.Models
 {
@@ -20,6 +21,7 @@ namespace Garden_Centre_MVC.Models
         public string SecondName { get; set; }
 
         [Required]
+        [CheckifIdHasBeenGiven]
         public int EmployeeNumber { get; set; }
 
         [Required]

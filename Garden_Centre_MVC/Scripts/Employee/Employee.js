@@ -132,6 +132,11 @@
                 $("#EmployeeFormModal").hide();
                 $(".modal-backdrop").remove();
                 $("#MainPageContainer").html(view);
+            },
+            error: function (error, type, errorMessage) {
+                var errorobj = JSON.parse(errorMessage);
+                $("#EmpNumVal").html(errorobj.ErrorMessage);
+
             }
         });
 

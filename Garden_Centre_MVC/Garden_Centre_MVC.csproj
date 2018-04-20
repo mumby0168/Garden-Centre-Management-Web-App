@@ -158,12 +158,14 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Assets\Error.cs" />
     <Compile Include="Assets\Logger.cs" />
     <Compile Include="Attributes\AdminUser.cs" />
     <Compile Include="Assets\CurrentUser.cs" />
     <Compile Include="Assets\Encryptor.cs" />
     <Compile Include="Attributes\CheckIfAlreadyRegistered.cs" />
     <Compile Include="Attributes\CheckIfEmailExists.cs" />
+    <Compile Include="Attributes\CheckifIdHasBeenGiven.cs" />
     <Compile Include="Attributes\NormalUser.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />

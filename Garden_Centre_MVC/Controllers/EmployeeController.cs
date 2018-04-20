@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 using Garden_Centre_MVC.Assets;
 using Garden_Centre_MVC.Attributes;
@@ -11,6 +13,7 @@ using Garden_Centre_MVC.Models;
 using Garden_Centre_MVC.Persistance;
 using Garden_Centre_MVC.ViewModels.EmployeeViewModels;
 using Microsoft.Ajax.Utilities;
+using Newtonsoft.Json;
 
 namespace Garden_Centre_MVC.Controllers
 {
@@ -49,10 +52,24 @@ namespace Garden_Centre_MVC.Controllers
             return PartialView("EmployeeLanding", vm);
         }
 
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         public ActionResult Save(Employee emp)
         {
-            if (!ModelState.IsValid) return View();
+            if (!ModelState.IsValid)
+            {
+                
+
+                Error er = new Error()
+                {
+                    Property = emp,
+                    ErrorMessage = "Employee Number Not Valid"
+                };
+
+                var json = JsonConvert.SerializeObject(er);
+
+
+                return new HttpStatusCodeResult(HttpStatusCode.NotAcceptable, json);
+            }
 
             //new so add them to the database
             if (emp.EmployeeId == 0)
@@ -114,7 +131,7 @@ namespace Garden_Centre_MVC.Controllers
         /// gets all of the employees to be viewed in the table
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [System.Web.Mvc.HttpGet]
         public ActionResult GetAll()
         {
             return View();
