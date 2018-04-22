@@ -1,3 +1,5 @@
+//Repo with full change history for this script can be found here https://bitbucket.org/RobertBennett1998/utillity
+
 class Paging {
     constructor(data, tableId, headers, rowLambda, btnClass, displyEmptyRows) {
         this.m_Data = data;
