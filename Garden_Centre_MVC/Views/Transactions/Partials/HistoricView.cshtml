@@ -5,7 +5,7 @@
     //TODO: Implement a smooth change between view and edit for the same transaction
 }
 
-<table id="Paging_Test" class="table table-bordered table-hover">
+<table id="HistoricTransactions" class="table table-bordered table-hover">
 </table>
 
 <script type="text/javascript">
@@ -13,30 +13,30 @@
     $(document).ready(function () {
         ///////////////////
         var headers = ["Transaction Number", "Date", "Time", "Customer", "Total Value", "Actions"];
-        var paging = new Paging(JSON.parse('@Html.Raw(Model.TransactionOverviewsJSON)'), "Paging_Test", headers,
+        var paging = new Paging(JSON.parse('@Html.Raw(Model.TransactionOverviewsJSON)'), "HistoricTransactions", headers,
             (dataObj, table) => {
                 var tr = document.createElement("tr");
                 var td = document.createElement("td");
                 td.innerHTML = dataObj.TransactionNumber;
                 tr.appendChild(td);
 
-                var td = document.createElement("td");
+                td = document.createElement("td");
                 td.innerHTML = dataObj.Date;
                 tr.appendChild(td);
 
-                var td = document.createElement("td");
+                td = document.createElement("td");
                 td.innerHTML = dataObj.Date;
                 tr.appendChild(td);
 
-                var td = document.createElement("td");
+                td = document.createElement("td");
                 td.innerHTML = dataObj.Customer.FullName;
                 tr.appendChild(td);
 
-                var td = document.createElement("td");
+                td = document.createElement("td");
                 td.innerHTML = dataObj.TotalValue;
                 tr.appendChild(td);
 
-                var td = document.createElement("td");
+                td = document.createElement("td");
                 var btn = document.createElement("button");
                 btn.setAttribute("class", "viewBtn btn btn-primary");
                 btn.setAttribute("title", "View the indiviudal items that make up this transaction !");

@@ -12,13 +12,6 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.ItemPrice)
-        @Html.TextBoxFor(m => m.ItemPrice, new { @id = "Price" + Model.ItemId, @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.ItemPrice)
-        <span class="field-validation-valid" data-valmsg-for="SecondName" data-valmsg-replace="true" id="EmpFirstNameVal"></span>
-    </div>
-
-    <div class="form-group">
         @Html.LabelFor(m => m.Stock)
         @Html.TextBoxFor(m => m.Stock, new { @id = "Stock" + Model.ItemId, @class = "form-control" })
         <span class="field-validation-valid" data-valmsg-for="EmployeeNumber" data-valmsg-replace="true" id="EmpNumVal"></span>

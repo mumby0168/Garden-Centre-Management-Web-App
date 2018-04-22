@@ -10,6 +10,7 @@ class Paging {
         this.m_DisplayEmptyRows = displyEmptyRows;
 
         this.CreateTableHeader();
+        this.Page(1);
     }
 
     Search(TextBoxId, FieldToSearch) {

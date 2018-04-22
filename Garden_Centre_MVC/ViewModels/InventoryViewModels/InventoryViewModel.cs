@@ -22,5 +22,13 @@ namespace Garden_Centre_MVC.ViewModels.InventoryViewModels
                 return m_Context.Items.ToList();
             }
         }
+
+        public string inventoryJSON
+        {
+            get
+            {
+                return Newtonsoft.Json.JsonConvert.SerializeObject(inventory);
+            }
+        }
     }
 }

@@ -58,7 +58,6 @@ namespace Garden_Centre_MVC.Controllers
         public PartialViewResult EditItemSerialize(Item editedItem)
         {
             var itemToUpdate = m_Context.Items.Where(i => i.ItemId == editedItem.ItemId).First();
-            itemToUpdate.ItemPrice = editedItem.ItemPrice;
             itemToUpdate.OnOrder = editedItem.OnOrder;
             itemToUpdate.Stock = editedItem.Stock;
             itemToUpdate.Description = editedItem.Description;
