@@ -1,5 +1,5 @@
 class Paging {
-    constructor(data, tableId, headers, rowLambda, btnClass) {
+    constructor(data, tableId, headers, rowLambda, btnClass, displyEmptyRows) {
         this.m_Data = data;
         this.m_SearchData = data;
         this.m_Table = document.getElementById(tableId);
@@ -7,6 +7,7 @@ class Paging {
         this.m_RowLambda = rowLambda;
         this.m_BtnClass = btnClass;
         this.m_RowsToDisplay = 10;
+        this.m_DisplayEmptyRows = displyEmptyRows;
 
         this.CreateTableHeader();
     }
@@ -49,6 +50,9 @@ class Paging {
         for (var i = (this.m_Page - 1) * this.m_RowsToDisplay; i < this.m_Page * this.m_RowsToDisplay; i++) {
             if (i < this.m_SearchData.length) {
                 this.m_RowLambda(this.m_SearchData[i], this.m_Table);
+            }
+            else if (this.m_DisplayEmptyRows === false || this.m_DisplayEmptyRows === undefined) {
+                break;
             }
             else {
                 var tr = document.createElement("tr");

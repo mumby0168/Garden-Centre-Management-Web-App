@@ -41,8 +41,6 @@ namespace Garden_Centre_MVC.Assets
 
             _context.SaveChanges();
             _context.Dispose();
-
-
         }
     }
 }
