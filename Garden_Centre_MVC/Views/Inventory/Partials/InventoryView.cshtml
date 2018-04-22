@@ -1,6 +1,6 @@
 ﻿@model Garden_Centre_MVC.ViewModels.InventoryViewModels.InventoryViewModel
 
-<table id="Inventory" class="table table-hover">
+<table id="Inventory" class="table table-striped table-bordered">
 </table>
 
 <script>
@@ -104,6 +104,6 @@
             {
                 @:table.appendChild(tr);
             }
-        });
+        }, "btn btn-primary", false);
     });
 </script>
