@@ -20,5 +20,6 @@ namespace Garden_Centre_MVC.Models
         [Required]
         public int CustomerId { get; set; }
         public Customer Customer { get; set; }
+        public String FullName { get { return Customer.FullName; } } 
     }
 }

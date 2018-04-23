@@ -13,7 +13,11 @@
     $(document).ready(function () {
         ///////////////////
         var headers = ["Transaction Number", "Date", "Time", "Customer", "Total Value", "Actions"];
-        var paging = new Paging(JSON.parse('@Html.Raw(Model.TransactionOverviewsJSON)'), "HistoricTransactions", headers,
+        var searchTerms = new Map();
+        searchTerms.set("Transaction Number", 1);
+        searchTerms.set("Full Name", 6);
+        searchTerms.set("Total Value", 2);
+        var paging = new Paging(JSON.parse('@Html.Raw(Model.TransactionOverviewsJSON)'), "HistoricTransactions", headers, searchTerms,
             (dataObj, table) => {
                 var tr = document.createElement("tr");
                 var td = document.createElement("td");

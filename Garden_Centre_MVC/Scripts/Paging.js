@@ -1,7 +1,5 @@
-//Repo with full change history for this script can be found here https://bitbucket.org/RobertBennett1998/utillity
-
 class Paging {
-    constructor(data, tableId, headers, rowLambda, btnClass, displyEmptyRows) {
+    constructor(data, tableId, headers, searchTermMap, rowLambda, btnClass, displyEmptyRows) {
         this.m_Data = data;
         this.m_SearchData = data;
         this.m_Table = document.getElementById(tableId);
@@ -10,8 +8,10 @@ class Paging {
         this.m_BtnClass = btnClass;
         this.m_RowsToDisplay = 10;
         this.m_SearchQuery = "";
+        this.m_SearchTermIndex = 0;
         this.m_SearchTerm = Object.getOwnPropertyNames(data[0])[0];
         this.m_DisplayEmptyRows = displyEmptyRows;
+        this.m_SearchTermMap = searchTermMap;
 
         this.CreateTableHeader();
         this.CreateSearchBox();
@@ -27,9 +27,9 @@ class Paging {
                 }
             }
             catch (errA) {
-                console.log(errA);
-                this.m_SearchData = undefined;
-                return;
+                    console.log(errA);
+                    this.m_SearchData = undefined;
+                    return;
             }
         }
 
@@ -57,7 +57,8 @@ class Paging {
         if (page < 1)
             return;
 
-        if (this.m_SearchData !== undefined) {
+        if(this.m_SearchData !== undefined)
+        {
             if (this.m_SearchData.length - ((page - 1) * this.m_RowsToDisplay) <= 0)
                 return;
         }
@@ -89,10 +90,9 @@ class Paging {
                 }
             }
         }
-
+        
         if (this.m_SearchData === undefined) {
             var tr = document.createElement("tr");
-
 
             var td = document.createElement("td");
             td.setAttribute("colspan", this.m_Headers.length);
@@ -229,6 +229,26 @@ class Paging {
 
         var div = document.createElement("div");
 
+        var sel = document.createElement("select");
+        sel.setAttribute("style", "float:right;");
+        sel.addEventListener("change", (e) => {
+            this.m_SearchTerm = Object.getOwnPropertyNames(this.m_Data[0])[parseInt(e.target.value)];
+            this.m_SearchTermIndex = e.target.value;
+            this.Search();
+        });
+
+        for (var [k, v] of this.m_SearchTermMap)
+        {
+            var opt = document.createElement("option");
+            opt.setAttribute("value", v.toString());
+            opt.innerHTML = k;
+            
+            sel.appendChild(opt);
+        }
+
+        div.appendChild(sel);
+        sel.value = this.m_SearchTermIndex;
+        
         var clearBtn = document.createElement("button");
 
         if (this.m_BtnClass !== undefined)
@@ -258,8 +278,6 @@ class Paging {
         });
 
         div.appendChild(this.m_SearchBox);
-
-
 
         td.appendChild(div);
         tr.appendChild(td);
