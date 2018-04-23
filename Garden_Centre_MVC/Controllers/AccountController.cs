@@ -76,6 +76,13 @@ namespace Garden_Centre_MVC.Controllers
             return View("Login", vm);
         }
 
+        public ActionResult GetAccountDetails(int id)
+        {
+            var emp = _context.EmployeeLogins.Include(e => e.Employee).FirstOrDefault(e => e.EmployeeLoginId == id);
+
+            return View("EmployeeAccount", emp);
+        }
+
         public ActionResult Register()
         {
             return View("Register");

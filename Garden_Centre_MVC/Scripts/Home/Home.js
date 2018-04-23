@@ -59,5 +59,24 @@
 
     });
 
+    $("#EmployeeNameLink").click(function() {
+
+        var id = document.getElementById("UsersId").value;
+
+        $.ajax({
+            url: "Account/GetAccountDetails/" + id,
+            success: function(view) {
+                $("#MainPageContainer").html(view);
+            }
+        });
+
+    });
+
+
+    $("#PersonalDetailsDown").click(function () {
+
+        $("#PersonalDetailsDiv").show();
+
+    });
 
 });

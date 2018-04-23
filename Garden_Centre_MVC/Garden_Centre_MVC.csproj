@@ -330,6 +330,7 @@
     <Content Include="Views\Customer\CustomerForm.cshtml" />
     <Content Include="Views\Customer\CustomerLanding.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Account\EmployeeAccount.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

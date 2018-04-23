@@ -9,7 +9,7 @@
 <div class="jumbotron" style="padding: 15px;">
     <div class="row" style="margin-bottom: 5px;">
         <div align="left" class="col-md-4">
-            <h3>@CurrentUser.EmployeeLogin.Employee.FirstName @CurrentUser.EmployeeLogin.Employee.SecondName</h3>
+            <a id="EmployeeNameLink"><h3>@CurrentUser.EmployeeLogin.Employee.FirstName @CurrentUser.EmployeeLogin.Employee.SecondName</h3></a>
         </div>
         <div class="col-md-4" align="center">
             <a href="/Home"><h3 align="center" style="margin-bottom: 20px; color:black">Garden Centre <i class="fa fa fa-plus-circle"></i></h3></a>
@@ -23,7 +23,7 @@
 </div>
 
 
-
+@Html.Hidden("id", CurrentUser.EmployeeLogin.EmployeeLoginId, new {@id = "UsersId"});
 
 <div id="MainPageContainer">
     <div class="row">
