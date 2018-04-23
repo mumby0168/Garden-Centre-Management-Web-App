@@ -23,6 +23,8 @@ namespace Garden_Centre_MVC.Controllers
     {
         private DatabaseContext _context;
 
+        private int EmployeeNumber = 0;
+
         public EmployeeController()
         {
             _context = new DatabaseContext();
@@ -83,8 +85,6 @@ namespace Garden_Centre_MVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.ExpectationFailed, obj);
             }
             
-            
-
             //new so add them to the database
             if (emp.EmployeeId == 0)
             {
@@ -120,6 +120,20 @@ namespace Garden_Centre_MVC.Controllers
             }
             else if(errorCounter == 0)
             {
+                //if the users id is already in the database
+                if (_context.Employees.FirstOrDefault(e => e.EmployeeNumber == emp.EmployeeNumber) != null)
+                {
+                    if (emp.EmployeeNumber != EmployeeNumber)
+                    {
+                        error.ErrorMessages.Add("The Employee Number has already been assigned.");
+
+                        var obj = JsonConvert.SerializeObject(error);
+
+                        return new HttpStatusCodeResult(HttpStatusCode.ExpectationFailed, obj);
+                    }
+
+                }
+
                 var employee = _context.Employees.FirstOrDefault(e => e.EmployeeId == emp.EmployeeId);
                 employee.Admin = emp.Admin;
                 employee.EmployeeNumber = emp.EmployeeNumber;
@@ -158,6 +172,9 @@ namespace Garden_Centre_MVC.Controllers
         {
             var employee = _context.Employees.FirstOrDefault(e => e.EmployeeId == id);
             var vm = employee;
+
+            EmployeeNumber = employee.EmployeeNumber;
+
             return PartialView("EmployeeForm", vm);
         }
 

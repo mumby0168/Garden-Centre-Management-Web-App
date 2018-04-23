@@ -104,7 +104,13 @@
             url: "/Employee/Edit/" + $(this).attr("empId"),
             success: function(view) {
                 $("#EmployeeFormModalBody").html(view);
+
+                var inputEmployeeNumber = document.getElementById("EmployeeNumber");
+
+                inputEmployeeNumber.setAttribute("disabled", "disabled");
+
                 $("#EmployeeFormModal").modal();
+
             }
         });
 
@@ -143,6 +149,12 @@
                 $("#ErrorDiv").html("");
 
                 var div = document.getElementById("ErrorDiv");
+
+                var h4 = document.createElement("h5");
+
+                h4.innerHTML = "Form Issues:";
+
+                div.appendChild(h4);
 
                 var list = document.createElement("ul");              
 
