@@ -7,12 +7,19 @@
     var prevInvOpenedTN = '0';
     $(document).ready(function (e) {
         var headers = ["Item ID", "Name", "Price", "In Stock", "On Order", "Sold"];
+        var searchTerms = new Map();
+        searchTerms.set("Item ID", 0);
+        searchTerms.set("Name", 1);
+        searchTerms.set("Price", 2);
+        searchTerms.set("Stock", 3);
+        searchTerms.set("On Order", 4);
+        searchTerms.set("Sold", 5);
         @if (Garden_Centre_MVC.Attributes.Assets.CurrentUser.EmployeeLogin.Employee.Admin)
         {
             @:headers.push("Actions");
         }
 
-        var paging = new Paging(JSON.parse('@Html.Raw(Model.inventoryJSON)'), "Inventory", headers, (dataObj, table) => {
+        var paging = new Paging(JSON.parse('@Html.Raw(Model.inventoryJSON)'), "Inventory", headers, searchTerms, (dataObj, table) => {
             var tr = document.createElement("tr");
 
             var td = document.createElement("td");
