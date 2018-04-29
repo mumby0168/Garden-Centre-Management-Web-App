@@ -39,7 +39,7 @@
                 $.ajax({
                     url: "Log/GetAll",
                     success: function (datas) {
-                        data = datas;                        
+                        data = JSON.parse(datas); 
                         ActionLogTable(data);
                     }
                 });
@@ -87,11 +87,7 @@
     });
 
 
-    $("#PersonalDetailsDown").click(function () {
-
-        $("#PersonalDetailsDiv").show();
-
-    });
+   
 
 
 
@@ -111,6 +107,8 @@
 
         var header = ["Log Number", "Date of Action", "Username", "Action Type", "Details of Action"];
 
+        var styles = "btn btn-default";
+
         var paging = new Paging(JsonObj,
             tableId,
             header,
@@ -120,7 +118,7 @@
                 var tr, td;
 
                 tr = document.createElement("tr");
-                td = document.createElement("td");
+                td = document.createElement("td");      
                 td.innerHTML = data.logNumber;
                 tr.appendChild(td);
 
@@ -137,11 +135,11 @@
                 tr.appendChild(td);
 
                 td = document.createElement("td");
-                td.innerHTML = data.DetailsofAction;
+                td.innerHTML = data.DetailsOfAction;
                 tr.appendChild(td);
 
                 table.appendChild(tr);
-            });
+            }, styles);
 
     }
 

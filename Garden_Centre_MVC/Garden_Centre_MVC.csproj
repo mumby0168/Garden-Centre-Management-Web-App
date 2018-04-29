@@ -284,6 +284,7 @@
     <Content Include="Scripts\Customers\Customers.js" />
     <Content Include="Scripts\datatables.js" />
     <Content Include="Scripts\datatables.min.js" />
+    <Content Include="Scripts\EmployeeDetails.js" />
     <Content Include="Scripts\Employee\Employee.js" />
     <Content Include="Scripts\Home\Home.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

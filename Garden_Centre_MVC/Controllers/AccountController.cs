@@ -83,6 +83,16 @@ namespace Garden_Centre_MVC.Controllers
             return View("EmployeeAccount", emp);
         }
 
+        public ActionResult EditPersonal(Employee employee)
+        {
+
+
+
+
+
+            return View("EmployeeAccount");
+        }
+
         public ActionResult Register()
         {
             return View("Register");

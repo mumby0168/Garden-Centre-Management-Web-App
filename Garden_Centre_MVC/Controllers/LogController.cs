@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using Garden_Centre_MVC.Persistance;
 using Garden_Centre_MVC.ViewModels.LogViewModels;
+using Newtonsoft.Json;
 
 namespace Garden_Centre_MVC.Controllers
 {
@@ -30,7 +31,7 @@ namespace Garden_Centre_MVC.Controllers
             return View("LogLandingPage", vm);
         }
 
-        public ActionResult GetAll()
+        public string GetAll()
         {
             var logs = _context.Logs.Include(l => l.ActionType).Include(e => e.EmployeeLogin.Employee).OrderByDescending(l => l.DateOfAction).ToList();
 
@@ -42,10 +43,10 @@ namespace Garden_Centre_MVC.Controllers
             {
                 returns.Add(new
                 {
-                    logNumber = log.LogId, DateofAction = log.DateOfAction, Username = log.EmployeeLogin.Username, ActionType = log.ActionType, DetailsOfAction = log.PropertyEffected});
+                    logNumber = log.LogId, DateofAction = log.DateOfAction.ToString("R"), Username = log.EmployeeLogin.Username, ActionType = log.ActionType.Description, DetailsOfAction = log.PropertyEffected});
             }
 
-            return Json(returns, JsonRequestBehavior.AllowGet);
+            return JsonConvert.SerializeObject(returns);
         }
 
 

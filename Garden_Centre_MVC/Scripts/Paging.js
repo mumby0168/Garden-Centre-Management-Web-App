@@ -16,6 +16,13 @@ class Paging {
         this.CreateTableHeader();
         this.CreateSearchBox();
         this.Page(1);
+
+        this.m_Table.setAttribute("class", "table table-bordered table-hover");
+
+
+
+
+
     }
 
     Search() {
@@ -27,9 +34,9 @@ class Paging {
                 }
             }
             catch (errA) {
-                    console.log(errA);
-                    this.m_SearchData = undefined;
-                    return;
+                console.log(errA);
+                this.m_SearchData = undefined;
+                return;
             }
         }
 
@@ -57,8 +64,7 @@ class Paging {
         if (page < 1)
             return;
 
-        if(this.m_SearchData !== undefined)
-        {
+        if (this.m_SearchData !== undefined) {
             if (this.m_SearchData.length - ((page - 1) * this.m_RowsToDisplay) <= 0)
                 return;
         }
@@ -90,7 +96,7 @@ class Paging {
                 }
             }
         }
-        
+
         if (this.m_SearchData === undefined) {
             var tr = document.createElement("tr");
 
@@ -147,7 +153,10 @@ class Paging {
 
         var sel = document.createElement("select");
 
+
         sel.setAttribute("style", "float:right; margin-right: 5px;")
+
+        sel.setAttribute("class", "form-control");
 
         sel.addEventListener("change", (e) => {
             this.m_RowsToDisplay = parseInt(e.target.value);
@@ -230,6 +239,8 @@ class Paging {
         var div = document.createElement("div");
 
         var sel = document.createElement("select");
+
+        sel.setAttribute("class", "form-control");
         sel.setAttribute("style", "float:right;");
         sel.addEventListener("change", (e) => {
             this.m_SearchTerm = Object.getOwnPropertyNames(this.m_Data[0])[parseInt(e.target.value)];
@@ -237,18 +248,17 @@ class Paging {
             this.Search();
         });
 
-        for (var [k, v] of this.m_SearchTermMap)
-        {
+        for (var [k, v] of this.m_SearchTermMap) {
             var opt = document.createElement("option");
             opt.setAttribute("value", v.toString());
             opt.innerHTML = k;
-            
+
             sel.appendChild(opt);
         }
 
         div.appendChild(sel);
         sel.value = this.m_SearchTermIndex;
-        
+
         var clearBtn = document.createElement("button");
 
         if (this.m_BtnClass !== undefined)
@@ -265,6 +275,9 @@ class Paging {
         div.appendChild(clearBtn);
 
         this.m_SearchBox = document.createElement("input");
+
+        this.m_SearchBox.setAttribute("class", "form-control");
+
         this.m_SearchBox.setAttribute("type", "text");
         this.m_SearchBox.setAttribute("placeholder", "Search...");
         this.m_SearchBox.setAttribute("style", "float:right;");
