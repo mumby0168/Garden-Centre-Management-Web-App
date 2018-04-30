@@ -10,6 +10,7 @@ namespace Garden_Centre_MVC.ViewModels.AccountViewModels
     {
         [Required]
         [EmailAddress]
+        [Display(Name = "Email Address")]
         public string Email { get; set; }
 
         [Required]

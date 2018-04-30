@@ -16,6 +16,7 @@ namespace Garden_Centre_MVC.ViewModels.AccountViewModels
         public string Password { get; set; }
         
         [Required]
+        [Display(Name = "Confirm Password")]
         public string ReTypePassword { get; set; }
     }
 }
