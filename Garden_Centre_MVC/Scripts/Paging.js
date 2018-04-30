@@ -1,5 +1,8 @@
 class Paging {
     constructor(data, tableId, headers, searchTermMap, rowLambda, btnClass, displyEmptyRows) {
+        if (data[0] === undefined || data[0] === null)
+            return;
+
         this.m_Data = data;
         this.m_SearchData = data;
         this.m_Table = document.getElementById(tableId);
