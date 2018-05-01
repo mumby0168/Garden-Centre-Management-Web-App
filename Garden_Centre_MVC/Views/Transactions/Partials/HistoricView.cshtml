@@ -37,12 +37,12 @@
                 tr.appendChild(td);
 
                 td = document.createElement("td");
-                td.innerHTML = dataObj.TotalValue;
+                td.innerHTML = "£" + dataObj.TotalValue;
                 tr.appendChild(td);
 
                 td = document.createElement("td");
-                td.setAttribute("style", "float:right;");
                 var btn = document.createElement("button");
+                btn.setAttribute("style", "background: none; border: none; color:black;");
                 btn.setAttribute("class", "viewBtn btn btn-primary");
                 btn.setAttribute("title", "View the indiviudal items that make up this transaction !");
                 btn.setAttribute("transactionNumber", dataObj.TransactionNumber);
@@ -86,6 +86,7 @@
                 @if (Garden_Centre_MVC.Attributes.Assets.CurrentUser.EmployeeLogin.Employee.Admin)
                 {
                     @:btn = document.createElement("button");
+                    @:btn.setAttribute("style", "background: none; border: none; color:black;");
                     @:btn.setAttribute("class", "editBtn btn btn-primary");
                     @:btn.setAttribute("title", "Edit the contents of this transaction !");
                     @:btn.setAttribute("transactionNumber", dataObj.TransactionNumber);
@@ -128,6 +129,7 @@
                     @:td.appendChild(btn);
 
                     @:btn = document.createElement("button");
+                    @:btn.setAttribute("style", "background: none; border: none; color:black;");
                     @:btn.setAttribute("class", "delBtn btn btn-primary");
                     @:btn.setAttribute("title", "Delete this transaction !");
                     @:btn.setAttribute("transactionNumber", dataObj.TransactionNumber);

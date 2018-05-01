@@ -326,14 +326,15 @@
     <Content Include="Views\Inventory\Partials\InventoryView.cshtml" />
     <Content Include="Views\Inventory\Partials\NewItemView.cshtml" />
     <Content Include="Views\Inventory\Partials\EditItemView.cshtml" />
-    <Content Include="Views\Log\LogLandingPage.cshtml" />
     <Content Include="Views\Account\EmailSent.cshtml" />
     <Content Include="Views\Customer\CustomerForm.cshtml" />
     <Content Include="Views\Customer\CustomerLanding.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\EmployeeAccount.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\Log\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
   </ItemGroup>

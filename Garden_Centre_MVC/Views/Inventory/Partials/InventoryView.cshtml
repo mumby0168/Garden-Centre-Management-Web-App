@@ -31,7 +31,7 @@
             tr.appendChild(td);
 
             td = document.createElement("td");
-            td.innerHTML = dataObj.ItemPrice;
+            td.innerHTML = "£" + dataObj.ItemPrice;
             tr.appendChild(td);
 
             td = document.createElement("td");
@@ -50,6 +50,7 @@
             {
                 @:td = document.createElement("td");
                 @:var btn = document.createElement("button");
+                @:btn.setAttribute("style", "background: none; border: none; color:black;");
                 @:btn.setAttribute("class", "viewBtn btn btn-primary");
                 @:btn.setAttribute("title", "Edit the properties of this item !!");
                 @:btn.setAttribute("invId", dataObj.ItemId);
