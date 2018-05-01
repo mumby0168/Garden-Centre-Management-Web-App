@@ -6,6 +6,10 @@ class Paging {
         this.m_Data = data;
         this.m_SearchData = data;
         this.m_Table = document.getElementById(tableId);
+
+        if (this.m_Table === undefined || this.m_Table === null)
+            alert("FAILED");
+
         this.m_Headers = headers;
         this.m_RowLambda = rowLambda;
         this.m_BtnClass = btnClass;
@@ -18,14 +22,10 @@ class Paging {
 
         this.CreateTableHeader();
         this.CreateSearchBox();
+
         this.Page(1);
 
         this.m_Table.setAttribute("class", "table table-bordered table-hover");
-
-
-
-
-
     }
 
     Search() {
@@ -91,6 +91,7 @@ class Paging {
                 }
                 else {
                     var tr = document.createElement("tr");
+                    tr.setAttribute("style", "padding:5px;");
                     var td = document.createElement("td");
                     td.setAttribute("colspan", this.m_Headers.length);
                     tr.appendChild(td);
