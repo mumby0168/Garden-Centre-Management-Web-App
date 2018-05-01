@@ -41,6 +41,7 @@
                 tr.appendChild(td);
 
                 td = document.createElement("td");
+                td.setAttribute("style", "float:right;");
                 var btn = document.createElement("button");
                 btn.setAttribute("class", "viewBtn btn btn-primary");
                 btn.setAttribute("title", "View the indiviudal items that make up this transaction !");
@@ -178,6 +179,5 @@
                 tr.appendChild(td);
                 table.appendChild(tr);
             }, "btn btn-primary", false);
-        paging.Page(1);
     });
 </script>
