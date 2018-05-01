@@ -72,13 +72,6 @@ namespace Garden_Centre_MVC.Controllers
                 errorCounter++;
             }
 
-
-            if (emp.EmployeeNumber.ToString().Trim().Length != 6)
-            {
-                error.ErrorMessages.Add("The Employee number must be 6 digits.");
-                errorCounter++;
-            }
-
             if (errorCounter != 0 && emp.EmployeeId != 0)
             {
                 var obj = JsonConvert.SerializeObject(error);
@@ -99,6 +92,13 @@ namespace Garden_Centre_MVC.Controllers
 
                 if (errorCounter != 0)
                 {
+
+                    if (emp.EmployeeNumber.ToString().Trim().Length != 6)
+                    {
+                        error.ErrorMessages.Add("The Employee number must be 6 digits.");
+                        errorCounter++;
+                    }
+
                     var obj = JsonConvert.SerializeObject(error);
 
                     return new HttpStatusCodeResult(HttpStatusCode.ExpectationFailed, obj);
@@ -136,7 +136,6 @@ namespace Garden_Centre_MVC.Controllers
 
                 var employee = _context.Employees.FirstOrDefault(e => e.EmployeeId == emp.EmployeeId);
                 employee.Admin = emp.Admin;
-                employee.EmployeeNumber = emp.EmployeeNumber;
                 employee.FirstName = emp.FirstName;
                 employee.SecondName = emp.SecondName;
                 _context.SaveChanges();

@@ -331,6 +331,7 @@
     <Content Include="Views\Customer\CustomerLanding.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\EmployeeAccount.cshtml" />
+    <Content Include="Views\Log\LogLandingPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Log\" />
