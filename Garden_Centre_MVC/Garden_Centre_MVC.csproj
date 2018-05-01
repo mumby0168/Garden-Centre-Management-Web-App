@@ -326,12 +326,12 @@
     <Content Include="Views\Inventory\Partials\InventoryView.cshtml" />
     <Content Include="Views\Inventory\Partials\NewItemView.cshtml" />
     <Content Include="Views\Inventory\Partials\EditItemView.cshtml" />
-    <Content Include="Views\Log\LogLandingPage.cshtml" />
     <Content Include="Views\Account\EmailSent.cshtml" />
     <Content Include="Views\Customer\CustomerForm.cshtml" />
     <Content Include="Views\Customer\CustomerLanding.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\EmployeeAccount.cshtml" />
+    <Content Include="Views\LogSystem\LogLandingPage.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
