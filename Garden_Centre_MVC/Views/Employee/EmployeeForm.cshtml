@@ -7,7 +7,7 @@
 <form id="EmployeeForm">
     <div class="form-group">
         @Html.LabelFor(m => m.FirstName)
-        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" }) 
         @Html.ValidationMessageFor(m => m.FirstName)
         <span class="field-validation-valid" data-valmsg-for="FirstName" data-valmsg-replace="true" id="EmpSecondNameVal"></span>
     </div>

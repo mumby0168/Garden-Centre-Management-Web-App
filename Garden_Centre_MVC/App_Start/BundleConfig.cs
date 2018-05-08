@@ -31,6 +31,10 @@ namespace Garden_Centre_MVC
             bundles.Add(new ScriptBundle("~/bundles/SiteScripts").Include("~/Scripts/Account/Account.js", 
                 "~/Scripts/Employee/Employee.js", 
                 "~/Scripts/Home/Home.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/Customers").Include("~/Scripts/Customers/Customers.js"));
+
+
         }
     }
 }
