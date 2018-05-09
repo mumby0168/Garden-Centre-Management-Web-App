@@ -52,7 +52,7 @@
                         <td>@item.Description</td>
                         <td>£@item.ItemPrice</td>
                         <td>
-                            <button btnId="@i" class="editRemBtn btn btn-primary"><i class="fa fa-remove"></i></button>
+                            <button btnId="@i" style="background:none; border:none; color:initial;" class="editRemBtn btn btn-primary"><i class="fa fa-remove"></i></button>
                         </td>
                     </tr>
 
@@ -67,7 +67,7 @@
     </table>
 }
 
-@if (Model._transactionOverview.Customer != null && Model._items.Count > 0 && Model.HasChanged == true)
+@if (Model._transactionOverview.Customer != null && (Model._items.Count + Model._newItems.Count) > 0 && Model.HasChanged == true)
 {
     <button class="editSaveBtn btn btn-primary" title="Save the changes to this transaction !">Save</button>
 }

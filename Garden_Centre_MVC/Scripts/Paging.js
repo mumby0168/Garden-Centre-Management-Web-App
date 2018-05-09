@@ -135,7 +135,7 @@ class Paging {
             btn.setAttribute("class", this.m_BtnClass);
 
         btn.innerHTML = "Prev";
-        btn.setAttribute("style", "float:left;");
+        btn.setAttribute("style", "float:left; margin-right:100px;");
         btn.addEventListener("click", (e) => {
             this.Page(this.m_Page - 1);
         });
@@ -158,7 +158,7 @@ class Paging {
         var sel = document.createElement("select");
 
 
-        sel.setAttribute("style", "float:right; margin-right: 5px;")
+        sel.setAttribute("style", "float:right; margin-right: 5px; width:100px;")
 
         sel.setAttribute("class", "form-control");
 
