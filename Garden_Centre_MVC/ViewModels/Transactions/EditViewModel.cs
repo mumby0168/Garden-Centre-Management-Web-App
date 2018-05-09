@@ -1,126 +1,14 @@
-﻿using System;
+﻿using Garden_Centre_MVC.Persistance;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Garden_Centre_MVC.Models;
-using Garden_Centre_MVC.Persistance;
 
 namespace Garden_Centre_MVC.ViewModels.Transactions
 {
     public class EditViewModel : IDisposable
     {
-        public EditViewModel(){}
-
-        public EditViewModel(TransactionOverview to)
-        {
-            TransactionOverview = to;
-            _Customer = to.Transactions[0].Customer;
-            _Items = new List<Item>();
-            _Remove = new List<Transaction>();
-            _NewItems = new List<Item>();
-
-            if (ItemList == null || ItemList.Count == 0)
-                ItemList = m_Context.Items.ToList();
-
-            if (CustomerList == null || CustomerList.Count == 0)
-                CustomerList = m_Context.Customers.ToList();
-        }
-
-        public EditViewModel(TransactionOverview to, List<Item> items, List<Transaction> remove, Customer customer)
-        {
-            TransactionOverview = to;
-            _Customer = customer;
-            _Items = items;
-            _Remove = remove;
-            _NewItems = new List<Item>();
-
-            if (ItemList == null || ItemList.Count == 0)
-                ItemList = m_Context.Items.ToList();
-
-            if (CustomerList == null || CustomerList.Count == 0)
-                CustomerList = m_Context.Customers.ToList();
-        }
-
-        public void Save()
-        {
-            if(_Customer != TransactionOverview.Transactions[0].Customer)
-            {
-                foreach (Transaction t in m_Context.Transactions)
-                {
-                    if (t.TransactionNumber == TransactionOverview.ID)
-                        t.CustomerId = _Customer.CustomerId;
-                }
-            }
-
-            if(_Items.Count > 0)
-            {
-                foreach(Item i in _Items)
-                {
-                    Transaction transaction = new Transaction();
-                    transaction.CustomerId = _Customer.CustomerId;
-                    transaction.ItemId = i.ItemId;
-                    transaction.Date = TransactionOverview.DateAndTime;
-                    transaction.TransactionNumber = TransactionOverview.ID;
-                    m_Context.Transactions.Add(transaction);
-                }
-            }
-
-            if (_Remove.Count > 0)
-            {
-                foreach (Transaction t in _Remove)
-                {
-                    m_Context.Transactions.Remove(m_Context.Transactions.Where(m => m.Id == t.Id).First());
-                }
-            }
-
-
-            m_Context.SaveChanges();
-        }
-
-        public List<Item> _NewItems
-        {
-            get; set;
-        }
-
-        public void UpdateVM()
-        {
-            if (_NewItems.Count > 0)
-            {
-                foreach (Item i in _NewItems)
-                {
-                    Transaction transaction = new Transaction();
-                    transaction.Customer = _Customer;
-                    transaction.CustomerId = _Customer.CustomerId;
-                    transaction.Item = i;
-                    transaction.ItemId = i.ItemId;
-                    transaction.Date = TransactionOverview.DateAndTime;
-                    transaction.TransactionNumber = TransactionOverview.ID;
-                    TransactionOverview.Transactions.Add(transaction);
-                    _Items.Add(i);
-                }
-            }
-        }
-
-        public Customer _Customer
-        {
-            get; set;
-        }
-
-        public List<Item> _Items
-        {
-            get; set;
-        }
-        
-        public List<Transaction> _Remove
-        {
-            get; set;
-        }
-
-        public TransactionOverview TransactionOverview
-        {
-            get; set;
-        }
-
         private DatabaseContext m_Context = new DatabaseContext();
         public void Dispose()
         {
@@ -129,11 +17,119 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
 
         public List<Customer> CustomerList
         {
-            private set; get;
+            get
+            {
+                return m_Context.Customers.ToList();
+            }
         }
+
         public List<Item> ItemList
         {
-            private set; get;
+            get
+            {
+                var preFix = m_Context.Items.ToList();
+                foreach(Item i in _newItems)
+                {
+                    foreach(Item it in preFix)
+                    {
+                        if (i.ItemId == it.ItemId)
+                        {
+                            it.Stock -= 1;
+                        }
+                    }
+                }
+
+                foreach (int s in _remItemsIds)
+                {
+                    var i = m_Context.Items.Where(n => n.ItemId == s).First();
+                    foreach (Item it in preFix)
+                    {
+                        if (i.ItemId == it.ItemId)
+                        {
+                            it.Stock += 1;
+                        }
+                    }
+                }
+
+                List<Item> postFix = new List<Item>();
+                foreach(Item i in preFix)
+                {
+                    if(i.Stock > 0)
+                    {
+                        postFix.Add(i);
+                    }
+                }
+
+                m_Context.Dispose();
+                m_Context = new DatabaseContext();
+
+                return postFix;
+            }
+        }
+
+        public bool HasChanged
+        {
+            get; set;
+        }
+
+        public TransactionOverview _transactionOverview
+        {
+            get; set;
+        }
+
+        public List<Item> _items
+        {
+            get; set;
+        }
+
+        public List<Item> _newItems
+        {
+            get; set;
+        }
+
+        public List<int> _remItemsIndex
+        {
+            get; set;
+        }
+
+        public List<int> _remItemsIds
+        {
+            get; set;
+        }
+
+        public EditViewModel()
+        {
+            _newItems = new List<Item>();
+            _remItemsIndex = new List<int>();
+            _remItemsIds = new List<int>();
+            HasChanged = false;
+            return;
+        }
+
+        public EditViewModel(Item item, EditViewModel vm)
+        {
+            _newItems = vm._newItems;
+            _remItemsIndex = vm._remItemsIndex;
+            _remItemsIds = vm._remItemsIds;
+            _items = vm._items;
+            _transactionOverview = vm._transactionOverview;
+            _newItems.Add(item);
+            _transactionOverview.TotalValue += item.ItemPrice;
+
+            HasChanged = true;
+        }
+
+        public EditViewModel(Customer customer, EditViewModel vm)
+        {
+            _newItems = vm._newItems;
+            _remItemsIndex = vm._remItemsIndex;
+            _remItemsIds = vm._remItemsIds;
+            _items = vm._items;
+            _transactionOverview = vm._transactionOverview;
+            _transactionOverview.Customer = customer;
+            _transactionOverview.CustomerId = customer.CustomerId;
+
+            HasChanged = true;
         }
     }
 }

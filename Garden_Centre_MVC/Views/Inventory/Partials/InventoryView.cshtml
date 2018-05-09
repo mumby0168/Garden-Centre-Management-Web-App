@@ -1,0 +1,117 @@
+﻿@model Garden_Centre_MVC.ViewModels.InventoryViewModels.InventoryViewModel
+
+<table id="Inventory" class="table table-striped table-bordered">
+</table>
+
+<script>
+    var prevInvOpenedTN = '0';
+    $(document).ready(function (e) {
+        var headers = ["Item ID", "Name", "Price", "In Stock", "On Order", "Sold"];
+        var searchTerms = new Map();
+        searchTerms.set("Item ID", 0);
+        searchTerms.set("Name", 1);
+        searchTerms.set("Price", 2);
+        searchTerms.set("Stock", 3);
+        searchTerms.set("On Order", 4);
+        searchTerms.set("Sold", 5);
+        @if (Garden_Centre_MVC.Attributes.Assets.CurrentUser.EmployeeLogin.Employee.Admin)
+        {
+            @:headers.push("Actions");
+        }
+
+        var paging = new Paging(JSON.parse('@Html.Raw(Model.inventoryJSON)'), "Inventory", headers, searchTerms, (dataObj, table) => {
+            var tr = document.createElement("tr");
+
+            var td = document.createElement("td");
+            td.innerHTML = dataObj.ItemId;
+            tr.appendChild(td);
+
+            td = document.createElement("td");
+            td.innerHTML = dataObj.Description;
+            tr.appendChild(td);
+
+            td = document.createElement("td");
+            td.innerHTML = "£" + dataObj.ItemPrice;
+            tr.appendChild(td);
+
+            td = document.createElement("td");
+            td.innerHTML = dataObj.Stock;
+            tr.appendChild(td);
+
+            td = document.createElement("td");
+            td.innerHTML = dataObj.OnOrder;
+            tr.appendChild(td);
+
+            td = document.createElement("td");
+            td.innerHTML = dataObj.Sold;
+            tr.appendChild(td);
+
+            @if (Garden_Centre_MVC.Attributes.Assets.CurrentUser.EmployeeLogin.Employee.Admin)
+            {
+                @:td = document.createElement("td");
+                @:var btn = document.createElement("button");
+                @:btn.setAttribute("style", "background: none; border: none; color:black;");
+                @:btn.setAttribute("class", "viewBtn btn btn-primary");
+                @:btn.setAttribute("title", "Edit the properties of this item !!");
+                @:btn.setAttribute("invId", dataObj.ItemId);
+
+                @:btn.addEventListener("click", function (e) {
+                    @:var _itemId = $(this).attr("invId");
+                    @:$.ajax({
+                        @:type: "POST",
+                        @:url: '@Url.Action("EditItemView", "Inventory")',
+                        @:data: ({ itemId: _itemId }),
+                        @:success: function(result) {
+                            @:$("#Inventory_NewItem").delay(100).slideUp();
+                            @:$("#Inv_DropDownViewTR" + _itemId).attr("style", "display:table-row;");
+                            @:$("#Inv_DropDownView" + _itemId).delay(100).slideDown("slow").html(result);
+
+                            @:if (prevInvOpenedTN !== '0' && prevInvOpenedTN !== _itemId)
+                            @:{
+                            @:$("#Inv_DropDownView" + prevInvOpenedTN).delay(100).slideUp("slow", "swing", function(e) {
+                                @:$("#Inv_DropDownViewTR" + prevInvOpenedTN).attr("style", "display:none;");
+                                    @:prevInvOpenedTN = _itemId;
+                                @:});
+                            @:}
+                            @:else
+                            @:{
+                                @:prevInvOpenedTN = _itemId;
+                            @:}
+                        @:},
+                        @:error: function(x, e, r) {
+                            @:alert(e + " " + r);
+                            @:alert(x.responseText);
+                        @:}
+                    @:});
+                @:});
+
+                @:var icon = document.createElement("i");
+                @:icon.setAttribute("class", "fa fa-edit");
+                @:btn.appendChild(icon);
+                @:td.appendChild(btn);
+                @:tr.appendChild(td);
+                @:table.appendChild(tr);
+
+                @:var tr = document.createElement("tr");
+                @:tr.setAttribute("style", "display:none; padding:0px;");
+                @:tr.setAttribute("id", "Inv_DropDownViewTR" + dataObj.ItemId);
+
+                @:td = document.createElement("td");
+                @:td.setAttribute("colspan", "6");
+                @:td.setAttribute("id", "Inv_DropDownViewTD" + dataObj.ItemId);
+
+                @:var div = document.createElement("div");
+                @:div.setAttribute("hidden", "hidden");
+                @:div.setAttribute("id", "Inv_DropDownView" + dataObj.ItemId);
+
+                @:td.appendChild(div);
+                @:tr.appendChild(td);
+                @:table.appendChild(tr);
+            }
+            else
+            {
+                @:table.appendChild(tr);
+            }
+        }, "btn btn-primary", false);
+    });
+</script>

@@ -54,6 +54,17 @@ namespace Garden_Centre_MVC.Controllers
             {
                 //succesful login
                 CurrentUser.EmployeeLogin = employee;
+
+                Log log = new Log()
+                {
+                    EmployeeLogin = CurrentUser.EmployeeLogin,
+                    ActionType = _context.ActionTypes.FirstOrDefault(l => l.Description == "Logged In"),
+                    PropertyEffected = "None",
+                    DateOfAction = DateTime.Now
+                };
+
+                _context.Logs.Add(log);
+                _context.SaveChanges();
                
                 Session[employee.Username] = employee;                
 
@@ -63,6 +74,23 @@ namespace Garden_Centre_MVC.Controllers
 
             vm = new LoginViewModel() { ErrorMessage = errorMessage };
             return View("Login", vm);
+        }
+
+        public ActionResult GetAccountDetails(int id)
+        {
+            var emp = _context.EmployeeLogins.Include(e => e.Employee).FirstOrDefault(e => e.EmployeeLoginId == id);
+
+            return View("EmployeeAccount", emp);
+        }
+
+        public ActionResult EditPersonal(Employee employee)
+        {
+
+
+
+
+
+            return View("EmployeeAccount");
         }
 
         public ActionResult Register()
@@ -76,20 +104,20 @@ namespace Garden_Centre_MVC.Controllers
             var checkifExist = _context.EmployeeLogins.FirstOrDefault(e => e.Username == registerVm.Email);
 
             if (checkifExist != null)
-                //just need to add a custom attribute to the Email attribute in 
                 return View("Register");
 
 
             if (registerVm.Password != registerVm.ReTypePasssword)
                 return View("Register");
 
-            var employeeLogins = _context.Employees.ToList();
 
-            var employee = employeeLogins.FirstOrDefault(e => e.EmployeeNumber == registerVm.EmployeeNumber);
+            var employee = _context.Employees.FirstOrDefault(e => e.EmployeeNumber == registerVm.EmployeeNumber);
 
             if (employee == null)
                 return View("Register");
 
+            if (employee.AccountCreated)
+                return View("Register");
 
             var returned = Encryptor.Encrypt(registerVm.Password);
 
@@ -103,6 +131,9 @@ namespace Garden_Centre_MVC.Controllers
             };
 
             _context.EmployeeLogins.Add(emp);
+
+            employee.AccountCreated = true;
+
             _context.SaveChanges();
 
             var vm = new LoginViewModel()
@@ -110,6 +141,8 @@ namespace Garden_Centre_MVC.Controllers
                 Email = registerVm.Email,
                 EmployeeNumber = registerVm.EmployeeNumber
             };
+
+            Logger.LogAction("Registered", "None.", emp);
             
             return View("Login", vm);
         }
@@ -139,7 +172,8 @@ namespace Garden_Centre_MVC.Controllers
             {
                 //email has been sent
                 employee.CanReset = true;
-                return View("ForgottenPassword");
+                _context.SaveChanges();
+                return View("EmailSent");
             }
             else
             {
@@ -155,6 +189,10 @@ namespace Garden_Centre_MVC.Controllers
             return View("ResetPasswordView");
         }
 
+        public ActionResult Reset()
+        {
+            return View("ResetPassword");
+        }
 
         //TODO: this needs testing and we need to think of a way to send a link out via email and verify that it is the user. 
         public ActionResult CheckPasswordReset(ResetPasswordViewModel vm)
@@ -163,25 +201,26 @@ namespace Garden_Centre_MVC.Controllers
 
             if (employee == null)
             {
-                //email does not exist
+                return View();
             }
 
             if (!employee.CanReset)
             {
-                //they are not allowed to reset
-                
+                return Content("You need to send yourself a email in order to reset your password");
+
             }
 
             //check if the passwords match
             if (vm.Password != vm.ReTypePassword)
             {
-                //they do not match cannot reset
+                return View();
             }
 
             var bytes = Encryptor.Encrypt(vm.Password);
 
             employee.Password = bytes[0];
             employee.Salt = bytes[1];
+            employee.CanReset = false;
 
 
             _context.SaveChanges();
@@ -193,6 +232,8 @@ namespace Garden_Centre_MVC.Controllers
 
             if (Session[CurrentUser.EmployeeLogin.Username] != null)
             {
+                Logger.LogAction("Logged Out", "None.");
+
                 Session.Contents.Remove(CurrentUser.EmployeeLogin.Username);
             }
 
@@ -207,7 +248,7 @@ namespace Garden_Centre_MVC.Controllers
             MailMessage msg = new MailMessage("greengardencentre@gmail.com", emp.Username)
             {
                 Subject = "Password Recovery",
-                Body = emp.Username
+                Body = "Hello " + emp.Username + Environment.NewLine + " Please use the following link to reset your account:  http://localhost:56163/Account/Reset "
             };
 
             NetworkCredential creds = new NetworkCredential("greengardencentre@gmail.com", "hci12345");

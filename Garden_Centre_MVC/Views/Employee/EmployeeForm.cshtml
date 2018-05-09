@@ -1,8 +1,19 @@
 ﻿@model Garden_Centre_MVC.Models.Employee
 
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/jqueryval")
+
+
+
 <script src="../../Scripts/Employee/Employee.js" type="text/javascript"></script>
 
 <h4 style="margin-bottom: 10px;">Employee Form</h4>
+
+
+<div id="ErrorDiv">
+
+</div>
 
 <form id="EmployeeForm">
     <div class="form-group">
@@ -22,6 +33,7 @@
     <div class="form-group">
         @Html.LabelFor(m => m.EmployeeNumber)
         @Html.TextBoxFor(m => m.EmployeeNumber, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.EmployeeNumber)
         <span class="field-validation-valid" data-valmsg-for="EmployeeNumber" data-valmsg-replace="true" id="EmpNumVal"></span>
     </div>
 
@@ -34,8 +46,5 @@
     @Html.HiddenFor(m => m.EmployeeId)
 
     <button type="submit" class="btn btn-primary">Submit</button>
-    <button id="CloseEmployeeForm" class="btn btn-default">Close</button>
 
 </form>
-
-

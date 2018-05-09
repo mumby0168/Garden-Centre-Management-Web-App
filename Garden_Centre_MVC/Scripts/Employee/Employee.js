@@ -29,8 +29,6 @@
             data: { "page": page },
             success: function (view) {
                 $("#MainPageContainer").html(view);
-
-
             }
         });
 
@@ -106,7 +104,13 @@
             url: "/Employee/Edit/" + $(this).attr("empId"),
             success: function(view) {
                 $("#EmployeeFormModalBody").html(view);
+
+                var inputEmployeeNumber = document.getElementById("EmployeeNumber");
+
+                inputEmployeeNumber.setAttribute("disabled", "disabled");
+
                 $("#EmployeeFormModal").modal();
+
             }
         });
 
@@ -117,11 +121,11 @@
     $("#EmployeeForm").submit(function(e) {
         e.preventDefault();
 
-        if ($("#EmployeeNumber").val().toString().length !== 6) {
-            //bootbox.alert("The employee Id must be 6 digits");
-            $("#EmpNumVal").html("The employee Id must be 6 digits");
-            return;
-        }
+        //if ($("#EmployeeNumber").val().toString().length !== 6) {
+        //    //bootbox.alert("The employee Id must be 6 digits");
+        //    $("#EmpNumVal").html("The employee Id must be 6 digits");
+        //    return;
+        //}
 
         var form = $("#EmployeeForm").serialize();
 
@@ -134,6 +138,39 @@
                 $("#EmployeeFormModal").hide();
                 $(".modal-backdrop").remove();
                 $("#MainPageContainer").html(view);
+            },
+            error: function (error, type, errorMessage) {
+
+                
+
+
+                var errorobj = JSON.parse(errorMessage);
+
+                $("#ErrorDiv").html("");
+
+                var div = document.getElementById("ErrorDiv");
+
+                var h4 = document.createElement("h5");
+
+                h4.innerHTML = "Form Issues:";
+
+                div.appendChild(h4);
+
+                var list = document.createElement("ul");              
+
+                for (var i = 0; i < errorobj.ErrorMessages.length; i++) {
+                    var li = document.createElement("li");
+
+                    li.innerHTML = errorobj.ErrorMessages[i];
+
+                    list.appendChild(li);
+                }
+
+                div.setAttribute("style", "color:red");
+
+                div.appendChild(list);
+
+
             }
         });
 

@@ -1,109 +1,185 @@
 ﻿@model Garden_Centre_MVC.ViewModels.Transactions.HistoricViewModel
+@{
+    //TODO: Fix the table row disapearing try to animate it
+    //TODO: Sort the padding on the exteneded view
+    //TODO: Implement a smooth change between view and edit for the same transaction
+}
 
-<table class="table table-bordered table-hover" id="transactionTable">
-    <thead>
-        <tr>
-            <td>Transaction ID</td>
-            <td>Name</td>
-            <td>Date</td>
-            <td>Transaction Value</td>
-            <td>Operations</td>
-        </tr>
-    </thead>
-    <tbody id="transactionTableBody">
-        @{
-            int i = 1;
-        }
-
-        @foreach (Garden_Centre_MVC.Models.TransactionOverview t in Model.Transactions)
-         {
-            <tr>
-                <td>@t.ID</td>
-                <td>@t.Transactions[0].Customer.FirstName @t.Transactions[0].Customer.SecondName</td>
-                <td>@t.DateAndTime.Day/@t.DateAndTime.Month/@t.DateAndTime.Year</td>
-                <td>£ @t.TotalValue</td>
-                <td>
-                    <button class="view btn btn-primary" tableRowIndex="@i" transactionId="@t.ID">View</button>
-                    <button class="edit btn btn-primary" tableRowIndex="@i" transactionId="@t.ID">Edit</button>
-                    <button class="del btn btn-primary" tableRowIndex="@i" transactionId="@t.ID">Delete</button>
-                </td>
-            </tr>
-            i++;
-        }
-    </tbody>
+<table id="HistoricTransactions" class="table table-bordered table-hover">
 </table>
 
 <script type="text/javascript">
-    $(document).ready(function ()
-    {
-        $(".view").on("click", function (e)
-        {
-            var id = $(this).attr("transactionId")
-            e.preventDefault();
-            $("#ActionView").delay(100).slideUp("slow");
-            $("#ExtendedView").delay(100).slideUp("slow", function () {
-                $.ajax(
-                {
-                    type: "POST",
-                    data: ({
-                        svm: '@Html.Raw(Json.Encode(Model))', transactionNumber: id
-                    }),
-                    url: '@Url.Action("ViewDetails", "Transactions")',
-                    success: function (result) {
-                        $("#ExtendedView").delay(100).slideDown("slow").html(result);
-                    },
-                    error: function (x, e, r) {
-                        alert(e + " " + r);
-                        alert(x.responseText);
-                    }
-                });
-            });
-        });
+    var prevOpenedTN = '0';
+    $(document).ready(function () {
+        ///////////////////
+        var headers = ["Transaction Number", "Date", "Time", "Customer", "Total Value", "Actions"];
+        var searchTerms = new Map();
+        searchTerms.set("Transaction Number", 1);
+        searchTerms.set("Full Name", 6);
+        searchTerms.set("Total Value", 2);
+        var paging = new Paging(JSON.parse('@Html.Raw(Model.TransactionOverviewsJSON)'), "HistoricTransactions", headers, searchTerms,
+            (dataObj, table) => {
+                var tr = document.createElement("tr");
+                var td = document.createElement("td");
+                td.innerHTML = dataObj.TransactionNumber;
+                tr.appendChild(td);
 
-        $(".edit").on("click", function (e)
-        {
-            var ws = $(this).attr("transactionId");
+                td = document.createElement("td");
+                td.innerHTML = dataObj.Date;
+                tr.appendChild(td);
 
-            e.preventDefault();
-            $.ajax(
-            {
-                type: "POST",
-                data: ({
-                    svm: '@Html.Raw(Json.Encode(Model))', transactionNumber: ws
-                }),
-                url: '@Url.Action("EditTransaction", "Transactions")',
-                success: function (result) {
-                    $("#ActionView").delay(100).slideDown("slow").html(result);
-                },
-                error: function (x, e, r) {
-                    alert(e + " " + r);
-                    alert(x.responseText);
-                }
-            });
-        });
+                td = document.createElement("td");
+                td.innerHTML = dataObj.Date;
+                tr.appendChild(td);
 
-        $(".del").on("click", function (e)
-        {
-            var id = $(this).attr("transactionId");
-            e.preventDefault();
+                td = document.createElement("td");
+                td.innerHTML = dataObj.Customer.FullName;
+                tr.appendChild(td);
 
-            if (confirm("Are you sure you want to delete this transaction ?")) {
-                $.ajax(
+                td = document.createElement("td");
+                td.innerHTML = "£" + dataObj.TotalValue;
+                tr.appendChild(td);
+
+                td = document.createElement("td");
+                var btn = document.createElement("button");
+                btn.setAttribute("style", "background: none; border: none; color:black;");
+                btn.setAttribute("class", "viewBtn btn btn-primary");
+                btn.setAttribute("title", "View the indiviudal items that make up this transaction !");
+                btn.setAttribute("transactionNumber", dataObj.TransactionNumber);
+                btn.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    var transactionNumber = $(this).attr("transactionNumber");
+                    $.ajax(
                     {
                         type: "POST",
-                        data: ({
-                            transactionNumber: id
-                        }),
-                        url: '@Url.Action("DeleteTransaction", "Transactions")',
+                        data: ({ _transactionNumber: transactionNumber }),
+                        url: '@Url.Action("ExtendedView", "Transactions")',
                         success: function (result) {
-                            $("#HistoricView").html(result);
+                            $("#Index_AddView").delay(100).slideUp("slow");
+
+                            $("#Historic_DropDownViewTR" + transactionNumber).attr("style", "display:table-row;");
+                            $("#Historic_DropDownView" + transactionNumber).delay(100).slideDown("slow").html(result);
+
+                            if (prevOpenedTN !== '0' && prevOpenedTN !== transactionNumber) {
+                                $("#Historic_DropDownView" + prevOpenedTN).delay(100).slideUp("slow", "swing", function (e) {
+                                    $("#Historic_DropDownViewTR" + prevOpenedTN).attr("style", "display:none;");
+                                    prevOpenedTN = transactionNumber;
+                                });
+                            }
+                            else
+                            {
+                                prevOpenedTN = transactionNumber;
+                            }
+
                         },
                         error: function (x, e, r) {
                             alert(e + " " + r);
                             alert(x.responseText);
                         }
-                    });
-            }
-        });
+                     });
+                });
+                var icon = document.createElement("i");
+                icon.setAttribute("class", "fa fa-eye");
+                btn.appendChild(icon);
+                td.appendChild(btn);
+
+                @if (Garden_Centre_MVC.Attributes.Assets.CurrentUser.EmployeeLogin.Employee.Admin)
+                {
+                    @:btn = document.createElement("button");
+                    @:btn.setAttribute("style", "background: none; border: none; color:black;");
+                    @:btn.setAttribute("class", "editBtn btn btn-primary");
+                    @:btn.setAttribute("title", "Edit the contents of this transaction !");
+                    @:btn.setAttribute("transactionNumber", dataObj.TransactionNumber);
+                    @:btn.addEventListener("click", function (e) {
+                        @:e.preventDefault();
+                        @:var transactionNumber = $(this).attr("transactionNumber");
+
+                        @:$.ajax(
+                        @:{
+                            @:type: "POST",
+                            @:data: ({ _transactionNumber: transactionNumber }),
+                            @:url: '@Url.Action("EditView", "Transactions")',
+                            @:success: function (result) {
+                                @:$("#Index_AddView").delay(100).slideUp("slow");
+
+                                @:$("#Historic_DropDownViewTR" + transactionNumber).attr("style", "display:table-row;");
+                                @:$("#Historic_DropDownView" + transactionNumber).delay(100).slideDown("slow").html(result);
+
+                                @:if (prevOpenedTN !== '0' && prevOpenedTN !== transactionNumber) {
+                                    @:$("#Historic_DropDownView" + prevOpenedTN).delay(100).slideUp("slow", "swing", function (e) {
+                                        @:$("#Historic_DropDownViewTR" + prevOpenedTN).attr("style", "display:none;");
+                                        @:prevOpenedTN = transactionNumber;
+                                    @:});
+                                @:}
+                                @:else
+                                @:{
+                                    @:prevOpenedTN = transactionNumber;
+                                @:}
+
+                            @:},
+                            @:error: function (x, e, r) {
+                                @:alert(e + " " + r);
+                                @:alert(x.responseText);
+                            @:}
+                        @:});
+                    @:});
+                    @:icon = document.createElement("i");
+                    @:icon.setAttribute("class", "fa fa-edit");
+                    @:btn.appendChild(icon);
+                    @:td.appendChild(btn);
+
+                    @:btn = document.createElement("button");
+                    @:btn.setAttribute("style", "background: none; border: none; color:black;");
+                    @:btn.setAttribute("class", "delBtn btn btn-primary");
+                    @:btn.setAttribute("title", "Delete this transaction !");
+                    @:btn.setAttribute("transactionNumber", dataObj.TransactionNumber);
+                    @:btn.addEventListener("click", function (e) {
+                    @:e.preventDefault();
+                    @:var transactionNumber = $(this).attr("transactionNumber");
+
+                    @:if (confirm("Are you sure you wish to delete this transaction ?"))
+                    @:{
+                    @:$.ajax(
+                            @:{
+                            @:type: "POST",
+                        @:data: ({ _transactionNumber: transactionNumber }),
+                        @:url: '@Url.Action("DeleteTransaction", "Transactions")',
+                        @:success: function(result) {
+                            @:$("#Index_Feedback").slideUp("slow", "swing", function(e) {
+                                @:$("#Index_Feedback").delay(100).slideDown("slow").html("<h1>Successfully Deleted The Transaction</h1>").delay(3000).slideUp("slow");
+                                @:});
+                           @: $("#View").html(result);
+                            @:},
+                       @: error: function(x, e, r) {
+                              @:  alert(e + " " + r);
+                            @:    alert(x.responseText);
+                            @:}
+                        @:});
+                   @: }
+                @:});
+                    @:icon = document.createElement("i");
+                    @:icon.setAttribute("class", "fa fa-trash");
+                    @:btn.appendChild(icon);
+                    @:td.appendChild(btn);
+                }
+
+
+                tr.appendChild(td);
+
+                table.appendChild(tr);
+
+                tr = document.createElement("tr");
+                tr.setAttribute("style", "display:none;");
+                tr.setAttribute("id", "Historic_DropDownViewTR" + dataObj.TransactionNumber);
+                td = document.createElement("td");
+                td.setAttribute("colspan", 6);
+                td.setAttribute("id", "Historic_DropDownViewTD" + dataObj.TransactionNumber);
+                var div = document.createElement("div");
+                div.setAttribute("hidden", "hidden");
+                div.setAttribute("id", "Historic_DropDownView" + dataObj.TransactionNumber)
+                td.appendChild(div);
+                tr.appendChild(td);
+                table.appendChild(tr);
+            }, "btn btn-primary", false);
     });
 </script>

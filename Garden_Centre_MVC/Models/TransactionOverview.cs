@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using Garden_Centre_MVC.Models;
@@ -8,47 +9,17 @@ namespace Garden_Centre_MVC.Models
 {
     public class TransactionOverview
     {
-        public List<Transaction> Transactions
-        {
-            get; set;
-        }
-
-        public DateTime DateAndTime
-        {
-            get; set;
-        }
-
-        public int ID
-        {
-            set; get;
-        }
-       
-        public float TotalValue
-        {
-            set; get;
-        }
-
-        public TransactionOverview()
-        {
-            Transactions = new List<Transaction>();
-            TotalValue = 0.0f;
-            DateAndTime = DateTime.Now;
-            foreach (Transaction t in Transactions)
-            {
-                TotalValue += t.Item.ItemPrice;
-            }
-        }
-
-        public TransactionOverview(List<Transaction> transactions)
-        {
-            Transactions = transactions;
-            TotalValue = 0.0f;
-            ID = transactions[0].TransactionNumber;
-            DateAndTime = transactions[0].Date;
-            foreach (Transaction t in Transactions)
-            {
-                TotalValue += t.Item.ItemPrice;
-            }
-        }
+        [Required]
+        public int Id { get; set; }
+        [Required]
+        public int TransactionNumber { get; set; }
+        [Required]
+        public float TotalValue { get; set; }
+        [Required]
+        public DateTime Date { get; set; }
+        [Required]
+        public int CustomerId { get; set; }
+        public Customer Customer { get; set; }
+        public String FullName { get { return "REPLACE ME"; } } 
     }
 }

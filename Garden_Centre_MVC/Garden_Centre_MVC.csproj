@@ -158,17 +158,21 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Assets\Error.cs" />
+    <Compile Include="Assets\Logger.cs" />
     <Compile Include="Attributes\AdminUser.cs" />
     <Compile Include="Assets\CurrentUser.cs" />
     <Compile Include="Assets\Encryptor.cs" />
     <Compile Include="Attributes\CheckIfAlreadyRegistered.cs" />
     <Compile Include="Attributes\CheckIfEmailExists.cs" />
+    <Compile Include="Attributes\CheckifIdHasBeenGiven.cs" />
     <Compile Include="Attributes\NormalUser.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ItemsController.cs" />
+    <Compile Include="Controllers\InventoryController.cs" />
+    <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\TransactionsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -201,11 +205,29 @@
     <Compile Include="Migrations\201804040826457_AddedCanResetField.Designer.cs">
       <DependentUpon>201804040826457_AddedCanResetField.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804160859263_addTransactionOverview.cs" />
+    <Compile Include="Migrations\201804160859263_addTransactionOverview.Designer.cs">
+      <DependentUpon>201804160859263_addTransactionOverview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804182028214_AddedTheLogAndActionTable.cs" />
+    <Compile Include="Migrations\201804182028214_AddedTheLogAndActionTable.Designer.cs">
+      <DependentUpon>201804182028214_AddedTheLogAndActionTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804190751126_EditedTheEmployeeLinkInTheLogTable.cs" />
+    <Compile Include="Migrations\201804190751126_EditedTheEmployeeLinkInTheLogTable.Designer.cs">
+      <DependentUpon>201804190751126_EditedTheEmployeeLinkInTheLogTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804200754187_AddedAccountCreatedFlagToEmployee.cs" />
+    <Compile Include="Migrations\201804200754187_AddedAccountCreatedFlagToEmployee.Designer.cs">
+      <DependentUpon>201804200754187_AddedAccountCreatedFlagToEmployee.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\ActionType.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\EmployeeLogin.cs" />
     <Compile Include="Models\Item.cs" />
+    <Compile Include="Models\Log.cs" />
     <Compile Include="Models\Transaction.cs" />
     <Compile Include="Models\TransactionOverview.cs" />
     <Compile Include="Persistance\DatabaseContext.cs" />
@@ -217,7 +239,9 @@
     <Compile Include="ViewModels\CustomerViewModels\CustomerFormViewModel.cs" />
     <Compile Include="ViewModels\CustomerViewModels\CustomerLandingViewModels.cs" />
     <Compile Include="ViewModels\EmployeeViewModels\EmployeeLandingViewModels.cs" />
+    <Compile Include="ViewModels\InventoryViewModels\InventoryViewModel.cs" />
     <Compile Include="ViewModels\ItemsViewModels\ItemsLandingPageViewModel.cs" />
+    <Compile Include="ViewModels\LogViewModels\LogLandingViewModel.cs" />
     <Compile Include="ViewModels\Transactions\AddViewModel.cs" />
     <Compile Include="ViewModels\Transactions\EditViewModel.cs" />
     <Compile Include="ViewModels\Transactions\ExtendedViewModel.cs" />
@@ -225,10 +249,16 @@
     <Compile Include="ViewModels\Transactions\IndexViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\Garden_Centre_MVC.Persistance.DatabaseContext.mdf" />
+    <Content Include="App_Data\Garden_Centre_MVC.Persistance.DatabaseContext_log.ldf">
+      <DependentUpon>Garden_Centre_MVC.Persistance.DatabaseContext.mdf</DependentUpon>
+    </Content>
+    <Content Include="Content\bootstrap-lumen.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\darkly-theme.css" />
     <Content Include="Content\datatables.min.css" />
+    <Content Include="Content\flatly.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="favicon.ico" />
@@ -254,6 +284,7 @@
     <Content Include="Scripts\Customers\Customers.js" />
     <Content Include="Scripts\datatables.js" />
     <Content Include="Scripts\datatables.min.js" />
+    <Content Include="Scripts\EmployeeDetails.js" />
     <Content Include="Scripts\Employee\Employee.js" />
     <Content Include="Scripts\Home\Home.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -263,7 +294,9 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\Log\Log.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\Paging.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Web.config" />
@@ -281,20 +314,27 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\ForgottenPassword.cshtml" />
-    <Content Include="Views\Transactions\Index.cshtml" />
     <Content Include="Views\Employee\EmployeeLanding.cshtml" />
     <Content Include="Views\Employee\EmployeeForm.cshtml" />
-    <Content Include="Views\Account\ResetPasswordView.cshtml" />
     <Content Include="Views\Items\Index.cshtml" />
-    <Content Include="Views\Transactions\Partials\AddView.cshtml" />
-    <Content Include="Views\Transactions\Partials\EditView.cshtml" />
-    <Content Include="Views\Transactions\Partials\ExtendedView.cshtml" />
+    <Content Include="Views\Transactions\Index.cshtml" />
     <Content Include="Views\Transactions\Partials\HistoricView.cshtml" />
+    <Content Include="Views\Transactions\Partials\AddView.cshtml" />
+    <Content Include="Views\Transactions\Partials\ExtendedView.cshtml" />
+    <Content Include="Views\Transactions\Partials\EditView.cshtml" />
+    <Content Include="Views\Inventory\Index.cshtml" />
+    <Content Include="Views\Inventory\Partials\InventoryView.cshtml" />
+    <Content Include="Views\Inventory\Partials\NewItemView.cshtml" />
+    <Content Include="Views\Inventory\Partials\EditItemView.cshtml" />
+    <Content Include="Views\Account\EmailSent.cshtml" />
     <Content Include="Views\Customer\CustomerForm.cshtml" />
     <Content Include="Views\Customer\CustomerLanding.cshtml" />
+    <Content Include="Views\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Account\EmployeeAccount.cshtml" />
+    <Content Include="Views\Log\LogLandingPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="Views\Log\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -330,6 +370,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804040826457_AddedCanResetField.resx">
       <DependentUpon>201804040826457_AddedCanResetField.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804160859263_addTransactionOverview.resx">
+      <DependentUpon>201804160859263_addTransactionOverview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804182028214_AddedTheLogAndActionTable.resx">
+      <DependentUpon>201804182028214_AddedTheLogAndActionTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804190751126_EditedTheEmployeeLinkInTheLogTable.resx">
+      <DependentUpon>201804190751126_EditedTheEmployeeLinkInTheLogTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804200754187_AddedAccountCreatedFlagToEmployee.resx">
+      <DependentUpon>201804200754187_AddedAccountCreatedFlagToEmployee.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

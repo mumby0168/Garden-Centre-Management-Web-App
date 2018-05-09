@@ -1426,14 +1426,13 @@ textarea {
 }
 
 a {
-    color: #0ce3ac;
+    color: lightskyblue;
     text-decoration: none;
 }
 
     a:hover,
     a:focus {
-        color: #0ce3ac;
-        text-decoration: underline;
+        text-shadow: 8px 8px 16px darkblue;
     }
 
     a:focus {
@@ -3885,22 +3884,22 @@ fieldset[disabled] a.btn {
     }
 
 .btn-primary {
-    color: #ffffff;
-    background-color: #375a7f;
-    border-color: #375a7f;
+    color: black;
+    background-color: lightskyblue;
+    border-color: lightskyblue;
 }
 
     .btn-primary:focus,
     .btn-primary.focus {
         color: #ffffff;
-        background-color: #28415b;
+        background-color: lightskyblue;
         border-color: #101b26;
     }
 
     .btn-primary:hover {
         color: #ffffff;
-        background-color: #28415b;
-        border-color: #253c54;
+        background-color: lightskyblue;
+        border-color: lightskyblue;
     }
 
     .btn-primary:active,
