@@ -1,7 +1,7 @@
 ﻿@using Garden_Centre_MVC.Models
 @model Garden_Centre_MVC.ViewModels.CustomerViewModels.CustomerLandingViewModels
 
-@Scripts.Render("~/bundles/SiteScripts")
+@Scripts.Render("~/bundles/Customers")
 
 <div align="center" class="row">
     <h2>Customers</h2>
@@ -45,28 +45,76 @@
                             <td>Address Line 1</td>
                             <td>Address Line 2</td>
                             <td>Postcode</td>
+                            <td>Operations</td>
                         </tr>
                     </thead>
 
                     <tbody>
+
+                    @foreach (var cust in Model.Customers)
+                    {
+                        <tr>
+                            <td>@cust.FirstName</td>
+
+                            <td>@cust.SecondName</td>
+
+                            <td>@cust.AddressLine1</td>
+
+                            <td>@cust.AddressLine2</td>
+
+                            <td>@cust.PostCode</td>
+
+                            <td>
+                                <button custId="@cust.CustomerId" class="EditLink  btn "><i class="fa fa-edit"></i></button>
+
+                                <button custId=@cust.CustomerId class="RemoveLink btn "><i class="fa fa-remove"></i> </button>
+                            </td>
+
+                        </tr>
+
+
+                    }
+
+                    </tbody>
+
                 </table>
+
+                if (Model.IsSearch)
+                {
+
+                }
+                else
+                {
+                    <button style="display: inline" class="btn btn-default" id="PreviousPage">Previous</button>
+
+                    <p style="margin-right: 5px; margin-left: 5px; font-size: 20px; display: inline" id="PageNumber">@Model.PageNum</p>
+
+                    <button class="btn btn-default" id="NextPage" style="display: inline">Next</button>
+                }
+
+
             }
-
-            if (Model.IsSearch)
-            {
-
-            }
-            else
-            {
-            <button style="display: inline" class="btn btn-default" id="PreviousPage">Previous</button>
-
-            <p style="margin-right: 5px; margin-left: 5px; font-size: 20px; display: inline" id="PageNumber">@Model.PageNum</p>
-
-            <button class="btn btn-default" id="NextPage" style="display: inline">Next</button>
-            }
-
-
-</div>
 
     </div>
 
+</div>
+
+<div class="jumbotron" style="display: none; margin-top: 5px;"></div>
+
+<div id="CustomerFormModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal">&times;</button>
+
+            </div>
+            <div class="modal-body">
+
+                <div id="CustomerFormModalBody" class="jumbotron">
+                    @*Content loaded here using jquery*@
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

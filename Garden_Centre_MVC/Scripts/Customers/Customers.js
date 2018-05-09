@@ -18,14 +18,14 @@
     //        alert(pages);
     //    }
     //});
-
+        
     $("#NextPage").click(function() {
 
         var page = $("#PageNumber").html();
         page++;
 
         $.ajax({
-            url: "/Customers/LoadTablePage",
+            url: "/Customer/LoadTablePage",
             data: { "page": page },
             success: function (view) {
                 $("#MainPageContainer").html(view);
@@ -49,7 +49,7 @@
         pages--;
 
         $.ajax({
-            url: "/Customers/LoadTablePage",
+            url: "/Customer/LoadTablePage",
             data: { "page": pages },
             success: function(view) {
                 $("#MainPageContainer").html(view);
@@ -59,7 +59,7 @@
 
     $("#GoBackFromNullError").click(function() {
         $.ajax({
-            url: "/Customers/Index",
+            url: "/Customer/Index",
             success: function (view) {
                 $("#MainPageContainer").html(view);
                 $("#Loader").hide();
@@ -73,7 +73,7 @@
     //Search Box Start
     $("#ResetSearch").click(function () {
         $.ajax({
-            url: "/Customers/Index/",
+            url: "/Customer/Index/",
             success: function (view) {
                 $("#MainPageContainer").html(view);
             }
@@ -87,7 +87,7 @@
         var filter = inputBox.val();
 
         $.ajax({
-            url: "Customers/Search/",
+            url: "Customer/Search/",
             data: {"str": filter},
             success: function(view) {
                 $("#MainPageContainer").html(view);
@@ -103,10 +103,10 @@
     $(".EditLink").click( function(e) {
         
         $.ajax({
-            url: "/Customers/Edit/" + $(this).attr("empId"),
+            url: "/Customer/Edit/" + $(this).attr("custId"),
             success: function(view) {
-                $("#CustomersFormModalBody").html(view);
-                $("#CustomersFormModal").modal();
+                $("#CustomerFormModalBody").html(view);
+                $("#CustomerFormModal").modal();
             }
         });
 
@@ -114,24 +114,24 @@
 
 
     //Edit Customer
-    $("#CustomersForm").submit(function(e) {
+    $("#CustomerForm").submit(function(e) {
         e.preventDefault();
 
-        if ($("#CustomersNumber").val().toString().length !== 6) {
+        if ($("#CustomerNumber").val().toString().length !== 6) {
             //bootbox.alert("The customers Id must be 6 digits");
-            $("#EmpNumVal").html("The customers Id must be 6 digits");
+            $("#CustNumVal").html("The customers Id must be 6 digits");
             return;
         }
 
-        var form = $("#CustomersForm").serialize();
+        var form = $("#CustomerForm").serialize();
 
         $.ajax({
-            url: "/Customers/Save",
+            url: "/Customer/Save",
             data: form,
             datatype: "JSON",
             type: "POST",
             success: function (view) {
-                $("#CustomersFormModal").hide();
+                $("#CustomerFormModal").hide();
                 $(".modal-backdrop").remove();
                 $("#MainPageContainer").html(view);
             }
@@ -162,7 +162,7 @@
                 }
 
                 $.ajax({
-                    url: "/Customers/Remove/" + id,
+                    url: "/Customer/Remove/" + id,
                     error: function(error, type, errorMessage) {
                         bootbox.alert({
                             message: errorMessage,
@@ -179,21 +179,21 @@
     });
 
     //loads the add screen
-    $("#AddCustomersBtn").click(function() {
+    $("#AddCustomerBtn").click(function() {
 
         $.ajax({
-            url: "/Customers/Add",
+            url: "/Customer/Add",
             success: function(view) {
-                $("#CustomersFormModalBody").html(view);
-                $("#CustomersFormModal").modal();
+                $("#CustomerFormModalBody").html(view);
+                $("#CustomerFormModal").modal();
             }
         });
 
     });
 
     //closes the customers form
-    $("#CloseCustomersForm").click(function() {
-        $("#CustomersFormDiv").delay(1000).slideUp("slow");
+    $("#CloseCustomerForm").click(function() {
+        $("#CustomerFormDiv").delay(1000).slideUp("slow");
     });
 
 });
