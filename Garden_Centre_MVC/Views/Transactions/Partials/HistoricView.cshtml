@@ -24,12 +24,24 @@
                 td.innerHTML = dataObj.TransactionNumber;
                 tr.appendChild(td);
 
+                var date = dataObj.Date;
+                var Tindex = date.indexOf("T", 0);
+                var year = date.slice(0, 4);
+                var month = date.slice(5, 7);
+                var day = date.slice(8, 10);
+                date = day + "/" + month + "/" + year;
+
+                var time = dataObj.Date;
+                time = time.slice(Tindex + 1, time.length);
+                time = time.slice(0, time.indexOf(".", 0));
+
                 td = document.createElement("td");
-                td.innerHTML = dataObj.Date;
+                td.innerHTML = date;
                 tr.appendChild(td);
 
                 td = document.createElement("td");
-                td.innerHTML = dataObj.Date;
+
+                td.innerHTML = time;
                 tr.appendChild(td);
 
                 td = document.createElement("td");
@@ -42,7 +54,7 @@
 
                 td = document.createElement("td");
                 var btn = document.createElement("button");
-                btn.setAttribute("style", "background: none; border: none; color:black;");
+                btn.setAttribute("style", "background: none; border: none; color:#2c3e50;");
                 btn.setAttribute("class", "viewBtn btn btn-primary");
                 btn.setAttribute("title", "View the indiviudal items that make up this transaction !");
                 btn.setAttribute("transactionNumber", dataObj.TransactionNumber);
@@ -86,7 +98,7 @@
                 @if (Garden_Centre_MVC.Attributes.Assets.CurrentUser.EmployeeLogin.Employee.Admin)
                 {
                     @:btn = document.createElement("button");
-                    @:btn.setAttribute("style", "background: none; border: none; color:black;");
+                    @:btn.setAttribute("style", "background: none; border: none; color:#2c3e50;");
                     @:btn.setAttribute("class", "editBtn btn btn-primary");
                     @:btn.setAttribute("title", "Edit the contents of this transaction !");
                     @:btn.setAttribute("transactionNumber", dataObj.TransactionNumber);
@@ -129,7 +141,7 @@
                     @:td.appendChild(btn);
 
                     @:btn = document.createElement("button");
-                    @:btn.setAttribute("style", "background: none; border: none; color:black;");
+                    @:btn.setAttribute("style", "background: none; border: none; color:#2c3e50;");
                     @:btn.setAttribute("class", "delBtn btn btn-primary");
                     @:btn.setAttribute("title", "Delete this transaction !");
                     @:btn.setAttribute("transactionNumber", dataObj.TransactionNumber);
