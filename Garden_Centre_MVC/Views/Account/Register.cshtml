@@ -16,7 +16,7 @@
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/jqueryval")
+    
 </head>
 <body>
 
@@ -24,45 +24,47 @@
 <div class="container body-content">
     <div id="CenteredDiv" align="center">
 
+        @Scripts.Render("~/bundles/jqueryval")
+
         <div class="jumbotron">
 
             <h2 style="margin-bottom: 10px;">Register</h2>
 
             @using (Html.BeginForm("RegisterForm", "Account", FormMethod.Post))
-            {
-                <div class="form-group">
-                    @Html.LabelFor(m => m.EmployeeNumber)
+        {
+            <div class="form-group">
+                @Html.LabelFor(m => m.EmployeeNumber)
 
-                    @Html.TextBoxFor(m => m.EmployeeNumber, new {@class = "form-control"})
-                    @Html.ValidationMessageFor(m => m.EmployeeNumber)
-                </div>
+                @Html.TextBoxFor(m => m.EmployeeNumber, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.EmployeeNumber)
+            </div>
 
 
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Email)
+            <div class="form-group">
+                @Html.LabelFor(m => m.Email)
 
-                    @Html.TextBoxFor(m => m.Email, new {@class = "form-control"})
-                    @Html.ValidationMessageFor(m => m.Email)
-                </div>
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Email)
+            </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Password)
+            <div class="form-group">
+                @Html.LabelFor(m => m.Password)
 
-                    @Html.PasswordFor(m => m.Password, new {@class = "form-control"})
-                    @Html.ValidationMessageFor(m => m.Password)
-                </div>
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Password)
+            </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(m => m.ReTypePasssword)
+            <div class="form-group">
+                @Html.LabelFor(m => m.ReTypePasssword)
 
-                    @Html.PasswordFor(m => m.ReTypePasssword, new {@class = "form-control"})
-                    @Html.ValidationMessageFor(m => m.ReTypePasssword)
-                </div>
+                @Html.PasswordFor(m => m.ReTypePasssword, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ReTypePasssword)
+            </div>
 
-                <button type="submit" class="btn btn-primary">Register</button>
+            <button type="submit" class="btn btn-primary">Register</button>
 
-                <br/>
-            }
+            <br />
+    }
 
         </div>
     </div>
