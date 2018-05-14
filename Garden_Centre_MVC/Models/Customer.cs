@@ -30,11 +30,14 @@ namespace Garden_Centre_MVC.Models
 
         [Required]
         [MaxLength(15)]
-        public string AddressLine2 { get; set; }   
+        public string AddressLine2 { get; set; }
 
         [MaxLength(255)]
         [Required]
         public string PostCode { get; set; }
+
+        [Required]
+        public bool CustomerDeleted { get; set; }
 
         [ScriptIgnore]
         public ICollection<Transaction> Transactions { get; set; }

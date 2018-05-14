@@ -221,6 +221,10 @@
     <Compile Include="Migrations\201804200754187_AddedAccountCreatedFlagToEmployee.Designer.cs">
       <DependentUpon>201804200754187_AddedAccountCreatedFlagToEmployee.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805140955301_AddedDeletedFlagToCustomerModel.cs" />
+    <Compile Include="Migrations\201805140955301_AddedDeletedFlagToCustomerModel.Designer.cs">
+      <DependentUpon>201805140955301_AddedDeletedFlagToCustomerModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ActionType.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -333,9 +337,7 @@
     <Content Include="Views\Account\EmployeeAccount.cshtml" />
     <Content Include="Views\Log\LogLandingPage.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Log\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
   </ItemGroup>
@@ -382,6 +384,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804200754187_AddedAccountCreatedFlagToEmployee.resx">
       <DependentUpon>201804200754187_AddedAccountCreatedFlagToEmployee.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805140955301_AddedDeletedFlagToCustomerModel.resx">
+      <DependentUpon>201805140955301_AddedDeletedFlagToCustomerModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
