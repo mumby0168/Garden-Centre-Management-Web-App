@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Script.Serialization;
+using System.Data.Entity;
 
 namespace Garden_Centre_MVC.ViewModels.Transactions
 {
@@ -21,13 +22,7 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
         {
             get
             {
-                List<TransactionOverview> ret = m_Context.TransactionOverviews.ToList();
-                foreach (TransactionOverview to in ret)
-                {
-                    if (to.Customer == null)
-                        to.Customer = m_Context.Customers.Where(c => c.CustomerId == to.CustomerId).First();
-                }
-
+                List<TransactionOverview> ret = m_Context.TransactionOverviews.Include(t => t.Customer).Where(t => t.Customer.CustomerDeleted == false).ToList();
                 return ret;
             }
         }
