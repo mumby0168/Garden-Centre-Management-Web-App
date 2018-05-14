@@ -13,7 +13,14 @@ namespace Garden_Centre_MVC.Attributes
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
+            if (value == null)
+            {
+               return new ValidationResult("The Email has not been provided.");
+            }
+
             var context = new DatabaseContext();
+
+            
 
             var check = context.EmployeeLogins.FirstOrDefault(e => e.Username == value.ToString());
 
