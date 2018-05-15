@@ -29,8 +29,11 @@
     $("#ActionLogLandingLink").click(function() {
 
         $.ajax({
-            url: "Log/Index",
-            success: function(view) {
+            url: "/Log/Index",
+            success: function (view) {
+
+                alert("Success");
+
                 $("#MainPageContainer").html(view);
 
                 var data = null;
@@ -43,10 +46,11 @@
                         ActionLogTable(data);
                     }
                 });
-
-
-
+            },
+            error: function (error, type, errorMessage) {
+                alert(errorMessage);
             }
+
         });
 
     });

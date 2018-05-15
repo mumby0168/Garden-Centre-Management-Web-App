@@ -115,7 +115,7 @@ namespace Garden_Centre_MVC.Controllers
                 _context.Employees.Add(employee);
                 _context.SaveChanges();
                 var vm = new EmployeeLandingViewModels() {Employees = _context.Employees.Take(10).ToList()};
-                Logger.LogAction("Employee Added ", employee.FirstName + employee.SecondName + " Added.");
+                Logger.LogAction("Employee Added", employee.FirstName + employee.SecondName + " Added.");
                 return View("EmployeeLanding", vm);
             }
             else if(errorCounter == 0)

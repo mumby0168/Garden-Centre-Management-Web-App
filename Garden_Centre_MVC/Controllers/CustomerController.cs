@@ -13,6 +13,7 @@ using Garden_Centre_MVC.Persistance;
 using Garden_Centre_MVC.ViewModels.CustomerViewModels;
 using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 namespace Garden_Centre_MVC.Controllers
 {
@@ -23,7 +24,6 @@ namespace Garden_Centre_MVC.Controllers
     {
         private DatabaseContext _context;
 
-        public object Logger { get; private set; }
 
         public CustomerController()
         {
@@ -32,7 +32,7 @@ namespace Garden_Centre_MVC.Controllers
         
         public ActionResult Index()
         {
-            var customers = _context.Customers.Take(10).Where(c => c.CustomerDeleted == false).ToList();
+            var customers = _context.Customers.Where(c => c.CustomerDeleted == false).Take(10).ToList();
 
             var vm = new CustomerLandingViewModels { Customers = customers, PageNum = 1, IsSearch = false };
 
@@ -52,7 +52,7 @@ namespace Garden_Centre_MVC.Controllers
         public ActionResult LoadTablePage(int page)
         {
             var skipAmount = (page - 1) * 10;
-            var customers = _context.Customers.OrderBy(c => c.FirstName).Skip(skipAmount).Take(10).ToList();
+            var customers = _context.Customers.OrderBy(c => c.FirstName).Where(c => c.CustomerDeleted == false).Skip(skipAmount).Take(10).ToList();
 
 
             var vm = new CustomerLandingViewModels()
@@ -86,6 +86,26 @@ namespace Garden_Centre_MVC.Controllers
                 errorCounter++;
             }
 
+            if (cust.PostCode.IsNullOrWhiteSpace())
+            {
+                error.ErrorMessages.Add("Please enter a postcode");
+                errorCounter++;
+            }
+
+            Regex reg = new Regex(@"([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))\s?[0-9][A-Za-z]{2})");
+
+
+            if(cust.PostCode != null)
+            {
+                if (!reg.IsMatch(cust.PostCode))
+                {
+                    error.ErrorMessages.Add("This is not a valid UK postcode");
+                    errorCounter++;
+                }
+            }
+            
+
+
             if (errorCounter != 0)
             {
                 var obj = JsonConvert.SerializeObject(error);
@@ -100,7 +120,8 @@ namespace Garden_Centre_MVC.Controllers
                     SecondName = cust.SecondName,
                     AddressLine1 = cust.AddressLine1,
                     AddressLine2 = cust.AddressLine2,
-                    PostCode = cust.PostCode
+                    PostCode = cust.PostCode,
+                    CustomerDeleted = false
                 };
 
                 _context.Customers.Add(customer);
@@ -108,8 +129,13 @@ namespace Garden_Centre_MVC.Controllers
 
                 var vm = new CustomerLandingViewModels()
                 {
-                    Customers = _context.Customers.Take(10).ToList()
+                    Customers = _context.Customers
+                    .Where(c => c.CustomerDeleted == false)
+                    .Take(10).
+                    ToList()
                 };
+
+                Assets.Logger.LogAction("Customer Added", customer.FirstName + customer.SecondName + " Added.");
 
                 return View("CustomerLanding", vm);
             }
@@ -128,8 +154,10 @@ namespace Garden_Centre_MVC.Controllers
 
                 var vm = new CustomerLandingViewModels()
                 {
-                    Customers = _context.Customers.Take(10).ToList()
+                    Customers = _context.Customers.Take(10).Where(c => c.CustomerDeleted == false).ToList()
                 };
+
+                Assets.Logger.LogAction("Customer Edited", customer.FirstName + customer.SecondName + " Edited.");
 
                 return PartialView("CustomerLanding", vm);
             }
@@ -146,8 +174,13 @@ namespace Garden_Centre_MVC.Controllers
 
             var vm = new CustomerLandingViewModels()
             {
-                Customers = _context.Customers.Take(10).Where(e => e.CustomerDeleted == false).ToList()
+                Customers = _context.Customers
+                .Where(c => c.CustomerDeleted == false)
+                    .Take(10).
+                    ToList()
             };
+
+            Assets.Logger.LogAction("Customer Deleted", customer.FirstName + customer.SecondName + " Deleted.");
 
             return PartialView("CustomerLanding", vm);
         }
@@ -187,7 +220,10 @@ namespace Garden_Centre_MVC.Controllers
 
             if (str.IsNullOrWhiteSpace())
             {
-                customers = _context.Customers.Take(10).ToList();
+                customers = _context.Customers
+                .Where(c => c.CustomerDeleted == false)
+                    .Take(10).
+                    ToList();
 
                 vm = new CustomerLandingViewModels()
                 {
@@ -198,7 +234,7 @@ namespace Garden_Centre_MVC.Controllers
             }
             else
             {
-                customers = _context.Customers.ToList();
+                customers = _context.Customers.Where(c => c.CustomerDeleted == false).ToList();
                 var listToReturn = new List<Customer>();
                 foreach (var cust in customers)
                 {

@@ -121,8 +121,7 @@
 
 
         e.preventDefault();
-
-        alert("form submitted");       
+     
 
         var form = $("#CustomerForm").serialize();
 
@@ -179,7 +178,7 @@
         var id = $(this).attr("custId");
 
         bootbox.confirm({
-            message: "are you sure you want to delete this record",
+            message: "Are you sure you want to delete this record?", 
             buttons: {
                 confirm: {
                     label: "Yes",
@@ -194,8 +193,6 @@
                 if (result !== true) {
                     return;
                 }
-
-                alert("Remove Submitted");
 
                 $.ajax({
                     url: "/Customer/Remove/" + id,

@@ -37,14 +37,13 @@ namespace Garden_Centre_MVC.Models
         public string AddressLine2 { get; set; }
 
         [MaxLength(255)]
-        [Required]
-        [RegularExpression("([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))\s?[0-9][A-Za-z]{2}")]
+        [Required]       
         [Display(Name = "Post Code")]
         public string PostCode { get; set; }
 
         [Required]
         public bool CustomerDeleted { get; set; }
-
+        
         [ScriptIgnore]
         public ICollection<Transaction> Transactions { get; set; }
 
