@@ -1,6 +1,12 @@
 ﻿@model Garden_Centre_MVC.Models.Customer
 
+@Scripts.Render("~/bundles/Customers")
+
 <h4 style="margin-bottom: 10px;">Customer Form</h4>
+
+<div id="ErrorDiv">
+
+</div>
 
 <form id="CustomerForm">
     <div class="form-group">
@@ -36,6 +42,10 @@
         @Html.TextBoxFor(m => m.PostCode, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.PostCode)
         <span class="field-validation-valid" data-valmsg-for="PostCode" data-valmsg-replace="true" id="CustPostCodeVal"></span>
+    </div>
+
+    <div class="form-group">
+        @Html.HiddenFor(d => d.CustomerId)
     </div>
 
     <button type="submit" class="btn btn-primary">Submit</button>

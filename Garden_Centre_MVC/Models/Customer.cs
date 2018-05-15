@@ -16,24 +16,30 @@ namespace Garden_Centre_MVC.Models
 
         [Required]
         [MaxLength(15)]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         [Required]
         [MaxLength(15)]
+        [Display(Name = "Second Name")]
         public string SecondName { get; set; }
 
         public string FullName { get { return FirstName + " " + SecondName; } }
 
         [Required]
         [MaxLength(25)]
+        [Display(Name = "Address Line 1")]
         public string AddressLine1 { get; set; }
 
         [Required]
         [MaxLength(15)]
+        [Display(Name = "Address Line 2")]
         public string AddressLine2 { get; set; }
 
         [MaxLength(255)]
         [Required]
+        [RegularExpression("([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))\s?[0-9][A-Za-z]{2}")]
+        [Display(Name = "Post Code")]
         public string PostCode { get; set; }
 
         [Required]

@@ -68,7 +68,7 @@ namespace Garden_Centre_MVC.Controllers
 
             if (emp.FirstName.IsNullOrWhiteSpace() || emp.SecondName.IsNullOrWhiteSpace())
             {
-                error.ErrorMessages.Add("Please enter a first and last name.");
+                error.ErrorMessages.Add("Please enter a first and last name."); 
                 errorCounter++;
             }
 

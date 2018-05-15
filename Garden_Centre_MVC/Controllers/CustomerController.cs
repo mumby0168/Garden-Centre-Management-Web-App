@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Garden_Centre_MVC.Assets;
 using Garden_Centre_MVC.Attributes;
 using Garden_Centre_MVC.Attributes.Assets;
 using Garden_Centre_MVC.Models;
 using Garden_Centre_MVC.Persistance;
 using Garden_Centre_MVC.ViewModels.CustomerViewModels;
+using Microsoft.Ajax.Utilities;
+using Newtonsoft.Json;
 
 namespace Garden_Centre_MVC.Controllers
 {
@@ -19,6 +23,8 @@ namespace Garden_Centre_MVC.Controllers
     {
         private DatabaseContext _context;
 
+        public object Logger { get; private set; }
+
         public CustomerController()
         {
             _context = new DatabaseContext();
@@ -26,7 +32,7 @@ namespace Garden_Centre_MVC.Controllers
         
         public ActionResult Index()
         {
-            var customers = _context.Customers.Take(10).ToList();
+            var customers = _context.Customers.Take(10).Where(c => c.CustomerDeleted == false).ToList();
 
             var vm = new CustomerLandingViewModels { Customers = customers, PageNum = 1, IsSearch = false };
 
@@ -40,6 +46,8 @@ namespace Garden_Centre_MVC.Controllers
 
             return Json(new { amount = count.ToString() });
         }
+
+
 
         public ActionResult LoadTablePage(int page)
         {
@@ -60,9 +68,30 @@ namespace Garden_Centre_MVC.Controllers
         public ActionResult Save(Customer cust)
         {
 
-            if (!ModelState.IsValid)
-                return View();
+            int errorCounter = 0;
 
+            Error error = new Error();
+            error.ErrorMessages = new List<string>();
+            error.Property = cust;
+
+            if (cust.FirstName.IsNullOrWhiteSpace() || cust.SecondName.IsNullOrWhiteSpace())
+            {
+                error.ErrorMessages.Add("Please enter a first and last name.");
+                errorCounter++;
+            }
+
+            if(cust.AddressLine1.IsNullOrWhiteSpace() || cust.AddressLine2.IsNullOrWhiteSpace())
+            {
+                error.ErrorMessages.Add("Please enter an Address Line 1 and 2.");
+                errorCounter++;
+            }
+
+            if (errorCounter != 0)
+            {
+                var obj = JsonConvert.SerializeObject(error);
+                return new HttpStatusCodeResult(HttpStatusCode.ExpectationFailed, obj);
+            }
+               
             if (cust.CustomerId == 0)
             {
                 var customer = new Customer
@@ -110,12 +139,14 @@ namespace Garden_Centre_MVC.Controllers
         {
             var customer = _context.Customers.FirstOrDefault(c => c.CustomerId == id);
 
-            _context.Customers.Remove(customer);
+            customer.CustomerDeleted = true;
+
+            
             _context.SaveChanges();
 
             var vm = new CustomerLandingViewModels()
             {
-                Customers = _context.Customers.Take(10).ToList()
+                Customers = _context.Customers.Take(10).Where(e => e.CustomerDeleted == false).ToList()
             };
 
             return PartialView("CustomerLanding", vm);
@@ -139,9 +170,6 @@ namespace Garden_Centre_MVC.Controllers
 
         }
 
-
-
-
         public ActionResult GetAll()
         {
             return View();
@@ -154,26 +182,34 @@ namespace Garden_Centre_MVC.Controllers
 
         public ActionResult Search(string str)
         {
-            var customers = _context.Customers.ToList();
+            CustomerLandingViewModels vm;
+            List<Customer> customers;
 
-            var listToReturn = new List<Customer>();
-
-            foreach (var cust in customers)
+            if (str.IsNullOrWhiteSpace())
             {
-                var fullName = cust.FirstName + cust.SecondName;
-                if (fullName.ToUpper().Contains(str.ToUpper()))
-                    listToReturn.Add(cust);
-            };
+                customers = _context.Customers.Take(10).ToList();
 
-            var vm = new CustomerLandingViewModels()
+                vm = new CustomerLandingViewModels()
+                {
+                    Customers = customers,
+                    PageNum = 1,
+                    IsSearch = false
+                };
+            }
+            else
             {
-                Customers = listToReturn,
-                PageNum = 1,
-                IsSearch = true
-            };
+                customers = _context.Customers.ToList();
+                var listToReturn = new List<Customer>();
+                foreach (var cust in customers)
+                {
+                    var fullName = cust.FirstName + cust.SecondName;
+                    if (fullName.ToUpper().Contains(str.ToUpper())) listToReturn.Add(cust);
+                }
+
+                vm = new CustomerLandingViewModels() { Customers = listToReturn, PageNum = 1, IsSearch = true };
+            }
 
             return PartialView("CustomerLanding", vm);
-
         }
 
         protected override void Dispose(bool disposing)

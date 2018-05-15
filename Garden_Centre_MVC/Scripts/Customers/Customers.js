@@ -1,5 +1,8 @@
 ﻿$(document).ready(function () {
 
+
+
+
     //global variables
     var amountOfrecords;
 
@@ -114,14 +117,12 @@
 
 
     //Edit Customer
-    $("#CustomerForm").submit(function(e) {
+    $("#CustomerForm").submit(function (e) {
+
+
         e.preventDefault();
 
-        if ($("#CustomerNumber").val().toString().length !== 6) {
-            //bootbox.alert("The customers Id must be 6 digits");
-            $("#CustNumVal").html("The customers Id must be 6 digits");
-            return;
-        }
+        alert("form submitted");       
 
         var form = $("#CustomerForm").serialize();
 
@@ -134,6 +135,39 @@
                 $("#CustomerFormModal").hide();
                 $(".modal-backdrop").remove();
                 $("#MainPageContainer").html(view);
+            },
+            error: function (error, type, errorMessage) {
+
+
+
+
+                var errorobj = JSON.parse(errorMessage);
+
+                $("#ErrorDiv").html("");
+
+                var div = document.getElementById("ErrorDiv");
+
+                var h4 = document.createElement("h5");
+
+                h4.innerHTML = "Form Issues:";
+
+                div.appendChild(h4);
+
+                var list = document.createElement("ul");
+
+                for (var i = 0; i < errorobj.ErrorMessages.length; i++) {
+                    var li = document.createElement("li");
+
+                    li.innerHTML = errorobj.ErrorMessages[i];
+
+                    list.appendChild(li);
+                }
+
+                div.setAttribute("style", "color:red");
+
+                div.appendChild(list);
+
+
             }
         });
 
@@ -142,7 +176,7 @@
     //deletes the Customer
     $(".RemoveLink").click(function (e) {
 
-        var id = $(this).attr("empId");
+        var id = $(this).attr("custId");
 
         bootbox.confirm({
             message: "are you sure you want to delete this record",
@@ -160,6 +194,8 @@
                 if (result !== true) {
                     return;
                 }
+
+                alert("Remove Submitted");
 
                 $.ajax({
                     url: "/Customer/Remove/" + id,
@@ -186,14 +222,17 @@
             success: function(view) {
                 $("#CustomerFormModalBody").html(view);
                 $("#CustomerFormModal").modal();
+
+
+                //closes the customers form
+                $("#CloseCustomerForm").click(function (e) {
+                    e.preventDefault();
+                    $("#CustomerFormModal").delay(1000).slideUp("slow", () => $("#CustomerFormModal").modal('toggle'));
+                        ;
+                });
             }
         });
 
-    });
-
-    //closes the customers form
-    $("#CloseCustomerForm").click(function() {
-        $("#CustomerFormDiv").delay(1000).slideUp("slow");
     });
 
 });
