@@ -95,86 +95,87 @@
                 btn.appendChild(icon);
                 td.appendChild(btn);
 
-                @if (Garden_Centre_MVC.Attributes.Assets.CurrentUser.EmployeeLogin.Employee.Admin)
-                {
-                    @:btn = document.createElement("button");
-                    @:btn.setAttribute("style", "background: none; border: none; color:#2c3e50;");
-                    @:btn.setAttribute("class", "editBtn btn btn-primary");
-                    @:btn.setAttribute("title", "Edit the contents of this transaction !");
-                    @:btn.setAttribute("transactionNumber", dataObj.TransactionNumber);
-                    @:btn.addEventListener("click", function (e) {
+                if (dataObj.Customer.CustomerDeleted === false) {
+                    @if (Garden_Centre_MVC.Attributes.Assets.CurrentUser.EmployeeLogin.Employee.Admin)
+                    {
+                        @:btn = document.createElement("button");
+                        @:btn.setAttribute("style", "background: none; border: none; color:#2c3e50;");
+                        @:btn.setAttribute("class", "editBtn btn btn-primary");
+                        @:btn.setAttribute("title", "Edit the contents of this transaction !");
+                        @:btn.setAttribute("transactionNumber", dataObj.TransactionNumber);
+                        @:btn.addEventListener("click", function (e) {
+                            @:e.preventDefault();
+                            @:var transactionNumber = $(this).attr("transactionNumber");
+
+                            @:$.ajax(
+                            @:{
+                                @:type: "POST",
+                                @:data: ({ _transactionNumber: transactionNumber }),
+                                @:url: '@Url.Action("EditView", "Transactions")',
+                                @:success: function (result) {
+                                    @:$("#Index_AddView").delay(100).slideUp("slow");
+
+                                    @:$("#Historic_DropDownViewTR" + transactionNumber).attr("style", "display:table-row;");
+                                    @:$("#Historic_DropDownView" + transactionNumber).delay(100).slideDown("slow").html(result);
+
+                                    @:if (prevOpenedTN !== '0' && prevOpenedTN !== transactionNumber) {
+                                        @:$("#Historic_DropDownView" + prevOpenedTN).delay(100).slideUp("slow", "swing", function (e) {
+                                            @:$("#Historic_DropDownViewTR" + prevOpenedTN).attr("style", "display:none;");
+                                            @:prevOpenedTN = transactionNumber;
+                                        @:});
+                                    @:}
+                                    @:else
+                                    @:{
+                                        @:prevOpenedTN = transactionNumber;
+                                    @:}
+
+                                @:},
+                                @:error: function (x, e, r) {
+                                    @:alert(e + " " + r);
+                                    @:alert(x.responseText);
+                                @:}
+                            @:});
+                        @:});
+                        @:icon = document.createElement("i");
+                        @:icon.setAttribute("class", "fa fa-edit");
+                        @:btn.appendChild(icon);
+                        @:td.appendChild(btn);
+
+                        @:btn = document.createElement("button");
+                        @:btn.setAttribute("style", "background: none; border: none; color:#2c3e50;");
+                        @:btn.setAttribute("class", "delBtn btn btn-primary");
+                        @:btn.setAttribute("title", "Delete this transaction !");
+                        @:btn.setAttribute("transactionNumber", dataObj.TransactionNumber);
+                        @:btn.addEventListener("click", function (e) {
                         @:e.preventDefault();
                         @:var transactionNumber = $(this).attr("transactionNumber");
 
-                        @:$.ajax(
+                        @:if (confirm("Are you sure you wish to delete this transaction ?"))
                         @:{
-                            @:type: "POST",
-                            @:data: ({ _transactionNumber: transactionNumber }),
-                            @:url: '@Url.Action("EditView", "Transactions")',
-                            @:success: function (result) {
-                                @:$("#Index_AddView").delay(100).slideUp("slow");
-
-                                @:$("#Historic_DropDownViewTR" + transactionNumber).attr("style", "display:table-row;");
-                                @:$("#Historic_DropDownView" + transactionNumber).delay(100).slideDown("slow").html(result);
-
-                                @:if (prevOpenedTN !== '0' && prevOpenedTN !== transactionNumber) {
-                                    @:$("#Historic_DropDownView" + prevOpenedTN).delay(100).slideUp("slow", "swing", function (e) {
-                                        @:$("#Historic_DropDownViewTR" + prevOpenedTN).attr("style", "display:none;");
-                                        @:prevOpenedTN = transactionNumber;
-                                    @:});
-                                @:}
-                                @:else
+                        @:$.ajax(
                                 @:{
-                                    @:prevOpenedTN = transactionNumber;
+                                @:type: "POST",
+                            @:data: ({ _transactionNumber: transactionNumber }),
+                            @:url: '@Url.Action("DeleteTransaction", "Transactions")',
+                            @:success: function (result) {
+                                @:$("#Index_Feedback").slideUp("slow", "swing", function (e) {
+                                    @:$("#Index_Feedback").delay(100).slideDown("slow").html("<h1>Successfully Deleted The Transaction</h1>").delay(3000).slideUp("slow");
+                                    @:});
+                               @: $("#View").html(result);
+                                @:},
+                           @: error: function (x, e, r) {
+                                  @:  alert(e + " " + r);
+                                @:    alert(x.responseText);
                                 @:}
-
-                            @:},
-                            @:error: function (x, e, r) {
-                                @:alert(e + " " + r);
-                                @:alert(x.responseText);
-                            @:}
-                        @:});
+                            @:});
+                       @: }
                     @:});
-                    @:icon = document.createElement("i");
-                    @:icon.setAttribute("class", "fa fa-edit");
-                    @:btn.appendChild(icon);
-                    @:td.appendChild(btn);
-
-                    @:btn = document.createElement("button");
-                    @:btn.setAttribute("style", "background: none; border: none; color:#2c3e50;");
-                    @:btn.setAttribute("class", "delBtn btn btn-primary");
-                    @:btn.setAttribute("title", "Delete this transaction !");
-                    @:btn.setAttribute("transactionNumber", dataObj.TransactionNumber);
-                    @:btn.addEventListener("click", function (e) {
-                    @:e.preventDefault();
-                    @:var transactionNumber = $(this).attr("transactionNumber");
-
-                    @:if (confirm("Are you sure you wish to delete this transaction ?"))
-                    @:{
-                    @:$.ajax(
-                            @:{
-                            @:type: "POST",
-                        @:data: ({ _transactionNumber: transactionNumber }),
-                        @:url: '@Url.Action("DeleteTransaction", "Transactions")',
-                        @:success: function(result) {
-                            @:$("#Index_Feedback").slideUp("slow", "swing", function(e) {
-                                @:$("#Index_Feedback").delay(100).slideDown("slow").html("<h1>Successfully Deleted The Transaction</h1>").delay(3000).slideUp("slow");
-                                @:});
-                           @: $("#View").html(result);
-                            @:},
-                       @: error: function(x, e, r) {
-                              @:  alert(e + " " + r);
-                            @:    alert(x.responseText);
-                            @:}
-                        @:});
-                   @: }
-                @:});
-                    @:icon = document.createElement("i");
-                    @:icon.setAttribute("class", "fa fa-trash");
-                    @:btn.appendChild(icon);
-                    @:td.appendChild(btn);
+                        @:icon = document.createElement("i");
+                        @:icon.setAttribute("class", "fa fa-trash");
+                        @:btn.appendChild(icon);
+                        @:td.appendChild(btn);
+                    }
                 }
-
 
                 tr.appendChild(td);
 

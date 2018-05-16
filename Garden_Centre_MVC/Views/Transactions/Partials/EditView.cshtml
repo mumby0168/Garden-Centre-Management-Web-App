@@ -76,7 +76,15 @@
 <script type="text/javascript">
     $(document).ready(function () {
         var transactionNumber = @Model._transactionOverview.TransactionNumber;
-        $("#Edit_CustomerSelection" + transactionNumber).prop("selectedIndex", '@Model._transactionOverview.CustomerId');
+
+        var ind = -1;
+        $("#Edit_CustomerSelection" + transactionNumber + " option").each(function (index, element) {
+            if (element.value === '@Model._transactionOverview.CustomerId') {
+                ind = index;
+            }
+        });
+
+        $("#Edit_CustomerSelection" + transactionNumber).prop("selectedIndex", ind);
 
         $(".editRemBtn").on("click", function (e) {
             e.preventDefault();
@@ -96,9 +104,13 @@
 
         $("#Edit_CustomerSelection" + transactionNumber).on("change", function (e) {
             e.preventDefault();
+            if (!$("#Edit_CustomerSelection" + transactionNumber).val() || $("#Edit_CustomerSelection" + transactionNumber).val() === null || $("#Edit_CustomerSelection" + transactionNumber).val() === undefined) {
+                $("#Edit_CustomerSelection" + transactionNumber).prop("selectedIndex", ind);
+            }
+
             $.ajax({
                 type: "POST",
-                data: ({ customerId: $("#Edit_CustomerSelection" + transactionNumber).prop("selectedIndex"), prevVM: '@Html.Raw(Json.Encode(Model))' }),
+                data: ({ customerId: $("#Edit_CustomerSelection" + transactionNumber).val(), prevVM: '@Html.Raw(Json.Encode(Model))' }),
                 url: '@Url.Action("EditSelectCustomer", "Transactions")',
                 success: function (result) {
                     $("#Historic_DropDownView" + transactionNumber).html(result);
