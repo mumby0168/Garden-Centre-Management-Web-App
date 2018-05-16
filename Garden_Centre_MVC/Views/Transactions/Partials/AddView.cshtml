@@ -78,12 +78,15 @@
             e.preventDefault();
             @if (Model.items.Count > 0 && Model.transactionOverview.Customer != null)
             {
-                @:if (confirm("Are you sure you would like to cancel this transaction ?")) {
-                    @:$("#Index_AddView").delay(100).slideUp("slow", "swing", function (e)
+                @:bootbox.confirm("Are you sure you would like to cancel this transaction?", function(result) {
+                    @:if (result)
                     @:{
-                        @:$("#Index_AddView").html("");
-                    @:});
-                @:}
+                        @:$("#Index_AddView").delay(100).slideUp("slow", "swing", function (e)
+                        @:{
+                            @:$("#Index_AddView").html("");
+                        @:});
+                   @:}
+                @:});
             }
             else
             {
@@ -163,9 +166,17 @@
                 url: '@Url.Action("AddItem", "Transactions")',
                 success: function (result) {
                     $("#Index_AddView").html(result);
+                    var x = -1;
+                    $("#Add_CustomerSelection" + " option").each(function (index, element) {
+                        if (element.value === '@Model.transactionOverview.CustomerId') {
+                            x = index;
+                            return;
+                        }
+                    });
+
                     @if (Model.transactionOverview.Customer != null)
                     {
-                        @:$("#Add_CustomerSelection").prop("selectedIndex", '@Model.transactionOverview.CustomerId').change(function (e) { this.val(e.val()); e.preventDefault(); });
+                        @:$("#Add_CustomerSelection").prop("selectedIndex", x);
                     }
                     $("#Add_ItemSelection").prop("selectedIndex", '0').change(function (e) { this.val(e.val); e.preventDefault(); });
                 },
