@@ -132,7 +132,7 @@
             }
             if ($("#Add_CustomerSelection").val() !== '')
             {
-                var v = $("#Add_CustomerSelection").val();
+                var v = $("#Add_CustomerSelection").prop("selectedIndex");
                 $.ajax(
                     {
                         type: "POST",
