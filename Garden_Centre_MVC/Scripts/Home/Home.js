@@ -32,8 +32,6 @@
             url: "/Log/Index",
             success: function (view) {
 
-                alert("Success");
-
                 $("#MainPageContainer").html(view);
 
                 var data = null;
