@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 
 namespace Garden_Centre_MVC.Controllers
 {
+
     [NormalUser]
     [AdminUser]
     public class EmployeeController : Controller
@@ -25,12 +26,20 @@ namespace Garden_Centre_MVC.Controllers
 
         private int EmployeeNumber = 0;
 
+
+        /// <summary>
+        /// This is the constrcutor and it be called when the class is created.
+        /// </summary>
         public EmployeeController()
         {
             _context = new DatabaseContext();
         }
 
-        // GET: Employee
+        /// <summary>
+        /// This is the default method for this controller it will load the employees out the database apply these to the
+        /// view and then return it to the client.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             var employees = _context.Employees.Take(10).ToList();
@@ -40,12 +49,23 @@ namespace Garden_Centre_MVC.Controllers
             return PartialView("EmployeeLanding", vm);
         }
 
+        /// <summary>
+        /// This method is used by the client to establish how many records are in the database.
+        /// This returns a new JSON object for us in Javascript.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult CheckAmountOfRecords()
         {
             var count = _context.Employees.Count();
             return Json(new {amount = count.ToString()});
         }
 
+        /// <summary>
+        /// this method is used when the the user either clicks the next or previous buttons on the paging.
+        /// it will return the next 10 or the previous 10 records in the datbase depedning on what page of the table the user is on.
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
         public ActionResult LoadTablePage(int page)
         {
             var skipAmount = (page - 1) * 10;
@@ -54,6 +74,15 @@ namespace Garden_Centre_MVC.Controllers
             return PartialView("EmployeeLanding", vm);
         }
 
+        /// <summary>
+        /// This method is used when the user either edits or creates a new user. it will know whether the user is
+        /// editing someone or creating a new one due to the value of the ID.
+        ///it will validate each field and then serialise these results into a JSON object so the JS on the client can then
+        /// display these to the user.
+        /// If there no errors the new record or the edited one will be updated in the database.
+        /// </summary>
+        /// <param name="emp"></param>
+        /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public ActionResult Save(Employee emp)
         {
@@ -149,6 +178,13 @@ namespace Garden_Centre_MVC.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.ExpectationFailed, ob1j);
         }
 
+        /// <summary>
+        /// this method will be used to remove a employee from the datbase.
+        /// the main validation in this is making sure that the user cannot
+        /// delete themselves is there are signed in as that employee.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult Remove(int id)
         {
             var employee = _context.Employees.FirstOrDefault(e => e.EmployeeId == id);
@@ -161,12 +197,22 @@ namespace Garden_Centre_MVC.Controllers
             return PartialView("EmployeeLanding", vm);
         }
 
+        /// <summary>
+        /// this will return the add view to the JS to display in the modal.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Add()
         {
             var vm = new Employee();
             return PartialView("EmployeeForm", vm);
         }
 
+        /// <summary>
+        /// this will return the same add view but this time it shall be populated with the details
+        /// of the employee who is to be edited.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult Edit(int id)
         {
             var employee = _context.Employees.FirstOrDefault(e => e.EmployeeId == id);
@@ -178,20 +224,11 @@ namespace Garden_Centre_MVC.Controllers
         }
 
         /// <summary>
-        /// gets all of the employees to be viewed in the table
+        /// this method will be used in order to allow the user to search within the database.
+        /// this will return the first 10 results that contain the string that the user has searched for.
         /// </summary>
+        /// <param name="str"></param>
         /// <returns></returns>
-        [System.Web.Mvc.HttpGet]
-        public ActionResult GetAll()
-        {
-            return View();
-        }
-
-        public ActionResult GetSingle(int id)
-        {
-            return View();
-        }
-
         public ActionResult Search(string str)
         {
             EmployeeLandingViewModels vm;
@@ -224,6 +261,11 @@ namespace Garden_Centre_MVC.Controllers
             return PartialView("EmployeeLanding", vm);
         }
 
+        /// <summary>
+        /// this will be called when the object is disposed of from by C# it will also get rid
+        /// of the overhanging context object.
+        /// </summary>
+        /// <param name="disposing"></param>
         protected override void Dispose(bool disposing)
         {
             _context.Dispose();
