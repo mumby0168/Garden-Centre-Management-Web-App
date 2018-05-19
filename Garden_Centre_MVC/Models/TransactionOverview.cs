@@ -7,6 +7,9 @@ using Garden_Centre_MVC.Models;
 
 namespace Garden_Centre_MVC.Models
 {
+    /// <summary>
+    /// This class is what will be used to creat the table in the database each property being a column in the table
+    /// </summary>
     public class TransactionOverview
     {
         [Required]
