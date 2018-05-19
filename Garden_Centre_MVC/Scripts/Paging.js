@@ -166,6 +166,20 @@ class Paging {
         sel.addEventListener("change", (e) => {
             this.m_RowsToDisplay = parseInt(e.target.value);
             e.target.value = e.target.value;
+
+            var numPages = 1;
+            if (this.m_SearchData !== undefined)
+            {
+                var numPages = parseInt(this.m_SearchData.length / this.m_RowsToDisplay);
+                if (this.m_SearchData.length % this.m_RowsToDisplay !== 0)
+                    numPages += 1;
+            }
+                if (this.m_Page > numPages)
+                {
+                    this.Page(numPages);
+                    return;
+                }
+
             this.Page(this.m_Page);
         });
 

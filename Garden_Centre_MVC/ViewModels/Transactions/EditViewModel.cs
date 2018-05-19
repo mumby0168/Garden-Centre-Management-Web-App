@@ -72,6 +72,7 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
             get; set;
         }
 
+        private Customer prevCust = null;
         public TransactionOverview _transactionOverview
         {
             get; set;

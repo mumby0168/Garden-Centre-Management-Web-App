@@ -1,4 +1,5 @@
-﻿using Garden_Centre_MVC.Attributes;
+﻿using Garden_Centre_MVC.Assets;
+using Garden_Centre_MVC.Attributes;
 using Garden_Centre_MVC.Models;
 using Garden_Centre_MVC.Persistance;
 using Garden_Centre_MVC.ViewModels.InventoryViewModels;
@@ -43,7 +44,7 @@ namespace Garden_Centre_MVC.Controllers
         {
             m_Context.Items.Add(newItem);
             m_Context.SaveChanges();
-
+            Logger.LogAction("Item Added", "Added new item - " + newItem.Description);
             return InventoryView();
         }
 
@@ -63,6 +64,8 @@ namespace Garden_Centre_MVC.Controllers
             itemToUpdate.Description = editedItem.Description;
 
             m_Context.SaveChanges();
+
+            Logger.LogAction("Item Edited", "Edited item - " + editedItem.Description);
 
             return InventoryView();
         }

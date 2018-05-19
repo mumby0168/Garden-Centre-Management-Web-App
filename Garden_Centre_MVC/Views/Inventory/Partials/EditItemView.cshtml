@@ -5,19 +5,19 @@
 
 <form id="EditItemForm">
     <div class="form-group">
-        @Html.LabelFor(m => m.Description)
+        <h3>Item Name</h3>
         @Html.TextBoxFor(m => m.Description, new { @id = "Desc" + Model.ItemId, @class = "form-control" })
         <span class="field-validation-valid" data-valmsg-for="Description" data-valmsg-replace="true" id=@("DescriptionValMessage" + Model.ItemId)></span>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Stock)
+        <h3>Number in Stock</h3>
         @Html.TextBoxFor(m => m.Stock, new { @id = "Stock" + Model.ItemId, @class = "form-control" })
         <span class="field-validation-valid" data-valmsg-for="Stock" data-valmsg-replace="true" id=@("StockValMessage" + Model.ItemId)></span>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.OnOrder)
+        <h3>Number on Order</h3>
         @Html.TextBoxFor(m => m.OnOrder, new { @id = "OnOrder" + Model.ItemId, @class = "form-control" })
         <span class="field-validation-valid" data-valmsg-for="OnOrder" data-valmsg-replace="true" id=@("OnOrderValMessage" + Model.ItemId)></span>
     </div>
@@ -39,7 +39,7 @@
 
             var onlyPosIntRegExp = RegExp('^([0-9]+\d*)$|^0$');
             var onlyPosFloatRegExp = RegExp('^[0-9]+([.][0-9]{0,2})?$');
-            var onlyLettersAndSpaces = RegExp('^[a-zA-Z\s]*$');
+            var onlyLettersAndSpaces = RegExp('^[a-zA-Z\s]*');
             var failed = false;
 
             if (onlyLettersAndSpaces.test($("#Desc" + @Model.ItemId).val()) === false) {

@@ -8,13 +8,21 @@
         </tr>
     </thead>
     <tbody>
+        @{
+            float val = 0.0f;
+        }
         @foreach (Garden_Centre_MVC.Models.Transaction t in Model.transactions)
         {
             <tr>
                 <td>@t.Item.Description</td>
                 <td>£@t.Item.ItemPrice</td>
             </tr>
+            val += t.Item.ItemPrice;
         }
+        <tr>
+            <td>Transaction Value: </td>
+            <td>£@val</td>
+        </tr>
     </tbody>
 </table>
 <button class="Extended_Close btn btn-primary" title="Hide the details of this transaction !">Close</button>

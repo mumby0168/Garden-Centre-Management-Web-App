@@ -1,4 +1,5 @@
-﻿using Garden_Centre_MVC.Attributes;
+﻿using Garden_Centre_MVC.Assets;
+using Garden_Centre_MVC.Attributes;
 using Garden_Centre_MVC.Models;
 using Garden_Centre_MVC.Persistance;
 using Garden_Centre_MVC.ViewModels.Transactions;
@@ -65,6 +66,8 @@ namespace Garden_Centre_MVC.Controllers
             }
 
             m_Context.SaveChanges();
+
+            Logger.LogAction("Transaction Deleted", "Deleted transaction number " + _transactionNumber);
 
             return PartialView("Partials/HistoricView", vm);
         }
@@ -182,6 +185,8 @@ namespace Garden_Centre_MVC.Controllers
 
             m_Context.SaveChanges();
 
+            Logger.LogAction("Transaction Edited", "Edited transaction number " + to.TransactionNumber);
+
             HistoricViewModel vm = new HistoricViewModel();
             return PartialView("Partials/HistoricView", vm);
         }
@@ -249,6 +254,8 @@ namespace Garden_Centre_MVC.Controllers
             }
 
             m_Context.SaveChanges();
+
+            Logger.LogAction("Transaction Added", "Added transaction number " + to.TransactionNumber);
 
             HistoricViewModel vm = new HistoricViewModel();
             return PartialView("Partials/HistoricView", vm);

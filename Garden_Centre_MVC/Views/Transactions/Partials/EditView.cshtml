@@ -105,8 +105,11 @@
 
         $("#Edit_CustomerSelection" + transactionNumber).on("change", function (e) {
             e.preventDefault();
+
             if (!$("#Edit_CustomerSelection" + transactionNumber).val() || $("#Edit_CustomerSelection" + transactionNumber).val() === null || $("#Edit_CustomerSelection" + transactionNumber).val() === undefined) {
+                alert("Please select a valid customer");
                 $("#Edit_CustomerSelection" + transactionNumber).prop("selectedIndex", ind);
+                return;
             }
 
             $.ajax({
