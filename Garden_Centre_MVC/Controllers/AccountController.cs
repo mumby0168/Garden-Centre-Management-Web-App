@@ -99,6 +99,13 @@ namespace Garden_Centre_MVC.Controllers
             return View("Register");
         }
 
+        /// <summary>
+        /// This method will verify if a user can be registerd.
+        /// if this is the case then it will return login view with the username prepopulated.
+        /// If this is not the case it will return the screen with a error.
+        ///</summary>
+        /// <param name="registerVm"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult RegisterForm(RegisterViewModel registerVm)
         {
@@ -148,18 +155,25 @@ namespace Garden_Centre_MVC.Controllers
             return View("Login", vm);
         }
 
-
+        /// <summary>
+        /// this will return the forgotten password view.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult ForgotPassword()
         {
             return PartialView("ForgottenPassword");
         }
 
+        /// <summary>
+        /// this method will send the email to the user in order to allow them to reset there password.
+        /// if they are not in the system then it will not send the emaal.
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <returns></returns>
         public ActionResult SendRecoveryEmail(ForgotPasswordViewModel vm)
-        {
-
+        {       
             if (!ModelState.IsValid)
                 return View();
-
 
             var employee = _context.EmployeeLogins.Include(m => m.Employee).FirstOrDefault(e => e.Username == vm.Email);
 
@@ -185,17 +199,21 @@ namespace Garden_Centre_MVC.Controllers
 
         }
 
-        public ActionResult ResetPassword()
-        {
-            return View("ResetPasswordView");
-        }
-
+        /// <summary>
+        /// this will return the reset password view.
+        /// </summary>
+        /// <returns></returns>      
         public ActionResult Reset()
         {
             return View("ResetPassword");
         }
 
-        //TODO: this needs testing and we need to think of a way to send a link out via email and verify that it is the user. 
+        /// <summary>
+        /// this will check the reset form that is filled out by the user.
+        /// this will also re-encrypt the password and then redirect the user to the login screen if they are succesful in registering in a account.
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <returns></returns>
         public ActionResult CheckPasswordReset(ResetPasswordViewModel vm)
         {
             var employee = _context.EmployeeLogins.FirstOrDefault(e => e.Username == vm.Email);
@@ -228,9 +246,13 @@ namespace Garden_Centre_MVC.Controllers
             return Content("your password has been reset.");
         }
 
-        public ActionResult Logoff()
-        {
 
+       /// <summary>
+       /// this method will logoff the user as well as destroying there session.
+       /// </summary>
+       /// <returns></returns>
+        public ActionResult Logoff()
+        {       
             if (Session[CurrentUser.EmployeeLogin.Username] != null)
             {
                 Logger.LogAction("Logged Out", "None.");
@@ -242,7 +264,11 @@ namespace Garden_Centre_MVC.Controllers
         }
 
         #region Private Functions
-
+        /// <summary>
+        /// This method will use a STP server in order to send the user a email.
+        /// </summary>
+        /// <param name="emp"></param>
+        /// <returns></returns>
         private bool SendEmail(EmployeeLogin emp)
         {
 
@@ -279,6 +305,10 @@ namespace Garden_Centre_MVC.Controllers
             }            
         }
 
+        /// <summary>
+        /// This will dispose of the context in order to make sure that it is not a overhanging resource when the controller goes out of scope.
+        /// </summary>
+        /// <param name="disposing"></param>
         protected override void Dispose(bool disposing)
         {
             _context.Dispose();
