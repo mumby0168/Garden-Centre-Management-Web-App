@@ -14,14 +14,27 @@ namespace Garden_Centre_MVC.Controllers
     {
         private DatabaseContext _context;
 
+        /// <summary>
+        /// this will be called when the controller method is made.
+        /// it will create a instance of the database contect 
+        /// </summary>
         public LogController()
         {
             _context = new DatabaseContext();
         }
 
+        /// <summary>
+        /// this is the default method for the controller.
+        /// it will return a list of logs the most recent action first.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
-            var logs =_context.Logs.Include(l => l.ActionType).Include(e => e.EmployeeLogin.Employee).OrderByDescending(l => l.DateOfAction).ToList();
+            var logs =_context.Logs
+                .Include(l => l.ActionType)
+                .Include(e => e.EmployeeLogin.Employee)
+                .OrderByDescending(l => l.DateOfAction)
+                .ToList();
 
             var vm = new LogLandingViewModel()
             {
@@ -31,6 +44,10 @@ namespace Garden_Centre_MVC.Controllers
             return View("LogLandingPage", vm);
         }
 
+        /// <summary>
+        /// this method again will return all of the logs that are in the database
+        /// </summary>
+        /// <returns></returns>
         public string GetAll()
         {
             var logs = _context.Logs.Include(l => l.ActionType).Include(e => e.EmployeeLogin.Employee).OrderByDescending(l => l.DateOfAction).ToList();
@@ -49,7 +66,10 @@ namespace Garden_Centre_MVC.Controllers
             return JsonConvert.SerializeObject(returns);
         }
 
-
+        /// <summary>
+        /// this will dispose of any overhanging resources.
+        /// </summary>
+        /// <param name="disposing"></param>
         protected override void Dispose(bool disposing)
         {
             _context.Dispose();
