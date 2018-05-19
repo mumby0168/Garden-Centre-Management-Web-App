@@ -17,22 +17,36 @@ namespace Garden_Centre_MVC.Controllers
 {
     /// <summary>
     /// Billy Mumby
+    /// This class will be what handles all of the 
     /// </summary>
     public class AccountController : Controller
     {
         private DatabaseContext _context;
 
+        /// <summary>
+        /// this method is the contrcutor and will create a new instance of the database context
+        /// </summary>
         public AccountController()
         {
             _context = new DatabaseContext();
         }
         
+        /// <summary>
+        /// This is the default method for the controller and will simply return the login view.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             var vm = new LoginViewModel();
             return View("Login", vm);
         }
 
+        /// <summary>
+        /// This will be called by a ajax method which will all the data in the form it will then process it and decide whether the
+        /// user can login if so return the home page view. If not then it shall return the next form with a error message.
+        /// </summary>
+        /// <param name="loginVm"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult Login(LoginViewModel loginVm)
         {
@@ -74,25 +88,12 @@ namespace Garden_Centre_MVC.Controllers
 
             vm = new LoginViewModel() { ErrorMessage = errorMessage };
             return View("Login", vm);
-        }
+        }      
 
-        public ActionResult GetAccountDetails(int id)
-        {
-            var emp = _context.EmployeeLogins.Include(e => e.Employee).FirstOrDefault(e => e.EmployeeLoginId == id);
-
-            return View("EmployeeAccount", emp);
-        }
-
-        public ActionResult EditPersonal(Employee employee)
-        {
-
-
-
-
-
-            return View("EmployeeAccount");
-        }
-
+        /// <summary>
+        /// This method will return the register view.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Register()
         {
             return View("Register");
