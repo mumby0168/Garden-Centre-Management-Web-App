@@ -8,6 +8,10 @@ using Garden_Centre_MVC.Models;
 
 namespace Garden_Centre_MVC.Persistance
 {
+    /// <summary>
+    /// This the class that holds each object listed in the models folder the names of
+    /// these propertys will be applied to the database as each table name.
+    /// </summary>
     public class DatabaseContext : DbContext
     {
         public DbSet<Employee> Employees { get; set; }
