@@ -10,9 +10,15 @@ namespace Garden_Centre_MVC.Assets
 {
     public static class Logger
     {
+        /// <summary>
+        /// this method will allow a developer to log there actions in the controllers as they are made it will create  a record
+        /// in the database when this method is called.
+        /// </summary>
+        /// <param name="actionType"></param>
+        /// <param name="message"></param>
+        /// <param name="empLog"></param>
         public static void LogAction(string actionType, string message, EmployeeLogin empLog = null)
         {
-
             Log log;
             DatabaseContext _context = new DatabaseContext();
 
