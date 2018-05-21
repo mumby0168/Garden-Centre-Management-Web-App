@@ -7,6 +7,10 @@ using System.Web;
 
 namespace Garden_Centre_MVC.ViewModels.Transactions
 {
+    /// <summary>
+    /// This view model represents each part of the transaction that make up a single transaction.
+    /// This follows on from the architecture that a transaction overview stores the transaction number for each part (item) of the transaction
+    /// </summary>
     public class ExtendedViewModel : IDisposable
     {
         private DatabaseContext m_Context = new DatabaseContext();
@@ -15,7 +19,14 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
             m_Context.Dispose();
         }
 
+        /// <summary>
+        /// store the transaction nubmer.
+        /// </summary>
         private int m_TransactionNumber = 0;
+
+        /// <summary>
+        // Retrive the list of transactions that make up the transaction from the database.
+        /// </summary>
         public List<Transaction> transactions
         {
             get
@@ -32,6 +43,9 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
             }
         }
 
+        /// <summary>
+        /// overloaded version of the constructor to set the transaction number
+        /// </summary>
         public ExtendedViewModel(int transactionNumber)
         {
             m_TransactionNumber = transactionNumber;

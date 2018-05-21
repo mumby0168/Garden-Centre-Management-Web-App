@@ -1,29 +1,39 @@
 ﻿@model Garden_Centre_MVC.ViewModels.Transactions.HistoricViewModel
-@{
-    //TODO: Fix the table row disapearing try to animate it
-    //TODO: Sort the padding on the exteneded view
-    //TODO: Implement a smooth change between view and edit for the same transaction
-}
 
 <table id="HistoricTransactions" class="table table-bordered table-hover">
 </table>
 
+<!--This script is specific to the historic view. It is responsable for setting up any listeners and loading the tables.-->
 <script type="text/javascript">
     var prevOpenedTN = '0';
     $(document).ready(function () {
         ///////////////////
+        //These are the headers passed to the paging class which is responsible for loading the table
         var headers = ["Transaction Number", "Date", "Time", "Customer", "Total Value", "Actions"];
+        //This map will map a name to the index of a property in a JSON object, this is passed to the Paging class as well.
         var searchTerms = new Map();
         searchTerms.set("Transaction Number", 1);
         searchTerms.set("Full Name", 6);
         searchTerms.set("Total Value", 2);
+        //Create a new paging object:
+        //The params are
+        //Data
+        //Table ID
+        //Headings
+        //Search terms - used by the search box in the table
+        //Row lambda - This is called for each peice of data and is responsible for how the row is created.
         var paging = new Paging(JSON.parse('@Html.Raw(Model.TransactionOverviewsJSON)'), "HistoricTransactions", headers, searchTerms,
             (dataObj, table) => {
+                //Create a table row
                 var tr = document.createElement("tr");
+                //Create a table cell for the transaction number
                 var td = document.createElement("td");
+                //Set the value of the cell
                 td.innerHTML = dataObj.TransactionNumber;
+                //add it to the row
                 tr.appendChild(td);
 
+                //Format the date
                 var date = dataObj.Date;
                 var Tindex = date.indexOf("T", 0);
                 var year = date.slice(0, 4);
@@ -31,27 +41,32 @@
                 var day = date.slice(8, 10);
                 date = day + "/" + month + "/" + year;
 
+                //Format the time
                 var time = dataObj.Date;
                 time = time.slice(Tindex + 1, time.length);
                 time = time.slice(0, time.indexOf(".", 0));
 
+                //Create a table cell for the date
                 td = document.createElement("td");
                 td.innerHTML = date;
                 tr.appendChild(td);
 
+                //Create a table cell for the time
                 td = document.createElement("td");
-
                 td.innerHTML = time;
                 tr.appendChild(td);
 
+                //Create a table cell for the customers full name
                 td = document.createElement("td");
                 td.innerHTML = dataObj.Customer.FullName;
                 tr.appendChild(td);
 
+                //Create a table cell for the total value of the transaction
                 td = document.createElement("td");
                 td.innerHTML = "£" + dataObj.TotalValue;
                 tr.appendChild(td);
 
+                //Create a table cell for the actions (view, edit and delete) for each transaction.
                 td = document.createElement("td");
                 var btn = document.createElement("button");
                 btn.setAttribute("style", "background: none; border: none; color:#2c3e50;");
@@ -182,8 +197,10 @@
 
                 tr.appendChild(td);
 
+                //Add the row to the table
                 table.appendChild(tr);
 
+                //Create a hidden row for the edit and extended view drop down.
                 tr = document.createElement("tr");
                 tr.setAttribute("style", "display:none;");
                 tr.setAttribute("id", "Historic_DropDownViewTR" + dataObj.TransactionNumber);

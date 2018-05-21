@@ -7,6 +7,9 @@ using Garden_Centre_MVC.Models;
 
 namespace Garden_Centre_MVC.ViewModels.InventoryViewModels
 {
+    /// <summary>
+    /// This view model represents the inventory class
+    /// </summary>
     public class InventoryViewModel : IDisposable
     {
         private DatabaseContext m_Context = new DatabaseContext();
@@ -15,6 +18,7 @@ namespace Garden_Centre_MVC.ViewModels.InventoryViewModels
             m_Context.Dispose();
         }
 
+        //Returns the list of items that makes up the inventory from the database
         public List<Item> inventory
         {
             get
@@ -23,6 +27,7 @@ namespace Garden_Centre_MVC.ViewModels.InventoryViewModels
             }
         }
 
+        //Returns a JSON version of the inventory 
         public string inventoryJSON
         {
             get

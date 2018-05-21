@@ -1,12 +1,8 @@
 ﻿@model Garden_Centre_MVC.Models.Item
-@{
-    //TODO: Add validation
-    //TODO: Tidy the form
-    //TODO: Discuss the delete option ! What if there is a transaction with that item in ?
-}
 
 @Scripts.Render("~/bundles/jqueryval")
 
+<!--form for when creating a new item-->
 <form id="NewItemForm">
     <div class="form-group">
         <h3>Item Name</h3>
@@ -40,61 +36,75 @@
 
 <script>
     $(document).ready(function (e) {
+        //listener for close button, simply just slide it
         $("#newItemClose").on("click", function (e) {
             $("#Inventory_NewItem").delay(100).slideUp("slow");
         });
 
+        //submit button
         $("#NewItemForm").submit(function (e) {
             e.preventDefault();
 
+            //some validation, reset the messages to be blank
             $("#DescriptionValMessage").html("");
             $("#ItemPriceValMessage").html("");
             $("#StockValMessage").html("");
             $("#OnOrderValMessage").html("");
 
+            //various regular expressions
             var onlyPosIntRegExp = RegExp('^([0-9]+\d*)$|^0$');
             var onlyPosFloatRegExp = RegExp('^[0-9]+([.][0-9]{0,2})?$');
             var onlyLettersAndSpaces = RegExp('^[a-zA-Z\s]*');
+            //flag if the validation fails
             var failed = false;
 
+            //if the description entry fails display its message and set the failed flag to true.
             if (onlyLettersAndSpaces.test($("#Description").val()) === false)
             {
                 $("#DescriptionValMessage").html("<p style=\"color: red\";>Please only use letters and spaces within the item name.</p>");
                 failed = true;
             }
 
+            //if the ItemPrice entry fails display its message and set the failed flag to true.
             if (onlyPosFloatRegExp.test($("#ItemPrice").val()) === false)
             {
                 $("#ItemPriceValMessage").html("<p style=\"color: red\";>Please enter a monitary value greater then zero.</p>");
                 failed = true;
             }
 
+            //if the Stock entry fails display its message and set the failed flag to true.
             if (onlyPosIntRegExp.test($("#Stock").val()) === false)
             {
                 $("#StockValMessage").html("<p style=\"color: red\";>Please enter a whole number greater then or equal to zero.</p>");
                 failed = true;
             }
 
+            //if the OnOrder entry fails display its message and set the failed flag to true.
             if (onlyPosIntRegExp.test($("#OnOrder").val()) === false) {
                 $("#OnOrderValMessage").html("<p style=\"color: red\";>Please enter a whole number greater then or equal to zero.</p>");
                 failed = true;
             }
 
+            //if its failed then exit the function and do not send it back
             if (failed)
                 return;
 
+            //serialse the form as json
             var form = $("#NewItemForm").serialize();
 
+            //send it to controller method through ajax
             $.ajax({
                 url: '@Url.Action("NewItemSerialize", "Inventory")',
                 data: form,
                 datatype: "JSON",
                 type: "POST",
                 success: function (result) {
+                    //show and hide the feedback after three seconds
                     $("#IndexInv_Feedback").slideUp("slow", "swing", function (e) {
                         $("#IndexInv_Feedback").delay(100).slideDown("slow").html("<h1>Successfully Added The New Item</h1>").delay(3000).slideUp("slow");
                     });
 
+                    //hide the new item form and show the updated
                     $("#Inventory_NewItem").delay(100).slideUp("slow");
                     $("#InventoryContent").html(result);
                 }

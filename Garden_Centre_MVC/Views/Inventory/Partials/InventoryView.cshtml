@@ -1,12 +1,16 @@
 ﻿@model Garden_Centre_MVC.ViewModels.InventoryViewModels.InventoryViewModel
 
+<!--table used by paging class to display the inventory-->
 <table id="Inventory" class="table table-striped table-bordered">
 </table>
 
+<!--Script to create the inventory table-->
 <script>
     var prevInvOpenedTN = '0';
     $(document).ready(function (e) {
+        //headers for the table
         var headers = ["Item ID", "Name", "Price", "In Stock", "On Order", "Sold"];
+        //map search terms to the index of property in JSON 
         var searchTerms = new Map();
         searchTerms.set("Item ID", 0);
         searchTerms.set("Name", 1);
@@ -14,38 +18,54 @@
         searchTerms.set("Stock", 3);
         searchTerms.set("On Order", 4);
         searchTerms.set("Sold", 5);
+        //if the user is an admin display the actions column
         @if (Garden_Centre_MVC.Attributes.Assets.CurrentUser.EmployeeLogin.Employee.Admin)
         {
             @:headers.push("Actions");
         }
 
+        //Create a new paging object:
+        //The params are
+        //Data
+        //Table ID
+        //Headings
+        //Search terms - used by the search box in the table
+        //Row lambda - This is called for each peice of data and is responsible for how the row is created.
         var paging = new Paging(JSON.parse('@Html.Raw(Model.inventoryJSON)'), "Inventory", headers, searchTerms, (dataObj, table) => {
+            //create the table row
             var tr = document.createElement("tr");
 
+            //create table cell for the item id
             var td = document.createElement("td");
             td.innerHTML = dataObj.ItemId;
             tr.appendChild(td);
 
+            //create the table sell for the Item name (description in the obj)
             td = document.createElement("td");
             td.innerHTML = dataObj.Description;
             tr.appendChild(td);
 
+            //create the table cell for the item price
             td = document.createElement("td");
             td.innerHTML = "£" + dataObj.ItemPrice;
             tr.appendChild(td);
 
+            //Create a table cell for the stock
             td = document.createElement("td");
             td.innerHTML = dataObj.Stock;
             tr.appendChild(td);
 
+            //create a cell for the number on order
             td = document.createElement("td");
             td.innerHTML = dataObj.OnOrder;
             tr.appendChild(td);
 
+            //create a cell for the number sold
             td = document.createElement("td");
             td.innerHTML = dataObj.Sold;
             tr.appendChild(td);
 
+            //if the user is an admin create the button for edit otherwise just add the table row
             @if (Garden_Centre_MVC.Attributes.Assets.CurrentUser.EmployeeLogin.Employee.Admin)
             {
                 @:td = document.createElement("td");

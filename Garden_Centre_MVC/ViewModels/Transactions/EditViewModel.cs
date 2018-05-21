@@ -7,6 +7,10 @@ using Garden_Centre_MVC.Models;
 
 namespace Garden_Centre_MVC.ViewModels.Transactions
 {
+    /// <summary>
+    /// This view model represents the edit form.
+    /// It is responsible for providing all the relevant data.
+    /// </summary>
     public class EditViewModel : IDisposable
     {
         private DatabaseContext m_Context = new DatabaseContext();
@@ -15,6 +19,9 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
             m_Context.Dispose();
         }
 
+        /// <summary>
+        /// Returns a list of all the customers in the database.
+        /// </summary>
         public List<Customer> CustomerList
         {
             get
@@ -23,6 +30,9 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
             }
         }
 
+        /// <summary>
+        /// This returns a list of all the available items that can be added, removing any that are out of stock
+        /// </summary>
         public List<Item> ItemList
         {
             get
@@ -67,37 +77,57 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
             }
         }
 
+        /// <summary>
+        /// A flag denoting that the view model has changed.
+        /// </summary>
         public bool HasChanged
         {
             get; set;
         }
 
-        private Customer prevCust = null;
+        /// <summary>
+        /// Stores the instance of the transaction overview been used.
+        /// </summary>
         public TransactionOverview _transactionOverview
         {
             get; set;
         }
 
+        /// <summary>
+        /// Stores the list of items that are in the transactions.
+        /// </summary>
         public List<Item> _items
         {
             get; set;
         }
 
+        /// <summary>
+        /// Stores the list of items that have been added since starting editing.
+        /// </summary>
         public List<Item> _newItems
         {
             get; set;
         }
 
+        /// <summary>
+        /// Stores the indexs of the items that have been removed.
+        /// </summary>
         public List<int> _remItemsIndex
         {
             get; set;
         }
 
+        /// <summary>
+        /// Stores the items of the items that have been removed
+        /// </summary>
         public List<int> _remItemsIds
         {
             get; set;
         }
 
+        /// <summary>
+        /// Constructor to create the empty view model.
+        /// </summary>
         public EditViewModel()
         {
             _newItems = new List<Item>();
@@ -107,6 +137,9 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
             return;
         }
 
+        /// <summary>
+        /// Overloaded constructor takes the item to add and the previous view model to populate the new one.
+        /// </summary>
         public EditViewModel(Item item, EditViewModel vm)
         {
             _newItems = vm._newItems;
@@ -120,6 +153,9 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
             HasChanged = true;
         }
 
+        /// <summary>
+        /// Overloaded constructor takes the customer to change the selection.
+        /// </summary>
         public EditViewModel(Customer customer, EditViewModel vm)
         {
             _newItems = vm._newItems;

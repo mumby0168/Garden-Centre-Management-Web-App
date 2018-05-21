@@ -1,3 +1,9 @@
+//////////////////////////////
+// This class is used to create a table from a set of headers, a list of objects a map of search terms and a lambda to create the rows, it fully supports searching and paging.
+// Authors: Robert Bennett and William Mumby
+// This was developed externally to this project
+// It was created as a framework for future projects
+//////////////////////////////
 class Paging {
     constructor(data, tableId, headers, searchTermMap, rowLambda, btnClass, displyEmptyRows) {
         if (data[0] === undefined || data[0] === null)

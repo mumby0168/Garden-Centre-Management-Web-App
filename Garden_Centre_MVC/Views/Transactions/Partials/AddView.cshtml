@@ -1,5 +1,6 @@
 ﻿@model Garden_Centre_MVC.ViewModels.Transactions.AddViewModel
 
+<!--Form the add view-->
 <form>
     <div class="form-group">
         <h2>Customer</h2>
@@ -13,6 +14,7 @@
         @Html.ValidationMessageFor(m => m.items)
     </div>
 </form>
+<!--if there are some items in the transaction then display a table summarising these items-->
 @if (Model.items.Count > 0)
 {
     <table class="table table-bordered table-hover">
@@ -50,6 +52,7 @@
     </table>
 }
 
+<!--If the customer isnt selected or there are no items dont display the save button-->
 @if (Model.transactionOverview.Customer != null && Model.items.Count > 0)
 {
     <button id="Add_Save" title="Add and save this transaction to the list of transactions !" class="btn btn-primary">Save</button>
@@ -58,13 +61,16 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        //Add listener to the remove button when it is clicked
         $(".remBtn").on("click", function (e) {
             e.preventDefault();
+            //Ajax call to controller method
             $.ajax({
                 type: "POST",
                 data: ({ index: $(this).attr("btnId"), prevVM: '@Html.Raw(Json.Encode(Model))' }),
                 url: '@Url.Action("AddRemItem", "Transactions")',
                 success: function (result) {
+                    //display the updated view
                     $("#Index_AddView").html(result);
                 },
                 error: function (x, e, r) {
@@ -74,8 +80,10 @@
             });
          });
 
+        //cancel button listener
         $("#Add_Cancel").on("click", function (e) {
             e.preventDefault();
+            //if the user hasnt prepeared a valid transaction the just hide it otherwise confirm this was intentional.
             @if (Model.items.Count > 0 && Model.transactionOverview.Customer != null)
             {
                 @:bootbox.confirm("Are you sure you would like to cancel this transaction?", function(result) {
@@ -97,17 +105,21 @@
             }
          });
 
+        //save button click listener
         $("#Add_Save").on("click", function (e) {
             e.preventDefault();
+            //ajax call to controller method
              $.ajax(
                     {
                         type: "POST",
                         data: ({ prevVM: '@Html.Raw(Json.Encode(Model))' }),
                         url: '@Url.Action("SerializeAdd", "Transactions")',
-                        success: function (result) {
+                     success: function (result) {
+                            //display feed back and hide it after three seconds
                             $("#Index_Feedback").slideUp("slow", "swing", function (e) {
                                 $("#Index_Feedback").delay(100).slideDown("slow").html("<h1>Successfully Added The Transaction</h1>").delay(3000).slideUp("slow");
                             });
+                            //hide the addview
                             $("#Index_AddView").delay(100).slideUp("slow", "swing", function (e)
                             {
                                 $("#Index_AddView").html("");
@@ -122,9 +134,11 @@
                     });
         });
 
+        //customer selection changed listener
         $("#Add_CustomerSelection").on("change", (function (e)
         {
             e.preventDefault();
+            //Check that the customer choice is valid and not "Select Customer" if it isnt a valid choice display an alert and tell the user theyre wrong
             if ($("#Add_CustomerSelection").val() === '')
             {
                 @if (Model.transactionOverview.Customer != null)
@@ -133,6 +147,7 @@
                     @:$("#Add_CustomerSelection").val('@Model.transactionOverview.Customer.CustomerId');
                 }
             }
+            //otherwise change it in the vm
             if ($("#Add_CustomerSelection").val() !== '')
             {
                 var v = $("#Add_CustomerSelection").prop("selectedIndex");
@@ -142,8 +157,11 @@
                         data: ({ prevVM: '@Html.Raw(Json.Encode(Model))', customerId: $("#Add_CustomerSelection").val() }),
                         url: '@Url.Action("SelectCustomer", "Transactions")',
                         success: function (result) {
+                            //disp the updated view
                             $("#Index_AddView").html(result);
+                            //make sure the customer selected is set to the one selected in vm
                             $("#Add_CustomerSelection").prop("selectedIndex", v).change(function (e) { this.val(e.val()); e.preventDefault(); });
+                            //reset the item selected to "select item"
                             $("#Add_ItemSelection").prop("selectedIndex", '0').change(function (e) { this.val(e.val()); e.preventDefault(); });
                         },
                         error: function (x, e, r) {
@@ -154,9 +172,11 @@
                 }
             }));
 
+    //listener when item selection changed
     $("#Add_ItemSelection").on("change", (function (e)
     {
         e.preventDefault();
+        //if the item is valid add it
         if ($("#Add_ItemSelection").val() !== 0)
         {
             $.ajax(
@@ -167,6 +187,7 @@
                 success: function (result) {
                     $("#Index_AddView").html(result);
                     var x = -1;
+                    //set the customer to the one that is selected in vm
                     $("#Add_CustomerSelection" + " option").each(function (index, element) {
                         if (element.value === '@Model.transactionOverview.CustomerId') {
                             x = index;
@@ -178,6 +199,7 @@
                     {
                         @:$("#Add_CustomerSelection").prop("selectedIndex", x);
                     }
+                    //reset the selected item to "Select Item"
                     $("#Add_ItemSelection").prop("selectedIndex", '0').change(function (e) { this.val(e.val); e.preventDefault(); });
                 },
                 error: function (x, e, r) {
