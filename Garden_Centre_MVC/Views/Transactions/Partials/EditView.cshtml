@@ -1,8 +1,6 @@
 ﻿@model Garden_Centre_MVC.ViewModels.Transactions.EditViewModel
-@{ 
-    //TODO: Come up with a better way of having ids for the editremove button as I think its causing bugs, the remove function is buggy
-}
 
+<!--For for the edit view-->
 <form>
     <div class="form-group">
         <h2>Customer</h2>
@@ -16,8 +14,10 @@
         @Html.ValidationMessageFor(m => m._items)
     </div>
 </form>
+<!--Double check to make sure there is actually some items to display.-->
 @if (Model._items.Count > 0 || Model._newItems.Count > 0)
 {
+    <!--Create the table the edit view-->
     <table class="table table-bordered table-hover">
         <thead>
             <tr>
@@ -67,6 +67,7 @@
     </table>
 }
 
+<!--Only display the save button if something has changed, there is a customer selected and there are items in the transaction.-->
 @if (Model._transactionOverview.Customer != null && (Model._items.Count + Model._newItems.Count) > 0 && Model.HasChanged == true)
 {
     <button class="editSaveBtn btn btn-primary" title="Save the changes to this transaction !">Save</button>
@@ -75,8 +76,10 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        //Get the transaction number from the view model
         var transactionNumber = @Model._transactionOverview.TransactionNumber;
 
+        //Find the selected customers index in the drop down displayed in this view
         var ind = -1;
         $("#Edit_CustomerSelection" + transactionNumber + " option").each(function (index, element) {
             if (element.value === '@Model._transactionOverview.CustomerId') {
@@ -85,15 +88,19 @@
             }
         });
 
+        //Set the slected customer in the dropdown to the index previously found.
         $("#Edit_CustomerSelection" + transactionNumber).prop("selectedIndex", ind);
 
+        //Add a click handler for the remove item from transaction button
         $(".editRemBtn").on("click", function (e) {
             e.preventDefault();
+            //Ajax all to controller method
             $.ajax({
                 type: "POST",
                 data: ({ index: $(this).attr("btnId"), prevVM: '@Html.Raw(Json.Encode(Model))' }),
                 url: '@Url.Action("EditRemItem", "Transactions")',
                 success: function (result) {
+                    //Update the view
                     $("#Historic_DropDownView" + transactionNumber).html(result);
                 },
                 error: function (x, e, r) {
@@ -103,20 +110,24 @@
             });
          });
 
+        //add a listener for when the selection changes for the customer
         $("#Edit_CustomerSelection" + transactionNumber).on("change", function (e) {
             e.preventDefault();
 
+            //If the user selects the option "Select Customer" then display some feed back that theyre wrong
             if (!$("#Edit_CustomerSelection" + transactionNumber).val() || $("#Edit_CustomerSelection" + transactionNumber).val() === null || $("#Edit_CustomerSelection" + transactionNumber).val() === undefined) {
                 alert("Please select a valid customer");
                 $("#Edit_CustomerSelection" + transactionNumber).prop("selectedIndex", ind);
                 return;
             }
 
+            //Ajax call to controller method
             $.ajax({
                 type: "POST",
                 data: ({ customerId: $("#Edit_CustomerSelection" + transactionNumber).val(), prevVM: '@Html.Raw(Json.Encode(Model))' }),
                 url: '@Url.Action("EditSelectCustomer", "Transactions")',
                 success: function (result) {
+                    //Display the updated vuew
                     $("#Historic_DropDownView" + transactionNumber).html(result);
                 },
                 error: function (x, e, r) {
@@ -126,6 +137,7 @@
             });
         });
 
+        //Add event listener for when an item is selected
         $("#Edit_ItemSelection" + transactionNumber).on("change", function (e) {
             e.preventDefault();
             $.ajax({
@@ -133,7 +145,9 @@
                 data: ({ itemId: $("#Edit_ItemSelection" + transactionNumber).val(), prevVM: '@Html.Raw(Json.Encode(Model))' }),
                 url: '@Url.Action("EditAddItem", "Transactions")',
                 success: function (result) {
+                    //Update the view
                     $("#Historic_DropDownView" + transactionNumber).html(result);
+                    //Reset the item selected to default "Item Selected" option
                     $("#Edit_ItemSelection" + "@Model._transactionOverview.TransactionNumber").prop("selectedIndex", '0').change(function (e) { this.val(e.val()); e.preventDefault(); });
                 },
                 error: function (x, e, r) {
@@ -143,7 +157,9 @@
             });
         });
 
+        //Add listener to the cancel button
         $(".editCancelBtn").on("click", function (e) {
+            //if the model hasnt changed close it, if it has confirm the user wishes to close it
             @if (!Model.HasChanged)
             {
                 @:$("#Historic_DropDownView" + @Model._transactionOverview.TransactionNumber).delay(100).slideUp("slow", "swing", function (e) {
@@ -164,16 +180,23 @@
             });
         });
 
+        //Add listener to the sacve button
         $(".editSaveBtn").on("click", function (e) {
+            //Ajax call to controller method
             $.ajax({
                 type: "POST",
                 data: ({ prevVM: '@Html.Raw(Json.Encode(Model))' }),
                 url: '@Url.Action("SerializeEdit", "Transactions")',
                 success: function (result) {
+                    //slide the edit up
                     $("#Historic_DropDownView" + @Model._transactionOverview.TransactionNumber).delay(100).slideUp("slow", "swing", function (e) {
+                        //hide the edit
                         $("#Historic_DropDownViewTR" + @Model._transactionOverview.TransactionNumber).attr("style", "display:none;");
+                        //update the view
                         $("#View").html(result);
+                        //Display some feedback
                         $("#Index_Feedback").slideUp("slow", "swing", function (e) {
+                            //hide the feedback after three seconds
                             $("#Index_Feedback").delay(100).slideDown("slow").html("<h1>Successfully Edited The Transaction</h1>").delay(3000).slideUp("slow");
                         });
                         prevOpenedTN = '0';

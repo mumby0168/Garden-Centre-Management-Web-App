@@ -7,6 +7,9 @@ using System.Web;
 
 namespace Garden_Centre_MVC.ViewModels.Transactions
 {
+    /// <summary>
+    /// This view model represents the add view model
+    /// </summary>
     public class AddViewModel : IDisposable
     {
         private DatabaseContext m_Context = new DatabaseContext();
@@ -15,6 +18,9 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
             m_Context.Dispose();
         }
 
+        /// <summary>
+        /// This is the basic constructor that creates the view from scratch
+        /// </summary>
         public AddViewModel()
         {
             transactionOverview = new TransactionOverview();
@@ -35,6 +41,10 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
             return;
         }
 
+        /// <summary>
+        /// This is the overloaded view model constructor.
+        /// It takes the item to be added and the previous view model to repopulate some of the variables in this new instance.
+        /// </summary>
         public AddViewModel(Item _item, AddViewModel prevVM)
         {
             items = prevVM.items;
@@ -43,6 +53,10 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
             transactionOverview.TotalValue += _item.ItemPrice;
         }
 
+        /// <summary>
+        /// This is the overloaded view model constructor.
+        /// It takes the customer selected and the previous view model to repopulate some of the variables in this new instance.
+        /// </summary>
         public AddViewModel(Customer _customer, AddViewModel prevVM)
         {
             items = prevVM.items;
@@ -51,16 +65,26 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
             transactionOverview.CustomerId = _customer.CustomerId;
         }
 
+        /// <summary>
+        /// This stores the list of items in the new trasaction
+        /// </summary>
         public List<Item> items
         {
             get; set;
         }
 
+        /// <summary>
+        /// This stores the instance of the transaction overview that is related to the view model
+        /// </summary>
         public TransactionOverview transactionOverview
         {
             get; set;
         }
 
+        /// <summary>
+        /// This returns the list of customers stored in the database.
+        /// This is used to populate the drop down menus.
+        /// </summary>
         public List<Customer> CustomerList
         {
             get
@@ -69,6 +93,9 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
             }
         }
 
+        /// <summary>
+        /// This returns the list of items related to the transaction
+        /// </summary>
         public List<Item> ItemList
         {
             get

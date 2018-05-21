@@ -1,8 +1,6 @@
 ﻿@model Garden_Centre_MVC.Models.Item
-@{
-    //TODO: Only allow saving if it has been edited
-}
 
+<!--Form for the edit view-->
 <form id="EditItemForm">
     <div class="form-group">
         <h3>Item Name</h3>
@@ -30,54 +28,66 @@
 
 <script>
     $(document).ready(function (e) {
-            $("#EditItemForm").submit(function (e) {
+        //listener submit button
+        $("#EditItemForm").submit(function (e) {
             e.preventDefault();
 
+            //reset the validation messeges to blank
             $("#DescriptionValMessage" + @Model.ItemId).html("");
             $("#StockValMessage" + @Model.ItemId).html("");
             $("#OnOrderValMessage" + @Model.ItemId).html("");
 
+            //regular expressions for various formats
             var onlyPosIntRegExp = RegExp('^([0-9]+\d*)$|^0$');
             var onlyPosFloatRegExp = RegExp('^[0-9]+([.][0-9]{0,2})?$');
             var onlyLettersAndSpaces = RegExp('^[a-zA-Z\s]*');
+            //failed flag
             var failed = false;
 
+            //check if the item name value is valid if not then display the error message
             if (onlyLettersAndSpaces.test($("#Desc" + @Model.ItemId).val()) === false) {
                 $("#DescriptionValMessage" + @Model.ItemId).html("<p style=\"color: red\";>Please only use letters and spaces within the item name.</p>");
                 failed = true;
             }
 
+            //check if the Stock value is valid if not then display the error message
             if (onlyPosIntRegExp.test($("#Stock" + @Model.ItemId).val()) === false) {
                 $("#StockValMessage" + @Model.ItemId).html("<p style=\"color: red\";>Please enter a whole number greater then or equal to zero.</p>");
                 failed = true;
             }
 
+            //check if the OnOrder value is valid if not then display the error message
             if (onlyPosIntRegExp.test($("#OnOrder" + @Model.ItemId).val()) === false) {
                 $("#OnOrderValMessage" + @Model.ItemId).html("<p style=\"color: red\";>Please enter a whole number greater then or equal to zero.</p>");
                 failed = true;
             }
 
+            //if the failed flag is set then exit before it can send the form
             if (failed)
                 return;
 
+            //serialize the form as JSON
             var form = $("#EditItemForm").serialize();
 
+            //send to controller method
             $.ajax({
                 url: '@Url.Action("EditItemSerialize", "Inventory")',
                 data: form,
                 datatype: "JSON",
                 type: "POST",
                 success: function (result) {
+                    //show the feedback and hide it after three seconds 
                     $("#IndexInv_Feedback").slideUp("slow", "swing", function (e) {
                         $("#IndexInv_Feedback").delay(100).slideDown("slow").html("<h1>Successfully Edited The Item</h1>").delay(3000).slideUp("slow");
                     });
 
+                    //delays the slide up to allow the div to populate
                     $("#Inventory_NewItem").delay(100).slideUp("slow");
                     $("#InventoryContent").html(result);
                 }
             });
         });
-
+            // on the clock of the close button this shall slide away the form that has been slid down above
             $(".invClose").on("click", function (e) {
                 $("#Inv_DropDownView" + @Model.ItemId).delay(100).slideUp("slow", "swing", function (e) {
                     $("#Inv_DropDownViewTR" + @Model.ItemId).attr("style", "display:none;");

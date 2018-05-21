@@ -1,5 +1,6 @@
 ﻿@model Garden_Centre_MVC.ViewModels.Transactions.ExtendedViewModel
 
+<!--Table for each item in the transaction-->
 <table class="table table-bordered table-hover">
     <thead>
         <tr>
@@ -29,8 +30,11 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        //Add click listener to the close button
         $('.Extended_Close').on("click", function (e) {
+            //Slide the details row up
             $("#Historic_DropDownView" + @Model.transactions.First().TransactionNumber).delay(100).slideUp("slow", "swing", function (e) {
+                //Hide the row when that action has finished
                 $("#Historic_DropDownViewTR" + @Model.transactions.First().TransactionNumber).attr("style", "display:none;");
                 prevOpenedTN = '0';
             });

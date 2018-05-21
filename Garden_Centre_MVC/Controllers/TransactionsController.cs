@@ -13,6 +13,10 @@ using System.Data.Entity;
 
 namespace Garden_Centre_MVC.Controllers
 {
+    /// <summary>
+    /// Robert Bennett -
+    /// This class will control anything to do with the transactions from adding, editing, deleting and viewing them.
+    /// </summary>
     public class TransactionsController : Controller, IDisposable
     {
         //Stores an instance of the database handler
@@ -26,17 +30,18 @@ namespace Garden_Centre_MVC.Controllers
             base.Dispose(disposing);
         }
 
-        //Called to get the index page - not used as we use the HistoricView as a partial view
+        /// <summary>
+        /// Called to get the index page - not used as we use the HistoricView as a partial view
+        /// </summary>
         [NormalUser]
         public ActionResult Index()
         {
             return View();
         }
 
-        /////////////////
-        //HISTORIC VIEW//
-        //This returns the view that lists all of the transactions.
-        /////////////////
+        /// <summary>
+        /// This returns the view that lists all of the transactions.
+        /// </summary>
         [NormalUser]
         public PartialViewResult HistoricView()
         {
@@ -46,11 +51,10 @@ namespace Garden_Centre_MVC.Controllers
             return PartialView("Partials/HistoricView", vm);
         }
 
-        /////////////////
-        //EXTENDED VIEW//
-        //This returns the details of specific transaction.
-        //It takes the transaction number and a new view model to pass to the view.
-        /////////////////
+        /// <summary>
+        /// This returns the details of specific transaction.
+        /// <param name="_transactionNumber">This is the number of the transaction to display the extended view for.</param>
+        /// </summary>
         [NormalUser]
         public PartialViewResult ExtendedView(int _transactionNumber)
         {
@@ -60,11 +64,10 @@ namespace Garden_Centre_MVC.Controllers
             return PartialView("Partials/ExtendedView", vm);
         }
 
-        //////////////////////
-        //DELETE TRANSACTION//
-        //This controller method is called when the delete button is pressed, it returns the historic view again.
-        //The transaction is removed from the view that is returned.
-        //////////////////////
+        /// <summary>
+        /// This deletes a transaction then returns the historic view again.
+        /// <param name="_transactionNumber">This is the number of the transaction to be deleted.</param>
+        /// </summary>
         [AdminUser]
         public PartialViewResult DeleteTransaction(int _transactionNumber)
         {
@@ -93,11 +96,11 @@ namespace Garden_Centre_MVC.Controllers
             return PartialView("Partials/HistoricView", vm);
         }
 
-        ////////////
-        //EDIT VIEW//
-        //Called when the edit button is clicked for a transaction.
-        //It returns the form that drops between the row.
-        ////////////
+        /// <summary>
+        /// Called when the edit button is clicked for a transaction.
+        /// This displays the edit form.
+        /// <param name="_transactionNumber">This is the number of the transaction to be edited.</param>
+        /// </summary>
         [AdminUser]
         public PartialViewResult EditView(int _transactionNumber)
         {
@@ -122,10 +125,11 @@ namespace Garden_Centre_MVC.Controllers
             return PartialView("Partials/EditView", vm);
         }
 
-        ////////////
-        //EDIT VIEW//
-        //This controller method is called when the user changes the customer selected in the edit view.
-        ////////////
+        /// <summary>
+        /// This controller method is called when the user changes the customer selected in the edit view.
+        /// <param name="customerId">This is the id of the customer selected.</param>
+        /// <param name="prevVM">The previous vm this is passed through AJAX and is the one that was been used.</param>
+        /// </summary>
         [AdminUser]
         public PartialViewResult EditSelectCustomer(int customerId, string prevVM)
         {
@@ -134,10 +138,11 @@ namespace Garden_Centre_MVC.Controllers
             return PartialView("Partials/EditView", vm);
         }
 
-        ////////////
-        //EDIT VIEW//
-        //This controller method is called when the user adds an item while in the edit view.
-        ////////////
+        /// <summary>
+        /// This controller method is called when the user adds an item while in the edit view.
+        /// <param name="itemId">This is the id of the item selected to add.</param>
+        /// <param name="prevVM">The previous vm this is passed through AJAX and is the one that was been used.</param>
+        /// </summary>
         [AdminUser]
         public PartialViewResult EditAddItem(int itemId, string prevVM)
         {
@@ -146,10 +151,11 @@ namespace Garden_Centre_MVC.Controllers
             return PartialView("Partials/EditView", vm);
         }
 
-        ////////////
-        //EDIT VIEW//
-        //This controller method is called when the user removes an item while in the edit view.
-        ////////////
+        /// <summary>
+        /// This controller method is called when the user removes an item while in the edit view.
+        /// <param name="index">This is the index of the item stored in the items list in the view model.</param>
+        /// <param name="prevVM">The previous vm this is passed through AJAX and is the one that was been used.</param>
+        /// </summary>
         [AdminUser]
         public PartialViewResult EditRemItem(int index, string prevVM)
         {
@@ -177,10 +183,10 @@ namespace Garden_Centre_MVC.Controllers
             return PartialView("Partials/EditView", vm);
         }
 
-        ////////////
-        //EDIT VIEW//
-        //This controller method is responsable for saving the changes to the transaction to the database
-        ////////////
+        /// <summary>
+        /// This controller method is responsable for saving the changes to the transaction to the database.
+        /// <param name="prevVM">The previous vm this is passed through AJAX and is the one that was been used.</param>
+        /// </summary>
         [AdminUser]
         public PartialViewResult SerializeEdit(string prevVM)
         {
@@ -250,9 +256,9 @@ namespace Garden_Centre_MVC.Controllers
             return PartialView("Partials/HistoricView", vm);
         }
 
-        ////////////
-        //ADD VIEW//
-        ////////////
+        /// <summary>
+        /// Called to get the Add View.
+        /// </summary>
         [NormalUser]
         public PartialViewResult AddView()
         {
@@ -260,6 +266,11 @@ namespace Garden_Centre_MVC.Controllers
             return PartialView("Partials/AddView", vm);
         }
 
+        /// <summary>
+        /// Called when the add item is pressed in the add view.
+        /// <param name="itemId">The id of the item added.</param>
+        /// <param name="prevVM">The previous vm this is passed through AJAX and is the one that was been used.</param>
+        /// </summary>
         [NormalUser]
         public PartialViewResult AddItem(int itemId, string prevVM)
         {
@@ -267,6 +278,11 @@ namespace Garden_Centre_MVC.Controllers
             return PartialView("Partials/AddView", vm);
         }
 
+        /// <summary>
+        /// Called when a new customer is selected in the add view.
+        /// <param name="customerId">The id of the customer added.</param>
+        /// <param name="prevVM">The previous vm this is passed through AJAX and is the one that was been used.</param>
+        /// </summary>
         [NormalUser]
         public PartialViewResult SelectCustomer(int customerId, string prevVM)
         {
@@ -274,6 +290,11 @@ namespace Garden_Centre_MVC.Controllers
             return PartialView("Partials/AddView", vm);
         }
 
+        /// <summary>
+        /// Called when a new customer is selected in the add view.
+        /// <param name="index">The index of the item to be removed from the item list.</param>
+        /// <param name="prevVM">The previous vm this is passed through AJAX and is the one that was been used.</param>
+        /// </summary>
         [NormalUser]
         public PartialViewResult AddRemItem(int index, string prevVM)
         {
@@ -285,19 +306,27 @@ namespace Garden_Centre_MVC.Controllers
             return PartialView("Partials/AddView", vm);
         }
 
+        /// <summary>
+        /// Called when the save button is clicked in the add view.
+        /// <param name="prevVM">The previous vm this is passed through AJAX and is the one that was been used.</param>
+        /// </summary>
         [NormalUser]
         public PartialViewResult SerializeAdd(string prevVm)
         {
+            //create view model from the vm passed from the view
             AddViewModel addVM = JsonConvert.DeserializeObject<AddViewModel>(prevVm);
 
+            //Create a transaction overview to summerise the transaction been added
             TransactionOverview to = new TransactionOverview();
             to.CustomerId = addVM.transactionOverview.CustomerId;
             to.Date = addVM.transactionOverview.Date;
             to.TransactionNumber = addVM.transactionOverview.TransactionNumber;
             to.TotalValue = addVM.transactionOverview.TotalValue;
 
+            //Add the transaction overview
             m_Context.TransactionOverviews.Add(to);
 
+            //for every item added create a transaction and update the stock and sold
             foreach (Item i in addVM.items)
             {
                 Transaction t = new Transaction();
@@ -312,10 +341,13 @@ namespace Garden_Centre_MVC.Controllers
                 item.Sold++;
             }
 
+            //Save the changes to the database
             m_Context.SaveChanges();
 
+            //log that a transaction has been added
             Logger.LogAction("Transaction Added", "Added transaction number " + to.TransactionNumber);
 
+            //create a new vm and return the view
             HistoricViewModel vm = new HistoricViewModel();
             return PartialView("Partials/HistoricView", vm);
         }

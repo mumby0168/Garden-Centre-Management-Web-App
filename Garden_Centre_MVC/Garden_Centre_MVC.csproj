@@ -244,7 +244,6 @@
     <Compile Include="ViewModels\CustomerViewModels\CustomerLandingViewModels.cs" />
     <Compile Include="ViewModels\EmployeeViewModels\EmployeeLandingViewModels.cs" />
     <Compile Include="ViewModels\InventoryViewModels\InventoryViewModel.cs" />
-    <Compile Include="ViewModels\ItemsViewModels\ItemsLandingPageViewModel.cs" />
     <Compile Include="ViewModels\LogViewModels\LogLandingViewModel.cs" />
     <Compile Include="ViewModels\Transactions\AddViewModel.cs" />
     <Compile Include="ViewModels\Transactions\EditViewModel.cs" />

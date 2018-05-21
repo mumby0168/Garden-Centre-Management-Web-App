@@ -10,6 +10,9 @@ using System.Data.Entity;
 
 namespace Garden_Centre_MVC.ViewModels.Transactions
 {
+    /// <summary>
+    ///This view model is used to represent the history of all transactions that have taken place
+    /// </summary>
     public class HistoricViewModel : IDisposable
     {
         private DatabaseContext m_Context = new DatabaseContext();
@@ -18,6 +21,9 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
             m_Context.Dispose();
         }
 
+        /// <summary>
+        ///This returns a list of transaction overview which represent the transactions that have taken place.
+        /// </summary>
         public List<TransactionOverview> TransactionOverviews
         {
             get
@@ -26,7 +32,7 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
                 return ret;
             }
         }
-
+        //Returns the list of transaction overview as a JSON object.
         public string TransactionOverviewsJSON
         {
             get
