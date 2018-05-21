@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -93,7 +94,13 @@ namespace Garden_Centre_MVC.Controllers
             error.ErrorMessages = new List<string>();
             error.Property = emp;
 
+            Regex lettersOnly = new Regex("[a-z]");
 
+            if (!lettersOnly.IsMatch(emp.FirstName) || !lettersOnly.IsMatch(emp.SecondName))
+            {
+                error.ErrorMessages.Add("Please do not enter special characters or number in the name fields.");
+                errorCounter++;
+            }
 
             if (emp.FirstName.IsNullOrWhiteSpace() || emp.SecondName.IsNullOrWhiteSpace())
             {
