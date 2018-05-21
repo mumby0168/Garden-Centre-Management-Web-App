@@ -19,7 +19,7 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
         {
             get
             {
-                return m_Context.Customers.ToList();
+                return m_Context.Customers.Where(C => C.CustomerDeleted == false).ToList();
             }
         }
 
@@ -72,6 +72,7 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
             get; set;
         }
 
+        private Customer prevCust = null;
         public TransactionOverview _transactionOverview
         {
             get; set;

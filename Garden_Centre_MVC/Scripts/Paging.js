@@ -14,11 +14,12 @@ class Paging {
         this.m_RowLambda = rowLambda;
         this.m_BtnClass = btnClass;
         this.m_RowsToDisplay = 10;
-        this.m_SearchQuery = "";
-        this.m_SearchTermIndex = 0;
-        this.m_SearchTerm = Object.getOwnPropertyNames(data[0])[0];
         this.m_DisplayEmptyRows = displyEmptyRows;
         this.m_SearchTermMap = searchTermMap;
+
+        this.m_SearchQuery = "";
+        this.m_SearchTermIndex = this.m_SearchTermMap.values().next().value;
+        this.m_SearchTerm = Object.getOwnPropertyNames(data[0])[this.m_SearchTermIndex];
 
         this.CreateTableHeader();
         this.CreateSearchBox();
@@ -165,6 +166,20 @@ class Paging {
         sel.addEventListener("change", (e) => {
             this.m_RowsToDisplay = parseInt(e.target.value);
             e.target.value = e.target.value;
+
+            var numPages = 1;
+            if (this.m_SearchData !== undefined)
+            {
+                var numPages = parseInt(this.m_SearchData.length / this.m_RowsToDisplay);
+                if (this.m_SearchData.length % this.m_RowsToDisplay !== 0)
+                    numPages += 1;
+            }
+                if (this.m_Page > numPages)
+                {
+                    this.Page(numPages);
+                    return;
+                }
+
             this.Page(this.m_Page);
         });
 

@@ -22,7 +22,7 @@ namespace Garden_Centre_MVC.ViewModels.Transactions
         {
             get
             {
-                List<TransactionOverview> ret = m_Context.TransactionOverviews.Include(t => t.Customer).Where(t => t.Customer.CustomerDeleted == false).ToList();
+                List<TransactionOverview> ret = m_Context.TransactionOverviews.Include(t => t.Customer).ToList();
                 return ret;
             }
         }

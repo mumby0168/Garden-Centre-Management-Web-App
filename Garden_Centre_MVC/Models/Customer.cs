@@ -10,6 +10,9 @@ using System.Web.Script.Serialization;
 
 namespace Garden_Centre_MVC.Models
 {
+    /// <summary>
+    /// This class is what will be used to creat the table in the database each property being a column in the table
+    /// </summary>
     public class Customer
     {
         public int CustomerId { get; set; }

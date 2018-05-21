@@ -76,7 +76,16 @@
 <script type="text/javascript">
     $(document).ready(function () {
         var transactionNumber = @Model._transactionOverview.TransactionNumber;
-        $("#Edit_CustomerSelection" + transactionNumber).prop("selectedIndex", '@Model._transactionOverview.CustomerId');
+
+        var ind = -1;
+        $("#Edit_CustomerSelection" + transactionNumber + " option").each(function (index, element) {
+            if (element.value === '@Model._transactionOverview.CustomerId') {
+                ind = index;
+                return;
+            }
+        });
+
+        $("#Edit_CustomerSelection" + transactionNumber).prop("selectedIndex", ind);
 
         $(".editRemBtn").on("click", function (e) {
             e.preventDefault();
@@ -96,9 +105,16 @@
 
         $("#Edit_CustomerSelection" + transactionNumber).on("change", function (e) {
             e.preventDefault();
+
+            if (!$("#Edit_CustomerSelection" + transactionNumber).val() || $("#Edit_CustomerSelection" + transactionNumber).val() === null || $("#Edit_CustomerSelection" + transactionNumber).val() === undefined) {
+                alert("Please select a valid customer");
+                $("#Edit_CustomerSelection" + transactionNumber).prop("selectedIndex", ind);
+                return;
+            }
+
             $.ajax({
                 type: "POST",
-                data: ({ customerId: $("#Edit_CustomerSelection" + transactionNumber).prop("selectedIndex"), prevVM: '@Html.Raw(Json.Encode(Model))' }),
+                data: ({ customerId: $("#Edit_CustomerSelection" + transactionNumber).val(), prevVM: '@Html.Raw(Json.Encode(Model))' }),
                 url: '@Url.Action("EditSelectCustomer", "Transactions")',
                 success: function (result) {
                     $("#Historic_DropDownView" + transactionNumber).html(result);
@@ -138,12 +154,14 @@
                 @:return;
             }
 
-            if (confirm("Are you sure you would like discard changes to this transaction ?")) {
-                $("#Historic_DropDownView" + @Model._transactionOverview.TransactionNumber).delay(100).slideUp("slow", "swing", function (e) {
-                    $("#Historic_DropDownViewTR" + @Model._transactionOverview.TransactionNumber).attr("style", "display:none;");
-                    prevOpenedTN = '0';
-                });
-            }
+            bootbox.confirm("Are you sure you would like discard changes to this transaction?", function (result) {
+                if (result) {
+                    $("#Historic_DropDownView" + @Model._transactionOverview.TransactionNumber).delay(100).slideUp("slow", "swing", function (e) {
+                        $("#Historic_DropDownViewTR" + @Model._transactionOverview.TransactionNumber).attr("style", "display:none;");
+                        prevOpenedTN = '0';
+                    });
+                }
+            });
         });
 
         $(".editSaveBtn").on("click", function (e) {
