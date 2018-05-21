@@ -96,10 +96,14 @@ namespace Garden_Centre_MVC.Controllers
 
             Regex lettersOnly = new Regex("[a-z]");
 
-            if (!lettersOnly.IsMatch(emp.FirstName) || !lettersOnly.IsMatch(emp.SecondName))
+            if (!emp.FirstName.IsNullOrWhiteSpace() || !emp.SecondName.IsNullOrWhiteSpace())
             {
-                error.ErrorMessages.Add("Please do not enter special characters or number in the name fields.");
-                errorCounter++;
+                if (!lettersOnly.IsMatch(emp.FirstName) || !lettersOnly.IsMatch(emp.SecondName))
+                {
+                    error.ErrorMessages.Add("Please do not enter special characters or number in the name fields.");
+                    errorCounter++;
+                }
+
             }
 
             if (emp.FirstName.IsNullOrWhiteSpace() || emp.SecondName.IsNullOrWhiteSpace())

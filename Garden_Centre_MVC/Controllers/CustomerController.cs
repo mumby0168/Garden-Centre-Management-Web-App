@@ -102,8 +102,39 @@ namespace Garden_Centre_MVC.Controllers
 
             Regex reg = new Regex(@"([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))\s?[0-9][A-Za-z]{2})"); //Regex string to provide validation for the possible ways/formats in which a postcode can be entered.
 
+            Regex AddressVerif = new Regex("[a-z0-9]");
 
-            if(cust.PostCode != null) //If some text has been entered for the Customer PostCode:
+            Regex lettersOnly = new Regex("[a-z]");
+
+            if (!cust.AddressLine1.IsNullOrWhiteSpace() || !cust.AddressLine2.IsNullOrWhiteSpace())
+            {
+                if (!AddressVerif.IsMatch(cust.AddressLine1) || !AddressVerif.IsMatch(cust.AddressLine2))
+                {
+                    error.ErrorMessages.Add("Please make sure there are no special characters in the address fields.");
+                    errorCounter++;
+                }
+
+
+            }
+
+            if (!cust.FirstName.IsNullOrWhiteSpace() || !cust.SecondName.IsNullOrWhiteSpace())
+            {
+                if (!lettersOnly.IsMatch(cust.FirstName) || !lettersOnly.IsMatch(cust.SecondName))
+                {
+                    error.ErrorMessages.Add("Please do not enter special characters or number in the name fields.");
+                    errorCounter++;
+                }
+
+
+            }
+
+
+
+
+
+
+
+            if (cust.PostCode != null) //If some text has been entered for the Customer PostCode:
             {
                 if (!reg.IsMatch(cust.PostCode)) //If the format is not a match to one that has been included within the regex string:
                 {
