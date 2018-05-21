@@ -8,6 +8,6 @@ namespace Garden_Centre_MVC.ViewModels.CustomerViewModels
 {
     public class CustomerFormViewModel
     {
-        public Customer Customer { get; set; }
+        public Customer Customer { get; set; } //Accessor methods for the Customer private field. 'Get' retrieves the information and returns it, before 'Set' writes it and makes it there visually.
     }
 }

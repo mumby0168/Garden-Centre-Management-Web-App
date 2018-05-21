@@ -11,8 +11,19 @@ using Microsoft.Ajax.Utilities;
 
 namespace Garden_Centre_MVC.Attributes
 {
+    /// <summary>
+    /// this is a attribute which can be placed on the top of a property and it will be checked in the
+    /// entry of a form in a text field.
+    /// </summary>
     public class CheckIfAlreadyRegistered : ValidationAttribute
     {
+        /// <summary>
+        /// this method will return a boolean and it will state whether or not the the id that has been given
+        /// is already assigned to another employee.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="validationContext"></param>
+        /// <returns></returns>
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             if (value == null)

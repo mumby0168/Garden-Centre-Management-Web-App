@@ -22,16 +22,16 @@
     //    }
     //});
         
-    $("#NextPage").click(function() {
+    $("#NextPage").click(function() { //Function for getting to the next page.
 
         var page = $("#PageNumber").html();
-        page++;
+        page++; //Add 1 to the page number.
 
         $.ajax({
-            url: "/Customer/LoadTablePage",
+            url: "/Customer/LoadTablePage", //Current page.
             data: { "page": page },
-            success: function (view) {
-                $("#MainPageContainer").html(view);
+            success: function (view) { 
+                $("#MainPageContainer").html(view); //Return the new view on the page.
 
 
             }
@@ -40,13 +40,13 @@
     });
 
 
-    $("#PreviousPage").click(function () {
+    $("#PreviousPage").click(function () { //Similar as the last function but for accessing the previous page.
 
         var pages = $("#PageNumber").html();
 
-        if (parseInt(pages) === 1) {
+        if (parseInt(pages) === 1) { //If the page is the first, display the message below.
             bootbox.alert("This is the first page");
-            return;
+            return; //Return the home view.
         }
 
         pages--;
@@ -55,17 +55,17 @@
             url: "/Customer/LoadTablePage",
             data: { "page": pages },
             success: function(view) {
-                $("#MainPageContainer").html(view);
+                $("#MainPageContainer").html(view); //Return the current view.
             }
         });
     });
 
-    $("#GoBackFromNullError").click(function() {
+    $("#GoBackFromNullError").click(function() { //Back button function.
         $.ajax({
-            url: "/Customer/Index",
+            url: "/Customer/Index", //Defines the page within the container.
             success: function (view) {
                 $("#MainPageContainer").html(view);
-                $("#Loader").hide();
+                $("#Loader").hide(); //Hide the page which the user has gone back from.
             }
         });
     });
@@ -74,26 +74,26 @@
 
       
     //Search Box Start
-    $("#ResetSearch").click(function () {
+    $("#ResetSearch").click(function () { //Reset search function.
         $.ajax({
             url: "/Customer/Index/",
             success: function (view) {
-                $("#MainPageContainer").html(view);
+                $("#MainPageContainer").html(view); //Return view.
             }
         });
 
     });
 
-    $("#SearchBtn").click(function () {
+    $("#SearchBtn").click(function () { //Search function.
 
         var inputBox = $("#SearchBox");
         var filter = inputBox.val();
 
         $.ajax({
             url: "Customer/Search/",
-            data: {"str": filter},
+            data: {"str": filter}, //Use the input to return names which match.
             success: function(view) {
-                $("#MainPageContainer").html(view);
+                $("#MainPageContainer").html(view); //Return the view.
             }
 
         });
@@ -139,10 +139,10 @@
 
 
 
-
+                //Return the error message if it does not meet the validadtion.
                 var errorobj = JSON.parse(errorMessage);
 
-                $("#ErrorDiv").html("");
+                $("#ErrorDiv").html(""); //Return the appropriate error message.
 
                 var div = document.getElementById("ErrorDiv");
 
@@ -162,7 +162,7 @@
                     list.appendChild(li);
                 }
 
-                div.setAttribute("style", "color:red");
+                div.setAttribute("style", "color:red"); //Sets the styling for the error messages.
 
                 div.appendChild(list);
 
@@ -177,12 +177,12 @@
 
         var id = $(this).attr("custId");
 
-        bootbox.confirm({
+        bootbox.confirm({ //Pop-up confirmation box.
             message: "Are you sure you want to delete this record?", 
             buttons: {
                 confirm: {
                     label: "Yes",
-                    className: "btn-danger"
+                    className: "btn-danger" //Styling on the box.
                 },
                 cancel: {
                     label: "No",

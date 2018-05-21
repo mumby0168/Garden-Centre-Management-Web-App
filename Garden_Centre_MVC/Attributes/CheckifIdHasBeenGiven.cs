@@ -10,6 +10,9 @@ using AuthorizeAttribute = System.Web.Http.AuthorizeAttribute;
 
 namespace Garden_Centre_MVC.Attributes
 {
+    /// <summary>
+    /// this class is not used to my knowledge.
+    /// </summary>
     public class CheckifIdHasBeenGiven : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)

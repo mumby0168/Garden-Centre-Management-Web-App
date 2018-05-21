@@ -19,7 +19,7 @@ namespace Garden_Centre_MVC.Controllers
 {
     
      
-    
+    //Allows the class to be called throughout the application.
     public class CustomerController : Controller
     {
         private DatabaseContext _context;
@@ -29,17 +29,22 @@ namespace Garden_Centre_MVC.Controllers
         {
             _context = new DatabaseContext();
         }
-        
-        public ActionResult Index()
-        {
-            var customers = _context.Customers.Where(c => c.CustomerDeleted == false).Take(10).ToList();
 
+        //Class for action results, allows you to determine what result will form from an action that takes place.
+        public ActionResult Index() 
+        {
+            //If the customer has not been deleted from the table, show 10 within the first page of the table.
+            var customers = _context.Customers.Where(c => c.CustomerDeleted == false).Take(10).ToList(); 
+
+            //Calls the CustomerLandingViewModel and sets the current properties.
             var vm = new CustomerLandingViewModels { Customers = customers, PageNum = 1, IsSearch = false };
 
-            //returns the home view
+            //Returns the home view.
             return PartialView("CustomerLanding", vm);
         }
 
+
+        //Counts the amount of current records and then returns them in a string.
         public ActionResult CheckAmountOfRecords()
         {
             var count = _context.Customers.Count();
@@ -48,70 +53,107 @@ namespace Garden_Centre_MVC.Controllers
         }
 
 
-
+        //Loads the Customers table.
         public ActionResult LoadTablePage(int page)
         {
+            //Defines how many results to include within the page.
             var skipAmount = (page - 1) * 10;
+            //Orders the Customers by their first name, and chooses customers to be included which have not been deleted. 10 is taken from the database to the list.
             var customers = _context.Customers.OrderBy(c => c.FirstName).Where(c => c.CustomerDeleted == false).Skip(skipAmount).Take(10).ToList();
 
-
+            //Defines the customers and page from the view model.
             var vm = new CustomerLandingViewModels()
             {
                 Customers = customers,
                 PageNum = page
             };
 
+            //Returns the home view.
             return PartialView("CustomerLanding", vm);
         }
 
         [HttpPost]
-        public ActionResult Save(Customer cust)
+        public ActionResult Save(Customer cust) //Save method.
         {
 
-            int errorCounter = 0;
+            int errorCounter = 0; //Defining that the number of errors must equal 0.
 
-            Error error = new Error();
-            error.ErrorMessages = new List<string>();
+            Error error = new Error(); //Initialising the object.
+            error.ErrorMessages = new List<string>(); //The appropriate error message will be displayed as a string within the list.
             error.Property = cust;
 
-            if (cust.FirstName.IsNullOrWhiteSpace() || cust.SecondName.IsNullOrWhiteSpace())
+            if (cust.FirstName.IsNullOrWhiteSpace() || cust.SecondName.IsNullOrWhiteSpace()) //If no text has been entered for the FirstName and SecondName:
             {
-                error.ErrorMessages.Add("Please enter a first and last name.");
-                errorCounter++;
+                error.ErrorMessages.Add("Please enter a first and last name."); //Display this error message as a string,
+                errorCounter++; //And add 1 to the error counter.
             }
 
-            if(cust.AddressLine1.IsNullOrWhiteSpace() || cust.AddressLine2.IsNullOrWhiteSpace())
+            if(cust.AddressLine1.IsNullOrWhiteSpace() || cust.AddressLine2.IsNullOrWhiteSpace()) //If no text has been entered for the AddressLine1 or AddressLine2:
             {
-                error.ErrorMessages.Add("Please enter an Address Line 1 and 2.");
-                errorCounter++;
+                error.ErrorMessages.Add("Please enter an Address Line 1 and 2."); //Display this error message as a string,
+                errorCounter++; //And add 1 to the error counter.
             }
 
-            if (cust.PostCode.IsNullOrWhiteSpace())
+            if (cust.PostCode.IsNullOrWhiteSpace()) //If no text has been enteref for the PostCode:
             {
-                error.ErrorMessages.Add("Please enter a postcode");
-                errorCounter++;
+                error.ErrorMessages.Add("Please enter a postcode"); //Display this error message as a string,
+                errorCounter++; //And add 1 to the error counter.
             }
 
-            Regex reg = new Regex(@"([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))\s?[0-9][A-Za-z]{2})");
+            Regex reg = new Regex(@"([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))\s?[0-9][A-Za-z]{2})"); //Regex string to provide validation for the possible ways/formats in which a postcode can be entered.
 
+            Regex AddressVerif = new Regex("[a-z0-9]");
 
-            if(cust.PostCode != null)
+            Regex lettersOnly = new Regex("[a-z]");
+
+            if (!cust.AddressLine1.IsNullOrWhiteSpace() || !cust.AddressLine2.IsNullOrWhiteSpace())
             {
-                if (!reg.IsMatch(cust.PostCode))
+                if (!AddressVerif.IsMatch(cust.AddressLine1) || !AddressVerif.IsMatch(cust.AddressLine2))
                 {
-                    error.ErrorMessages.Add("This is not a valid UK postcode");
+                    error.ErrorMessages.Add("Please make sure there are no special characters in the address fields.");
                     errorCounter++;
+                }
+
+
+            }
+
+            if (!cust.FirstName.IsNullOrWhiteSpace() || !cust.SecondName.IsNullOrWhiteSpace())
+            {
+                if (!lettersOnly.IsMatch(cust.FirstName) || !lettersOnly.IsMatch(cust.SecondName))
+                {
+                    error.ErrorMessages.Add("Please do not enter special characters or number in the name fields.");
+                    errorCounter++;
+                }
+
+
+            }
+
+
+
+
+
+
+
+            if (cust.PostCode != null) //If some text has been entered for the Customer PostCode:
+            {
+                if (!reg.IsMatch(cust.PostCode)) //If the format is not a match to one that has been included within the regex string:
+                {
+                    error.ErrorMessages.Add("This is not a valid UK postcode"); //Display this error message as a string,
+                    errorCounter++; //And add 1 to the error counter.
                 }
             }
             
 
 
-            if (errorCounter != 0)
+            if (errorCounter != 0) //If the error counter is not equal to 0:
             {
-                var obj = JsonConvert.SerializeObject(error);
+                //The expectation for 0 errors has failed.
+                var obj = JsonConvert.SerializeObject(error); 
                 return new HttpStatusCodeResult(HttpStatusCode.ExpectationFailed, obj);
             }
-               
+            
+
+            //Section to take in values which the customer has entered for the new ID.
             if (cust.CustomerId == 0)
             {
                 var customer = new Customer
@@ -124,9 +166,11 @@ namespace Garden_Centre_MVC.Controllers
                     CustomerDeleted = false
                 };
 
+                //Add the customer to the database and save the changes made.
                 _context.Customers.Add(customer);
                 _context.SaveChanges();
 
+                //Show only customers which have not been deleted from the table, and take 10 to the list to show.
                 var vm = new CustomerLandingViewModels()
                 {
                     Customers = _context.Customers
@@ -135,8 +179,12 @@ namespace Garden_Centre_MVC.Controllers
                     ToList()
                 };
 
+
+                //Add the change made to the Action log.
                 Assets.Logger.LogAction("Customer Added", customer.FirstName + customer.SecondName + " Added.");
 
+
+                //Return the home view.
                 return View("CustomerLanding", vm);
             }
             else
@@ -157,16 +205,22 @@ namespace Garden_Centre_MVC.Controllers
                     Customers = _context.Customers.Take(10).Where(c => c.CustomerDeleted == false).ToList()
                 };
 
+                //Add to the action log the action of a customer being edited.
                 Assets.Logger.LogAction("Customer Edited", customer.FirstName + customer.SecondName + " Edited.");
 
+                //Return the view.
                 return PartialView("CustomerLanding", vm);
             }
         }
 
+
+        //Method for removing
         public ActionResult Remove(int id)
         {
             var customer = _context.Customers.FirstOrDefault(c => c.CustomerId == id);
 
+
+            //If the customer has been deleted, save the database changes.
             customer.CustomerDeleted = true;
 
             
@@ -180,45 +234,51 @@ namespace Garden_Centre_MVC.Controllers
                     ToList()
             };
 
+
+            //Log the change in the action logger of a customer being deleted.
             Assets.Logger.LogAction("Customer Deleted", customer.FirstName + customer.SecondName + " Deleted.");
 
+
+            //Return the view.
             return PartialView("CustomerLanding", vm);
         }
 
+
+        //Add button.
         public ActionResult Add()
         {
             var vm = new Customer();
 
-            return PartialView("CustomerForm", vm);
+            return PartialView("CustomerForm", vm); //Return the adding customer view model.
         }
 
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int id) //Edit button.
         {
             var customer = _context.Customers.FirstOrDefault(c => c.CustomerId == id);
 
             var vm = customer;
 
 
-            return PartialView("CustomerForm", vm);
+            return PartialView("CustomerForm", vm); //Reutnr the customer form view model.
 
         }
 
-        public ActionResult GetAll()
+        public ActionResult GetAll() //Return the appropriate view.
         {
             return View();
         }
 
-        public ActionResult GetSingle(int id)
+        public ActionResult GetSingle(int id) //Get the Id's and return view.
         {
             return View();
         }
 
-        public ActionResult Search(string str)
+        public ActionResult Search(string str) //Search method.
         {
             CustomerLandingViewModels vm;
-            List<Customer> customers;
+            List<Customer> customers; //Display the strings of customers.
 
-            if (str.IsNullOrWhiteSpace())
+            if (str.IsNullOrWhiteSpace()) //If the customer has been deleted don't display them.
             {
                 customers = _context.Customers
                 .Where(c => c.CustomerDeleted == false)
@@ -235,16 +295,18 @@ namespace Garden_Centre_MVC.Controllers
             else
             {
                 customers = _context.Customers.Where(c => c.CustomerDeleted == false).ToList();
-                var listToReturn = new List<Customer>();
+                var listToReturn = new List<Customer>(); //Show list of customers which have not been deleted.
                 foreach (var cust in customers)
                 {
                     var fullName = cust.FirstName + cust.SecondName;
                     if (fullName.ToUpper().Contains(str.ToUpper())) listToReturn.Add(cust);
                 }
 
+                
                 vm = new CustomerLandingViewModels() { Customers = listToReturn, PageNum = 1, IsSearch = true };
             }
 
+            //Return the view.
             return PartialView("CustomerLanding", vm);
         }
 

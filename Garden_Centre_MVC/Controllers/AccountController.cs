@@ -178,22 +178,22 @@ namespace Garden_Centre_MVC.Controllers
             var employee = _context.EmployeeLogins.Include(m => m.Employee).FirstOrDefault(e => e.Username == vm.Email);
 
             if (employee == null)
-                return PartialView("ForgottenPassword");
+                return PartialView("ForgottenPasswordError");
 
             if (employee.Employee.EmployeeNumber != vm.EmployeeId)
-                return PartialView("ForgottenPassword");
+                return PartialView("ForgottenPasswordError");
 
             if (SendEmail(employee))
             {
                 //email has been sent
                 employee.CanReset = true;
                 _context.SaveChanges();
-                return View("EmailSent");
+                return View("ForgottenPasswordError");
             }
             else
             {
                 //email has not been sent
-                return View("ForgottenPassword");
+                return View("Error");
             }
 
 
