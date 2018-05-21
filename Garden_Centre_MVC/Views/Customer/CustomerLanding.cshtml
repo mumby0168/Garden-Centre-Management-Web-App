@@ -35,7 +35,7 @@
 
 
 
-        @if (Model.Customers.Count == 0)
+        if (Model.Customers.Count == 0)
 {
         <h2>No Results</h2>
         <button class="btn btn-default" id="GoBackFromNullError">Go Back</button>
@@ -108,7 +108,7 @@ else
 
 
 
-        @if (Model.Customers.Count == 0)
+        if (Model.Customers.Count == 0)
 {
         <h2>No Results</h2>
         <button class="btn btn-default" id="GoBackFromNullError">Go Back</button>
