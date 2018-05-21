@@ -15,11 +15,11 @@ namespace Garden_Centre_MVC.ViewModels.CustomerViewModels
         }
 
 
-        public List<Customer> Customers { get; set; }
+        public List<Customer> Customers { get; set; } //Accessor methods for the Customers private field. 'Get' reads the information and returns it, 'Set' writes the information in that private field.
 
-        public int PageNum { get; set; }
+        public int PageNum { get; set; } //Accessor methods for the PageNum private field.
 
-        public bool IsSearch { get; set; }
+        public bool IsSearch { get; set; } //Accessor methods for the IsSearch private field.
 
     }
 }
