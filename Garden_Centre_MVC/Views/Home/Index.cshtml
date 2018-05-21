@@ -94,34 +94,34 @@
     <div class="row">
 
         @if (CurrentUser.EmployeeLogin.Employee.Admin)
-    {
-        <div align="center" class="col-sm-12">
-            <a style="cursor: pointer; color: black;" id="ActionLogLandingLink">
-                <div class="jumbotron">
-                    <div align="center">
-                        <i class="fa fa-pencil fa-3x"></i>
-                        <h3>Action Log</h3>
-                    </div>
-                    <div align="left">
+        {
+            <div align="center" class="col-sm-12">
+                <a style="cursor: pointer; color: black;" id="ActionLogLandingLink">
+                    <div class="jumbotron">
+                        <div align="center">
+                            <i class="fa fa-pencil fa-3x"></i>
+                            <h3>Action Log</h3>
+                        </div>
+                        <div align="left">
 
+                        </div>
                     </div>
-                </div>
-            </a>
-        </div>
-}
-else
-{
-    <div align="center" class="col-sm-12">
-        <a style="cursor: pointer; color: lightskyblue;  pointer-events: none; cursor: default; text-decoration: none;color: gray; opacity: 0.2;" id="ActionLogLandingLink">
-            <div class="jumbotron">
-                <div align="center">
-                    <i align="left" class="fa fa-lock fa-5x"></i>
-                    <h3>Action Log</h3>
-                </div>                
+                </a>
             </div>
-        </a>
-    </div>
-}
+        }
+        else
+        {
+            <div align="center"  style="opacity: 0.5;" class="col-sm-12">
+                <a style="cursor: pointer; color: black;  pointer-events: none; cursor: default; text-decoration: none;color: gray; opacity: 0.2;" id="ActionLogLandingLink">
+                    <div class="jumbotron">
+                        <div align="center">
+                            <i align="left" class="fa fa-5x fa-lock"></i>
+                            <h3>Action Log</h3>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
 
     </div>
 
