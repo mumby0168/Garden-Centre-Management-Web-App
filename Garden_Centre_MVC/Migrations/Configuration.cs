@@ -1,3 +1,5 @@
+using Garden_Centre_MVC.Models;
+
 namespace Garden_Centre_MVC.Migrations
 {
     using System;
@@ -14,10 +16,26 @@ namespace Garden_Centre_MVC.Migrations
 
         protected override void Seed(Garden_Centre_MVC.Persistance.DatabaseContext context)
         {
-            //  This method will be called after migrating to the latest version.
+            var employee = context.Employees.FirstOrDefault(e => e.EmployeeNumber == 123456);
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data.
+            if (employee == null)
+            {
+                var employeeLogin = new EmployeeLogin()
+                {
+                    Username = "joebloggs@outlook.com",
+                    Employee = new Employee()
+                    {
+                        FirstName = "Joe",
+                        SecondName = "Bloggs",
+                        EmployeeNumber = 123456,
+                        Admin = true,
+                        AccountCreated = false
+                    }
+                };
+                context.EmployeeLogins.Add(employeeLogin);
+            }
+
+            context.SaveChanges();
         }
     }
 }

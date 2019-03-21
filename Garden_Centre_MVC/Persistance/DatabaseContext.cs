@@ -5,7 +5,6 @@ using System.Linq;
 using System.Security.Policy;
 using System.Web;
 using Garden_Centre_MVC.Models;
-using MySql.Data.Entity;
 
 
 namespace Garden_Centre_MVC.Persistance
@@ -13,8 +12,7 @@ namespace Garden_Centre_MVC.Persistance
     /// <summary>
     /// This the class that holds each object listed in the models folder the names of
     /// these propertys will be applied to the database as each table name.
-    /// </summary>
-    [DbConfigurationType(typeof(MySqlEFConfiguration))]
+    /// </summary>   
     public class DatabaseContext : DbContext
     {
         public DbSet<Employee> Employees { get; set; }

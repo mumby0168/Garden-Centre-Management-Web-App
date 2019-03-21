@@ -69,16 +69,16 @@ namespace Garden_Centre_MVC.Controllers
                 //succesful login
                 CurrentUser.EmployeeLogin = employee;
 
-                Log log = new Log()
-                {
-                    EmployeeLogin = CurrentUser.EmployeeLogin,
-                    ActionType = _context.ActionTypes.FirstOrDefault(l => l.Description == "Logged In"),
-                    PropertyEffected = "None",
-                    DateOfAction = DateTime.Now
-                };
+                //Log log = new Log()
+                //{
+                //    EmployeeLogin = CurrentUser.EmployeeLogin,
+                //    ActionType = _context.ActionTypes.FirstOrDefault(l => l.Description == "Logged In"),
+                //    PropertyEffected = "None",
+                //    DateOfAction = DateTime.Now
+                //};
 
-                _context.Logs.Add(log);
-                _context.SaveChanges();
+                //_context.Logs.Add(log);
+                //_context.SaveChanges();
                
                 Session[employee.Username] = employee;                
 
@@ -109,6 +109,7 @@ namespace Garden_Centre_MVC.Controllers
         [HttpPost]
         public ActionResult RegisterForm(RegisterViewModel registerVm)
         {
+            var users = _context.EmployeeLogins.ToList();
             var checkifExist = _context.EmployeeLogins.FirstOrDefault(e => e.Username == registerVm.Email);
 
             if (checkifExist != null)

@@ -19,34 +19,34 @@ namespace Garden_Centre_MVC.Assets
         /// <param name="empLog"></param>
         public static void LogAction(string actionType, string message, EmployeeLogin empLog = null)
         {
-            Log log;
-            DatabaseContext _context = new DatabaseContext();
+            //Log log;
+            //DatabaseContext _context = new DatabaseContext();
 
-            if (empLog == null)
-            {
-                log = new Log()
-                {
-                    EmployeeLoginId = CurrentUser.EmployeeLogin.EmployeeLoginId,
-                    DateOfAction = DateTime.Now,
-                    ActionType = _context.ActionTypes.FirstOrDefault(a => a.Description == actionType),
-                    PropertyEffected = message
-                };
-            }
-            else
-            {
-                log = new Log()
-                {
-                    EmployeeLoginId = empLog.EmployeeLoginId,
-                    DateOfAction = DateTime.Now,
-                    ActionType = _context.ActionTypes.FirstOrDefault(a => a.Description == actionType),
-                    PropertyEffected = message
-                };
-            }
+            //if (empLog == null)
+            //{
+            //    log = new Log()
+            //    {
+            //        EmployeeLoginId = CurrentUser.EmployeeLogin.EmployeeLoginId,
+            //        DateOfAction = DateTime.Now,
+            //        ActionType = _context.ActionTypes.FirstOrDefault(a => a.Description == actionType),
+            //        PropertyEffected = message
+            //    };
+            //}
+            //else
+            //{
+            //    log = new Log()
+            //    {
+            //        EmployeeLoginId = empLog.EmployeeLoginId,
+            //        DateOfAction = DateTime.Now,
+            //        ActionType = _context.ActionTypes.FirstOrDefault(a => a.Description == actionType),
+            //        PropertyEffected = message
+            //    };
+            //}
         
-            _context.Logs.Add(log);
+            //_context.Logs.Add(log);
 
-            _context.SaveChanges();
-            _context.Dispose();
+            //_context.SaveChanges();
+            //_context.Dispose();
         }
     }
 }
