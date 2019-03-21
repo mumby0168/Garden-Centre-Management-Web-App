@@ -22,7 +22,7 @@ namespace Garden_Centre_MVC.Models
 
         [Required]
         [MaxLength(15)]
-        [Display(Name = "Second Name")]Admin
+        [Display(Name = "Second Name")]
         public string SecondName { get; set; }
 
         [Required]
